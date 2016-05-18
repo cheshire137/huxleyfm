@@ -19,7 +19,11 @@
     "index.js",
     "index.html",
     "index.css",
-    "reset.css"
+    "reset.css",
+    "settings.html",
+    "settings.js",
+    "icon48.png",
+    "icon48-dark.png"
   ],
   "keywords": [
     "electron-app",
