@@ -24,8 +24,8 @@
     "reset.css",
     "settings.html",
     "settings.js",
-    "icon48.png",
-    "icon48-dark.png",
+    "images/icon48.png",
+    "images/icon48-dark.png",
     "SomaPlayer.js",
     "SomaPlayerSettings.js",
     "SomaPlayerUtil.js"
