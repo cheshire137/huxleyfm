@@ -94,66 +94,66 @@ body.theme-dark hr {
   border-top-color: #444;
   border-bottom-color: transparent;
 }
-body.options {
+body.settings {
   font-size: 18px;
 }
-body.options .icon-dark {
+body.settings .icon-dark {
   display: none;
 }
-body.options.theme-dark a,
-body.options.theme-dark a:link,
-body.options.theme-dark a:visited,
-body.options.theme-dark a:active {
+body.settings.theme-dark a,
+body.settings.theme-dark a:link,
+body.settings.theme-dark a:visited,
+body.settings.theme-dark a:active {
   color: #D8A24D;
 }
-body.options.theme-dark a:hover,
-body.options.theme-dark a:focus {
+body.settings.theme-dark a:hover,
+body.settings.theme-dark a:focus {
   color: #e1b877;
 }
-body.options.theme-dark .icon-light {
+body.settings.theme-dark .icon-light {
   display: none;
 }
-body.options.theme-dark .icon-dark {
+body.settings.theme-dark .icon-dark {
   display: block;
 }
-body.options.theme-dark .help-block {
+body.settings.theme-dark .help-block {
   color: #999;
 }
-body.options a,
-body.options a:link,
-body.options a:visited,
-body.options a:active {
+body.settings a,
+body.settings a:link,
+body.settings a:visited,
+body.settings a:active {
   color: #D8A24D;
   text-decoration: underline;
 }
-body.options a:hover,
-body.options a:focus {
+body.settings a:hover,
+body.settings a:focus {
   color: #BA0005;
   text-decoration: none;
 }
-body.options footer a,
-body.options footer a:link,
-body.options footer a:visited,
-body.options footer a:active {
+body.settings footer a,
+body.settings footer a:link,
+body.settings footer a:visited,
+body.settings footer a:active {
   text-decoration: none;
 }
-body.options .station-count:before {
+body.settings .station-count:before {
   content: "(";
 }
-body.options .station-count:after {
+body.settings .station-count:after {
   content: ")";
 }
-body.options .refresh-stations {
+body.settings .refresh-stations {
   margin-bottom: 14px;
 }
-body.options .stations-list {
+body.settings .stations-list {
   margin-bottom: 0;
 }
-body.options .container {
+body.settings .container {
   margin: 2em 20%;
   position: relative;
 }
-body.options .container .alert {
+body.settings .container .alert {
   position: absolute;
   left: 50%;
   width: 40%;
@@ -161,14 +161,14 @@ body.options .container .alert {
   top: 55px;
   font-size: 14px;
 }
-body.options h1 {
+body.settings h1 {
   font-size: 32px;
   font-weight: 300;
 }
-body.options p {
+body.settings p {
   margin-bottom: 0;
 }
-body.options #lastfm-is-authenticated p.help-block {
+body.settings #lastfm-is-authenticated p.help-block {
   margin-bottom: 14px;
 }
 body.player {
