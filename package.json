@@ -21,6 +21,8 @@
     "index.js",
     "index.html",
     "css/index.css",
+    "css/settings.css",
+    "css/shared.css",
     "css/reset.css",
     "settings.html",
     "settings.js",
