@@ -1,0 +1,43 @@
+{
+  "name": "soma-electron",
+  "productName": "SomaElectron",
+  "version": "0.0.1",
+  "description": "SomaFM Electron desktop app",
+  "license": "MIT",
+  "repository": "cheshire137/soma-electron",
+  "author": {
+    "name": "Sarah Vessels",
+    "email": "cheshire137@gmail.com",
+    "url": "3till7.net"
+  },
+  "scripts": {
+    "test": "xo",
+    "start": "electron .",
+    "build": "electron-packager . --out=dist --app-version=$npm_package_version --prune --asar --overwrite --all"
+  },
+  "files": [
+    "index.js",
+    "index.html",
+    "index.css"
+  ],
+  "keywords": [
+    "electron-app",
+    "electron"
+  ],
+  "dependencies": {
+    "electron-debug": "^1.0.0"
+  },
+  "devDependencies": {
+    "devtron": "^1.1.0",
+    "electron-packager": "^7.0.0",
+    "electron-prebuilt": "^1.0.1",
+    "xo": "^0.15.0"
+  },
+  "xo": {
+    "esnext": true,
+    "envs": [
+      "node",
+      "browser"
+    ]
+  }
+}
