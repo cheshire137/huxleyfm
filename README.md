@@ -1,6 +1,6 @@
 # soma-electron
 
-A desktop player for [SomaFM](http://somafm.com/).
+A desktop player for [SomaFM](http://somafm.com/). Compare to the [Chrome extension](https://github.com/cheshire137/soma-chrome).
 
 ## How to Develop
 
