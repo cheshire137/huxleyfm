@@ -2,6 +2,7 @@
   "name": "soma-electron",
   "productName": "SomaElectron",
   "version": "0.0.1",
+  "main": "main.js",
   "description": "SomaFM Electron desktop app",
   "license": "MIT",
   "repository": "cheshire137/soma-electron",
@@ -16,6 +17,7 @@
     "build": "electron-packager . --out=dist --app-version=$npm_package_version --prune --asar --overwrite --all"
   },
   "files": [
+    "main.js",
     "index.js",
     "index.html",
     "index.css",
