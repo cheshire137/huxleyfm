@@ -1,19 +1,14 @@
+const Util = require('./SomaPlayerUtil');
+
 module.exports = class SomaPlayer {
   constructor() {
-    this.handleLinks();
+    this.applyTheme();
   }
 
-  handleLinks() {
-    const shell = require('electron').shell;
-    const links = document.querySelectorAll('a[href]');
-    Array.prototype.forEach.call(links, function (link) {
-      const url = link.getAttribute('href');
-      if (url.indexOf('http') === 0) {
-        link.addEventListener('click', function (e) {
-          e.preventDefault()
-          shell.openExternal(url)
-        });
-      }
+  applyTheme() {
+    Util.getOptions().then((options) => {
+      const theme = options.theme || 'light';
+      document.body.classList.add('theme-' + theme);
     });
   }
 }
