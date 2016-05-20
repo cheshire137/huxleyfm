@@ -24,7 +24,7 @@ module.exports = class SomaPlayerSettings {
     this.lastfmConnectedMessage =
         document.getElementById('lastfm-is-authenticated');
     this.statusArea = document.getElementById('status-message');
-    this.lastfmButton = document.querySelector('button.lastfm-auth');
+    this.lastfmButtons = document.querySelectorAll('button.lastfm-auth');
     this.disableScrobbling = document.getElementById('disable_scrobbling');
     this.enableScrobbling = document.getElementById('enable_scrobbling');
     this.disableNotifications =
@@ -64,11 +64,13 @@ module.exports = class SomaPlayerSettings {
     this.restoreNotificationsSetting();
     this.restoreThemeSetting();
     this.revealControls();
-    this.revealLastfmButton();
+    this.revealLastfmButtons();
   }
 
-  revealLastfmButton() {
-    this.lastfmButton.classList.remove('hidden');
+  revealLastfmButtons() {
+    Array.prototype.forEach.call(this.lastfmButtons, (button) => {
+      button.classList.remove('hidden');
+    });
   }
 
   revealControls() {
