@@ -1,21 +1,25 @@
 const storage = require('electron-json-storage');
 
 module.exports = class SomaPlayerUtil {
-  static getOptions() {
+  static retrieve(key) {
     return new Promise((resolve, reject) => {
-      storage.get('options', (error, data) => {
+      storage.get(key, (error, value) => {
         if (error) {
           reject(error);
         } else {
-          resolve(data);
+          resolve(value);
         }
       });
     });
   }
 
-  static setOptions(options) {
+  static getOptions() {
+    return this.retrieve('options');
+  }
+
+  static store(key, value) {
     return new Promise((resolve, reject) => {
-      storage.set('options', options, (error) => {
+      storage.set(key, value, (error) => {
         if (error) {
           reject(error);
         } else {
@@ -25,6 +29,11 @@ module.exports = class SomaPlayerUtil {
     });
   }
 
+  static setOptions(options) {
+    console.log('saving options', options);
+    return this.store('options', options);
+  }
+
   static handleLinks() {
     const shell = require('electron').shell;
     const links = document.querySelectorAll('a[href]');
@@ -32,8 +41,8 @@ module.exports = class SomaPlayerUtil {
       const url = link.getAttribute('href');
       if (url.indexOf('http') === 0) {
         link.addEventListener('click', function(e) {
-          e.preventDefault()
-          shell.openExternal(url)
+          e.preventDefault();
+          shell.openExternal(url);
         });
       }
     });

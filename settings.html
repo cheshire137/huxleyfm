@@ -28,7 +28,7 @@
             </a>
           </p>
           <p>
-            <button class="lastfm-auth hidden">
+            <button class="lastfm-auth hidden" type="button">
               <i class="fa fa-lastfm"></i>
               Authenticate with Last.fm
             </button>
@@ -38,9 +38,17 @@
           </p>
         </div>
         <div class="hidden" id="lastfm-is-not-authenticated">
-          <button class="lastfm-auth hidden btn-lastfm">
+          <button class="lastfm-auth hidden btn-lastfm" type="button">
             <i class="fa fa-lastfm"></i>
             Authenticate with Last.fm
+          </button>
+        </div>
+        <div class="hidden" id="lastfm-is-authenticating">
+          <p class="help-block">
+            Click here when you have finished authenticating in your browser:
+          </p>
+          <button type="button" class="lastfm-get-session">
+            Done Authorizing
           </button>
         </div>
       </fieldset>

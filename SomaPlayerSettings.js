@@ -23,10 +23,13 @@ module.exports = class SomaPlayerSettings {
   }
 
   findElements() {
-    this.lastfmConnectedMessage =
+    this.lastfmConnected =
         document.getElementById('lastfm-is-authenticated');
     this.statusArea = document.getElementById('status-message');
     this.lastfmButtons = document.querySelectorAll('button.lastfm-auth');
+    this.lastfmSessionButton = document.querySelector('.lastfm-get-session');
+    this.lastfmIsAuthenticating =
+        document.getElementById('lastfm-is-authenticating');
     this.disableScrobbling = document.getElementById('disable_scrobbling');
     this.enableScrobbling = document.getElementById('enable_scrobbling');
     this.disableNotifications =
@@ -34,9 +37,7 @@ module.exports = class SomaPlayerSettings {
     this.enableNotifications = document.getElementById('enable_notifications');
     this.lightTheme = document.getElementById('light_theme');
     this.darkTheme = document.getElementById('dark_theme');
-    this.lastfmConnectedMessage =
-        document.getElementById('lastfm-is-authenticated');
-    this.lastfmNotConnectedMessage =
+    this.lastfmNotConnected =
         document.getElementById('lastfm-is-not-authenticated');
     this.lastfmUser = document.getElementById('lastfm-user');
     this.lastfmDisconnect = document.getElementById('lastfm-disconnect');
@@ -62,14 +63,56 @@ module.exports = class SomaPlayerSettings {
   listenForLastfmAuthenticateClicks() {
     Array.prototype.forEach.call(this.lastfmButtons, (button) => {
       button.addEventListener('click', (e) => {
+        e.preventDefault();
         this.authenticateLastfm();
       });
     });
+    this.lastfmSessionButton.addEventListener('click', (e) => {
+      e.preventDefault();
+      this.getLastfmSession();
+    });
+  }
+
+  getLastfmSession() {
+    console.log('token', this.token);
+    const lastfm = new Lastfm();
+    lastfm.getSession(this.token).
+           then(this.onLastfmSessionLoaded.bind(this)).
+           catch(this.onLastfmSessionLoadError.bind(this));
+  }
+
+  onLastfmSessionLoaded(session) {
+    console.log('session', session);
+    this.token = undefined;
+    this.options.lastfmSessionKey = session.key;
+    this.options.lastfmUser = session.name;
+    Util.setOptions(this.options).
+         then(this.onLastfmSessionSaved.bind(this));
+  }
+
+  onLastfmSessionLoadError(err) {
+    console.error('failed to get Last.fm session', err);
+    this.flashError('There was an error connecting with Last.fm.');
+    this.lastfmIsAuthenticating.classList.add('hidden');
+    this.lastfmNotConnected.classList.remove('hidden');
   }
 
   authenticateLastfm() {
     const lastfm = new Lastfm();
-    lastfm.authenticate();
+    lastfm.authenticate().then(this.onLastfmAuthRequestMade.bind(this));
+  }
+
+  onLastfmAuthRequestMade(token) {
+    this.token = token;
+    this.lastfmNotConnected.classList.add('hidden');
+    this.lastfmIsAuthenticating.classList.remove('hidden');
+  }
+
+  onLastfmSessionSaved() {
+    this.flashMessage('Connected to Last.fm!');
+    this.restoreLastfmSessionSetting();
+    this.restoreLastfmUserSetting();
+    this.restoreScrobblingSetting();
   }
 
   restoreSettings() {
@@ -97,10 +140,10 @@ module.exports = class SomaPlayerSettings {
 
   restoreLastfmSessionSetting() {
     if (this.options.lastfmSessionKey) {
-      this.lastfmConnectedMessage.classList.remove('hidden');
+      this.lastfmConnected.classList.remove('hidden');
       this.enableScrobbling.disabled = false;
     } else {
-      this.lastfmNotConnectedMessage.classList.remove('hidden');
+      this.lastfmNotConnected.classList.remove('hidden');
     }
   }
 
@@ -136,13 +179,28 @@ module.exports = class SomaPlayerSettings {
     Util.setOptions(this.options).then(this.onSettingsSaved.bind(this));
   }
 
-  onSettingsSaved() {
-    this.statusArea.textContent = 'Saved your settings!';
+  flashError(message) {
+    this.flashMessage(message, true);
+  }
+
+  flashMessage(message, isError) {
+    this.statusArea.textContent = message;
+    if (isError) {
+      this.statusArea.classList.add('error');
+    } else {
+      this.statusArea.classList.remove('error');
+    }
     this.statusArea.classList.remove('hidden');
     window.scrollTo(0, 0);
+    const delay = isError ? 10000 : 2000;
     setTimeout(() => {
       this.statusArea.classList.add('hidden');
-    }, 2000);
+      this.statusArea.textContent = '';
+    }, delay);
+  }
+
+  onSettingsSaved() {
+    this.flashMessage('Saved your settings!');
     this.applyTheme();
   }
 

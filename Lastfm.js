@@ -7,8 +7,29 @@ module.exports = class Lastfm {
   }
 
   authenticate() {
-    this.getToken().then((token) => {
-      console.log('token', token);
+    return new Promise((resolve) => {
+      this.getToken().then((token) => {
+        const url = Config.lastfm_auth_url +
+            '?api_key=' + Config.lastfm_api_key + '&token=' + token;
+        const shell = require('electron').shell;
+        shell.openExternal(url);
+        resolve(token);
+      });
+    });
+  }
+
+  getSession(token) {
+    const params = {
+      token: token,
+      api_key: Config.lastfm_api_key,
+      method: 'auth.getSession'
+    };
+    const url = this.getUrl(this.applySignature(params));
+    return new Promise((resolve, reject) => {
+      this.get(url).then((json) => {
+        console.log('session response', json);
+        resolve(json.session);
+      }).catch(reject);
     });
   }
 
@@ -28,7 +49,7 @@ module.exports = class Lastfm {
     return new Promise((resolve, reject) => {
       fetch(url).then((response) => {
         if (!response.ok) {
-          reject(response.statusText);
+          reject(response.statusText + ' ' + url);
           return;
         }
         response.json().then(resolve);
