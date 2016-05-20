@@ -13,6 +13,18 @@ module.exports = class SomaPlayerUtil {
     });
   }
 
+  static setOptions(options) {
+    return new Promise((resolve, reject) => {
+      storage.set('options', options, (error) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve();
+        }
+      });
+    });
+  }
+
   static handleLinks() {
     const shell = require('electron').shell;
     const links = document.querySelectorAll('a[href]');

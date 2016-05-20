@@ -63,11 +63,19 @@ module.exports = class SomaPlayerSettings {
     this.restoreScrobblingSetting();
     this.restoreNotificationsSetting();
     this.restoreThemeSetting();
+    this.revealControls();
+    this.revealLastfmButton();
+  }
+
+  revealLastfmButton() {
+    this.lastfmButton.classList.remove('hidden');
+  }
+
+  revealControls() {
     const controls = document.querySelectorAll('.controls.hidden');
     Array.prototype.forEach.call(controls, (control) => {
       control.classList.remove('hidden');
     });
-    this.lastfmButton.classList.remove('hidden');
   }
 
   restoreLastfmSessionSetting() {
@@ -105,6 +113,35 @@ module.exports = class SomaPlayerSettings {
   }
 
   saveSettings() {
-    console.log('save settings');
+    this.options.scrobbling = this.getScrobblingOption();
+    this.options.notifications = this.getNotificationsOption();
+    this.options.theme = this.getThemeOption();
+    Util.setOptions(this.options).then(this.onSettingsSaved.bind(this));
+  }
+
+  onSettingsSaved() {
+    this.statusArea.textContent = 'Saved your settings!';
+    this.statusArea.classList.remove('hidden');
+    window.scrollTo(0, 0);
+    setTimeout(() => {
+      this.statusArea.classList.add('hidden');
+    }, 2000);
+    this.applyTheme();
+  }
+
+  getScrobblingOption() {
+    const checked = document.querySelector('input[name="scrobbling"]:checked');
+    return checked.value === 'enabled';
+  }
+
+  getNotificationsOption() {
+    const checked = document.
+        querySelector('input[name="notifications"]:checked');
+    return checked.value === 'enabled';
+  }
+
+  getThemeOption() {
+    const checked = document.querySelector('input[name="theme"]:checked');
+    return checked.value;
   }
 }
