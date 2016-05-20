@@ -59,8 +59,8 @@ body.settings .container {
 }
 body.settings .container .alert {
   position: absolute;
-  left: 10%;
-  width: 80%;
+  left: 0;
+  width: 100%;
   top: 55px;
   font-size: 14px;
 }
@@ -73,4 +73,7 @@ body.settings p {
 }
 body.settings #lastfm-is-authenticated p.help-block {
   margin-bottom: 14px;
+}
+body.settings .help-block + button {
+  margin-top: 10px;
 }

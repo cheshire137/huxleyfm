@@ -74,7 +74,6 @@ module.exports = class SomaPlayerSettings {
   }
 
   getLastfmSession() {
-    console.log('token', this.token);
     const lastfm = new Lastfm();
     lastfm.getSession(this.token).
            then(this.onLastfmSessionLoaded.bind(this)).
