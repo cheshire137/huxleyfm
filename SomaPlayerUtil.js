@@ -30,7 +30,6 @@ module.exports = class SomaPlayerUtil {
   }
 
   static setOptions(options) {
-    console.log('saving options', options);
     return this.store('options', options);
   }
 

@@ -75,12 +75,12 @@ module.exports = class Lastfm {
 
   // http://www.last.fm/api/desktopauth#6
   getSignature(params) {
-    const keys = Object.keys(params);
-    keys.sort();
     const orderedParams = [];
-    for (let i = 0; i < keys.length; i++) {
-      orderedParams.push(keys[i] + params[keys[i]]);
-    }
+    Object.keys(params).sort().forEach((key) => {
+      if (key !== 'format') {
+        orderedParams.push(key + params[key]);
+      }
+    });
     return this.md5(orderedParams.join('') + Config.lastfm_api_secret);
   }
 

@@ -64,11 +64,13 @@ module.exports = class SomaPlayerSettings {
     Array.prototype.forEach.call(this.lastfmButtons, (button) => {
       button.addEventListener('click', (e) => {
         e.preventDefault();
+        e.target.blur();
         this.authenticateLastfm();
       });
     });
     this.lastfmSessionButton.addEventListener('click', (e) => {
       e.preventDefault();
+      e.target.blur();
       this.getLastfmSession();
     });
   }
@@ -81,10 +83,10 @@ module.exports = class SomaPlayerSettings {
   }
 
   onLastfmSessionLoaded(session) {
-    console.log('session', session);
     this.token = undefined;
     this.options.lastfmSessionKey = session.key;
     this.options.lastfmUser = session.name;
+    this.options.scrobbling = true;
     Util.setOptions(this.options).
          then(this.onLastfmSessionSaved.bind(this));
   }
@@ -104,10 +106,12 @@ module.exports = class SomaPlayerSettings {
   onLastfmAuthRequestMade(token) {
     this.token = token;
     this.lastfmNotConnected.classList.add('hidden');
+    this.lastfmConnected.classList.add('hidden');
     this.lastfmIsAuthenticating.classList.remove('hidden');
   }
 
   onLastfmSessionSaved() {
+    this.lastfmIsAuthenticating.classList.add('hidden');
     this.flashMessage('Connected to Last.fm!');
     this.restoreLastfmSessionSetting();
     this.restoreLastfmUserSetting();
