@@ -1,10 +1,12 @@
 const Util = require('./SomaPlayerUtil');
+const Lastfm = require('./Lastfm');
 
 module.exports = class SomaPlayerSettings {
   constructor() {
     this.findElements();
     Util.getOptions().then(this.onOptionsLoaded.bind(this));
     this.listenForChanges();
+    this.listenForLastfmAuthenticateClicks();
   }
 
   onOptionsLoaded(options) {
@@ -55,6 +57,19 @@ module.exports = class SomaPlayerSettings {
         this.saveSettings();
       });
     });
+  }
+
+  listenForLastfmAuthenticateClicks() {
+    Array.prototype.forEach.call(this.lastfmButtons, (button) => {
+      button.addEventListener('click', (e) => {
+        this.authenticateLastfm();
+      });
+    });
+  }
+
+  authenticateLastfm() {
+    const lastfm = new Lastfm();
+    lastfm.authenticate();
   }
 
   restoreSettings() {

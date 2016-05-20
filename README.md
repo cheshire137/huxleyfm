@@ -6,7 +6,7 @@ A desktop player for [SomaFM](http://somafm.com/). Compare to the [Chrome extens
 
     cp config.json.example config.json
 
-Configure config.json with [your Last.fm API key and secret](http://www.last.fm/api/accounts).
+Configure config.json with [your Last.fm API key and secret](http://www.last.fm/api/account/create).
 
     npm install
     npm start

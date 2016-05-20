@@ -30,15 +30,18 @@
     "images/icon48-dark.png",
     "SomaPlayer.js",
     "SomaPlayerSettings.js",
-    "SomaPlayerUtil.js"
+    "SomaPlayerUtil.js",
+    "Lastfm.js"
   ],
   "keywords": [
     "electron-app",
     "electron"
   ],
   "dependencies": {
+    "crypto": "0.0.3",
     "electron-debug": "^1.0.0",
-    "electron-json-storage": "^2.0.0"
+    "electron-json-storage": "^2.0.0",
+    "node-fetch": "^1.5.2"
   },
   "devDependencies": {
     "devtron": "^1.1.0",
