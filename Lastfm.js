@@ -20,14 +20,18 @@ module.exports = class Lastfm {
     };
     const url = this.getUrl(this.applySignature(params));
     return new Promise((resolve, reject) => {
+      this.get(url).then((json) => resolve(json.token)).catch(reject);
+    });
+  }
+
+  get(url) {
+    return new Promise((resolve, reject) => {
       fetch(url).then((response) => {
         if (!response.ok) {
           reject(response.statusText);
           return;
         }
-        response.json().then((json) => {
-          resolve(json.token);
-        });
+        response.json().then(resolve);
       });
     });
   }
