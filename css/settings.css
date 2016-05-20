@@ -54,7 +54,6 @@ body.settings .stations-list {
   margin-bottom: 0;
 }
 body.settings .container {
-  margin: 2em 20%;
   position: relative;
 }
 body.settings .container .alert {
@@ -63,10 +62,6 @@ body.settings .container .alert {
   width: 100%;
   top: 55px;
   font-size: 14px;
-}
-body.settings h1 {
-  font-size: 32px;
-  font-weight: 300;
 }
 body.settings p {
   margin-bottom: 0;
