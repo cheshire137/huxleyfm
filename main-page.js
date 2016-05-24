@@ -1,37 +1,36 @@
 const Settings = require('./models/settings');
+const fs = require('fs');
+const Router = require('./models/router');
+const LinkHandler = require('./models/linkHandler');
 const IndexPage = require('./index/indexPage');
 const SettingsPage = require('./settings/settingsPage');
-const fs = require('fs');
-const shell = require('electron').shell;
 
 class PageLoader {
   constructor() {
-    this.priorPageID = null;
-    this.loadPage('index/index.html', 'player').
-         then(this.onIndexPageLoaded.bind(this));
+    this.pageID = null;
+    Settings.load().then(this.onInitialSettingsLoad.bind(this));
   }
 
-  onIndexPageLoaded() {
-    new IndexPage(this.settings);
-  }
-
-  onSettingsPageLoaded() {
-    const settingsPage = new SettingsPage(this.settings);
-    settingsPage.addListener('settings:change',
-                             this.onSettingsChanged.bind(this));
-  }
-
-  onAboutPageLoaded() {
-  }
-
-  onSettingsChanged(settings) {
+  onInitialSettingsLoad(settings) {
     this.settings = settings;
-    this.applyTheme(settings.theme);
+    this.setupRouter();
   }
 
-  onSettingsLoaded(pageID, settings) {
-    this.settings = settings;
-    this.applyTheme(settings.theme);
+  setupRouter() {
+    this.router = new Router();
+    this.router.addListener('page:loaded', (id, d) => this.onPageLoaded(id, d));
+    this.router.loadPage('index/index.html', 'player');
+  }
+
+  onPageLoaded(pageID, data) {
+    this.updatePageClass(pageID);
+    document.getElementById('page-container').innerHTML = data;
+    this.handleLinks();
+    this.applyTheme(this.settings.theme);
+    this.initPage(pageID);
+  }
+
+  initPage(pageID) {
     if (pageID === 'player') {
       this.onIndexPageLoaded();
     } else if (pageID === 'settings') {
@@ -41,73 +40,41 @@ class PageLoader {
     }
   }
 
+  handleLinks() {
+    this.linkHandler = new LinkHandler();
+    this.linkHandler.
+         addListener('page:load', (p, id) => this.router.loadPage(p, id));
+  }
+
+  updatePageClass(pageID) {
+    if (this.pageID) {
+      document.body.classList.remove(this.pageID);
+    }
+    this.pageID = pageID;
+    document.body.classList.add(pageID);
+  }
+
   applyTheme(theme) {
     document.body.classList.remove('theme-light');
     document.body.classList.remove('theme-dark');
     document.body.classList.add('theme-' + (theme || 'light'));
   }
 
-  onPageLoaded(pageID, data) {
-    if (this.priorPageID) {
-      document.body.classList.remove(this.priorPageID);
-    }
-    this.priorPageID = pageID;
-    document.body.classList.add(pageID);
-    document.getElementById('page-container').innerHTML = data;
-    this.handleLinks();
-    Settings.load().then(this.onSettingsLoaded.bind(this, pageID));
+  onIndexPageLoaded() {
+    new IndexPage(this.settings);
   }
 
-  onPageLoadError(path, err) {
-    console.error('failed to load page', path, err);
+  onSettingsPageLoaded() {
+    const page = new SettingsPage(this.settings);
+    page.addListener('settings:change', (s) => this.onSettingsChanged(s));
   }
 
-  loadPage(path, pageID) {
-    return this.loadPageContent(path).
-                then(this.onPageLoaded.bind(this, pageID)).
-                catch(this.onPageLoadError.bind(this, path));
+  onAboutPageLoaded() {
   }
 
-  loadPageContent(path) {
-    return new Promise((resolve, reject) => {
-      fs.readFile(path, (err, data) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(data);
-        }
-      });
-    });
-  }
-
-  onInternalLinkClick(e) {
-    e.preventDefault();
-    let link = e.target;
-    if (link.nodeName !== 'A') {
-      link = link.closest('a');
-    }
-    const path = link.getAttribute('data-page-path');
-    const pageID = link.getAttribute('data-page-id');
-    this.loadPage(path, pageID);
-  }
-
-  onExternalLinkClick(url, e) {
-    e.preventDefault();
-    shell.openExternal(url);
-  }
-
-  handleLink(link) {
-    const url = link.href;
-    if (url.indexOf('http') === 0) {
-      link.addEventListener('click', this.onExternalLinkClick.bind(this, url));
-    } else {
-      link.addEventListener('click', this.onInternalLinkClick.bind(this));
-    }
-  }
-
-  handleLinks() {
-    Array.prototype.forEach.call(document.querySelectorAll('a[href]'),
-                                 this.handleLink.bind(this));
+  onSettingsChanged(settings) {
+    this.settings = settings;
+    this.applyTheme(settings.theme);
   }
 }
 

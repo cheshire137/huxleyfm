@@ -30,6 +30,9 @@
     "images/icon48-dark.png",
     "models/settings.js",
     "models/Lastfm.js",
+    "models/router.js",
+    "models/linkHandler.js",
+    "models/eventful.js",
     "about/about.html",
     "about/about.css",
     "about/about.js"
