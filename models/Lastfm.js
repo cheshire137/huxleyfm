@@ -1,4 +1,4 @@
-const Config = require('./config.json');
+const Config = require('../config.json');
 const crypto = require('crypto');
 const fetch = require('node-fetch');
 

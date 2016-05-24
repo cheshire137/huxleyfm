@@ -1,4 +1,4 @@
-const Util = require('../SomaPlayerUtil');
+const Util = require('../models/SomaPlayerUtil');
 
 document.addEventListener('DOMContentLoaded', function() {
   Util.handleLinks();

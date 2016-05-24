@@ -1,5 +1,5 @@
-const SomaSettings = require('../SomaPlayerSettings');
-const Util = require('../SomaPlayerUtil');
+const SomaSettings = require('../models/SomaPlayerSettings');
+const Util = require('../models/SomaPlayerUtil');
 
 document.addEventListener('DOMContentLoaded', function() {
   Util.handleLinks();
