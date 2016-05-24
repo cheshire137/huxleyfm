@@ -1,22 +1,15 @@
-const Util = require('./SomaPlayerUtil');
-const Lastfm = require('./Lastfm');
+const Settings = require('../models/settings');
+const Lastfm = require('../models/Lastfm');
 
-module.exports = class SomaPlayerSettings {
-  constructor() {
+module.exports = class SettingsPage {
+  constructor(settings) {
+    this.settings = settings;
+    this.listeners = new Map();
+
     this.findElements();
-    Util.getOptions().then(this.onOptionsLoaded.bind(this));
     this.listenForChanges();
     this.listenForLastfmAuthenticateClicks();
-  }
-
-  onOptionsLoaded(options) {
-    this.options = options;
     this.restoreSettings();
-    this.applyTheme();
-  }
-
-  applyTheme() {
-    Util.applyTheme(this.options.theme);
   }
 
   findElements() {
@@ -81,10 +74,10 @@ module.exports = class SomaPlayerSettings {
 
   onLastfmSessionLoaded(session) {
     this.token = undefined;
-    this.options.lastfmSessionKey = session.key;
-    this.options.lastfmUser = session.name;
-    this.options.scrobbling = true;
-    Util.setOptions(this.options).
+    this.settings.lastfmSessionKey = session.key;
+    this.settings.lastfmUser = session.name;
+    this.settings.scrobbling = true;
+    Settings.save(this.settings).
          then(this.onLastfmSessionSaved.bind(this));
   }
 
@@ -139,7 +132,7 @@ module.exports = class SomaPlayerSettings {
   }
 
   restoreLastfmSessionSetting() {
-    if (this.options.lastfmSessionKey) {
+    if (this.settings.lastfmSessionKey) {
       this.lastfmConnected.classList.remove('hidden');
       this.enableScrobbling.disabled = false;
     } else {
@@ -148,35 +141,35 @@ module.exports = class SomaPlayerSettings {
   }
 
   restoreLastfmUserSetting() {
-    if (this.options.lastfmUser) {
-      this.lastfmUser.textContent = this.options.lastfmUser;
-      this.lastfmUser.href = 'http://last.fm/user/' + this.options.lastfmUser;
+    if (this.settings.lastfmUser) {
+      this.lastfmUser.textContent = this.settings.lastfmUser;
+      this.lastfmUser.href = 'http://last.fm/user/' + this.settings.lastfmUser;
     }
   }
 
   restoreNotificationsSetting() {
-    if (this.options.notifications === false) {
+    if (this.settings.notifications === false) {
       this.disableNotifications.checked = true;
     }
   }
 
   restoreScrobblingSetting() {
-    if (this.options.scrobbling) {
+    if (this.settings.scrobbling) {
       this.enableScrobbling.checked = true;
     }
   }
 
   restoreThemeSetting() {
-    if (this.options.theme === 'dark') {
+    if (this.settings.theme === 'dark') {
       this.darkTheme.checked = true;
     }
   }
 
   saveSettings() {
-    this.options.scrobbling = this.getScrobblingOption();
-    this.options.notifications = this.getNotificationsOption();
-    this.options.theme = this.getThemeOption();
-    Util.setOptions(this.options).then(this.onSettingsSaved.bind(this));
+    this.settings.scrobbling = this.getScrobblingOption();
+    this.settings.notifications = this.getNotificationsOption();
+    this.settings.theme = this.getThemeOption();
+    Settings.save(this.settings).then(this.onSettingsSaved.bind(this));
   }
 
   flashError(message) {
@@ -201,7 +194,7 @@ module.exports = class SomaPlayerSettings {
 
   onSettingsSaved() {
     this.flashMessage('Saved your settings!');
-    this.applyTheme();
+    this.emit('settings:change', this.settings);
   }
 
   getScrobblingOption() {
@@ -218,5 +211,39 @@ module.exports = class SomaPlayerSettings {
   getThemeOption() {
     const checked = document.querySelector('input[name="theme"]:checked');
     return checked.value;
+  }
+
+  emit(label, ...args) {
+    let listeners = this.listeners.get(label);
+    if (listeners && listeners.length) {
+      listeners.forEach((listener) => {
+        listener(...args);
+      });
+      return true;
+    }
+    return false;
+  }
+
+  addListener(label, callback) {
+    this.listeners.has(label) || this.listeners.set(label, []);
+    this.listeners.get(label).push(callback);
+  }
+
+  removeListener(label, callback) {
+    let listeners = this.listeners.get(label);
+    let index;
+    if (listeners && listeners.length) {
+      index = listeners.reduce((i, listener, index) => {
+        return (isFunction(listener) && listener === callback) ?
+          i = index :
+          i;
+      }, -1);
+      if (index > -1) {
+        listeners.splice(index, 1);
+        this.listeners.set(label, listeners);
+        return true;
+      }
+    }
+    return false;
   }
 }
