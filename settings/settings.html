@@ -7,15 +7,25 @@
     <link rel="stylesheet" href="settings.css" media="screen" type="text/css">
   </head>
   <body class="settings">
-    <div class="container">
-      <header>
-        <a href="../index/index.html">
-          <img alt="SomaPlayer logo" class="icon-light pull-left" height="48" src="../images/icon48.png" width="48">
-          <img alt="SomaPlayer logo" class="icon-dark pull-left" height="48" src="../images/icon48-dark.png" width="48">
-        </a>
-        <h1>SomaPlayer Options</h1>
-        <hr>
-      </header>
+    <header>
+      <h1>SomaPlayer Settings</h1>
+      <ul class="list-inline">
+        <li>
+          <a href="../index/index.html">
+            <i class="fa fa-music"></i>
+          </a>
+        </li>
+        <li class="active">
+          <i class="fa fa-cog"></i>
+        </li>
+        <li>
+          <a href="../about/about.html">
+            <i class="fa fa-info-circle"></i>
+          </a>
+        </li>
+      </ul>
+    </header>
+    <main>
       <p class="hidden alert" id="status-message"></p>
       <fieldset>
         <legend>Last.fm Authentication</legend>
@@ -117,7 +127,7 @@
         </button>
         <p class="stations-list"></p>
       </fieldset>
-    </div>
+    </main>
     <script src="settings.js"></script>
   </body>
 </html>

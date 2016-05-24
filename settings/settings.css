@@ -23,18 +23,6 @@ body.settings.theme-dark .icon-dark {
 body.settings.theme-dark .help-block {
   color: #999;
 }
-body.settings a,
-body.settings a:link,
-body.settings a:visited,
-body.settings a:active {
-  color: #D8A24D;
-  text-decoration: underline;
-}
-body.settings a:hover,
-body.settings a:focus {
-  color: #BA0005;
-  text-decoration: none;
-}
 body.settings footer a,
 body.settings footer a:link,
 body.settings footer a:visited,
@@ -53,10 +41,7 @@ body.settings .refresh-stations {
 body.settings .stations-list {
   margin-bottom: 0;
 }
-body.settings .container {
-  position: relative;
-}
-body.settings .container .alert {
+body.settings .alert {
   position: absolute;
   left: 0;
   width: 100%;

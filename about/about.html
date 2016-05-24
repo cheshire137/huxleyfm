@@ -1,21 +1,31 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>SomaPlayer About</title>
+    <title>About SomaPlayer</title>
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" media="screen" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="../shared.css" media="screen" type="text/css">
     <link rel="stylesheet" href="about.css" media="screen" type="text/css">
   </head>
   <body class="about">
-    <div class="container">
-      <header>
-        <a href="index.html">
-          <img alt="SomaPlayer logo" class="icon-light pull-left" height="48" src="../images/icon48.png" width="48">
-          <img alt="SomaPlayer logo" class="icon-dark pull-left" height="48" src="../images/icon48-dark.png" width="48">
-        </a>
-        <h1>About SomaPlayer</h1>
-        <hr>
-      </header>
+    <header>
+      <h1>About SomaPlayer</h1>
+      <ul class="list-inline">
+        <li>
+          <a href="../index/index.html">
+            <i class="fa fa-music"></i>
+          </a>
+        </li>
+        <li>
+          <a href="../settings/settings.html">
+            <i class="fa fa-cog"></i>
+          </a>
+        </li>
+        <li class="active">
+          <i class="fa fa-info-circle"></i>
+        </li>
+      </ul>
+    </header>
+    <main>
       <p>
         This is an unofficial app, endorsed by neither
         <a href="http://somafm.com">SomaFM</a>
@@ -35,8 +45,11 @@
             View source code
           </a>
         </li>
+        <li>
+          <a href="http://somafm.com/support/">Donate to SomaFM</a>
+        </li>
       </ul>
-    </div>
+    </main>
     <script src="about.js"></script>
   </body>
 </html>
