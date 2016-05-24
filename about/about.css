@@ -10,3 +10,6 @@ body.about.theme-dark .icon-light {
 body.about.theme-dark .icon-dark {
   display: block;
 }
+body.about.theme-dark .help-block {
+  color: #999;
+}
