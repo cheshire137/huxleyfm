@@ -4,16 +4,6 @@ body.settings {
 body.settings .icon-dark {
   display: none;
 }
-body.settings.theme-dark a,
-body.settings.theme-dark a:link,
-body.settings.theme-dark a:visited,
-body.settings.theme-dark a:active {
-  color: #D8A24D;
-}
-body.settings.theme-dark a:hover,
-body.settings.theme-dark a:focus {
-  color: #e1b877;
-}
 body.settings.theme-dark .icon-light {
   display: none;
 }

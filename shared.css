@@ -90,8 +90,8 @@ body {
   color: #D8A24D;
   text-decoration: underline;
 }
-body.theme-light a:hover,
-body.theme-light a:focus {
+.theme-light a:hover,
+.theme-light a:focus {
   color: #BA0005;
   text-decoration: none;
 }
@@ -99,6 +99,16 @@ body.theme-light a:focus {
   background-color: #222;
   color: #EEE;
   text-shadow: 0 1px 1px #111;
+}
+.theme-dark a,
+.theme-dark a:link,
+.theme-dark a:visited,
+.theme-dark a:active {
+  color: #D8A24D;
+}
+.theme-dark a:hover,
+.theme-dark a:focus {
+  color: #e1b877;
 }
 .theme-dark h1 {
   color: #999;
@@ -395,4 +405,14 @@ header img.pull-left {
 .theme-light header a:focus {
   color: #BA0005;
   text-decoration: none;
+}
+.theme-dark header a,
+.theme-dark header a:link,
+.theme-dark header a:visited,
+.theme-dark header a:active {
+  color: #EEE;
+}
+.theme-dark header a:hover,
+.theme-dark header a:focus {
+  color: #e1b877;
 }
