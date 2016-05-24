@@ -1,133 +1,102 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>SomaPlayer Options</title>
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" media="screen" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" href="../shared.css" media="screen" type="text/css">
-    <link rel="stylesheet" href="settings.css" media="screen" type="text/css">
-  </head>
-  <body class="settings">
-    <header>
-      <h1>SomaPlayer Settings</h1>
-      <ul class="list-inline">
-        <li>
-          <a href="../index/index.html">
-            <i class="fa fa-music"></i>
-          </a>
-        </li>
-        <li class="active">
-          <i class="fa fa-cog"></i>
-        </li>
-        <li>
-          <a href="../about/about.html">
-            <i class="fa fa-info-circle"></i>
-          </a>
-        </li>
-      </ul>
-    </header>
-    <main>
-      <p class="hidden alert" id="status-message"></p>
-      <fieldset>
-        <legend>Last.fm Authentication</legend>
-        <div class="hidden" id="lastfm-is-authenticated">
-          <p class="help-block">
-            Connected as:
-            <a id="lastfm-user"></a>
-            &mdash;
-            <a href="#" id="lastfm-disconnect">
-              Disconnect
-            </a>
-          </p>
-          <p>
-            <button class="lastfm-auth hidden" type="button">
-              <i class="fa fa-lastfm"></i>
-              Authenticate with Last.fm
-            </button>
-            <span class="help-inline">
-              You can re-authenticate if scrobbling isn't working
-            </span>
-          </p>
-        </div>
-        <div class="hidden" id="lastfm-is-not-authenticated">
-          <button class="lastfm-auth hidden btn-lastfm" type="button">
-            <i class="fa fa-lastfm"></i>
-            Authenticate with Last.fm
-          </button>
-        </div>
-        <div class="hidden" id="lastfm-is-authenticating">
-          <p class="help-block">
-            Click here when you have finished authenticating in your browser:
-          </p>
-          <button type="button" class="lastfm-get-session">
-            Done Authorizing
-          </button>
-        </div>
-      </fieldset>
-      <hr>
-      <fieldset>
-        <legend>Track Scrobbling</legend>
-        <div class="controls hidden">
-          <label for="enable_scrobbling">
-            <input disabled="disabled" id="enable_scrobbling" name="scrobbling" type="radio" value="enabled">
-            Enable scrobbling
-          </label>
-          <label for="disable_scrobbling">
-            <input checked="checked" id="disable_scrobbling" name="scrobbling" type="radio" value="disabled">
-            Disable scrobbling
-          </label>
-        </div>
-        <p class="help-block">
-          Requires Last.fm authentication. Only stations supported by the
-          <a href="http://api.somascrobbler.com/">SomaScrobbler</a>
-          will get notifications/scrobbling.
-        </p>
-      </fieldset>
-      <hr>
-      <fieldset>
-        <legend>Desktop Notifications</legend>
-        <div class="controls hidden">
-          <label for="enable_notifications">
-            <input checked="checked" id="enable_notifications" name="notifications" type="radio" value="enabled">
-            Enable notifications
-          </label>
-          <label for="disable_notifications">
-            <input id="disable_notifications" name="notifications" type="radio" value="disabled">
-            Disable notifications
-          </label>
-        </div>
-        <p class="help-block">
-          Desktop notifications when the track changes.
-        </p>
-      </fieldset>
-      <hr>
-      <fieldset>
-        <legend>Theme</legend>
-        <div class="controls hidden">
-          <label for="light_theme">
-            <input checked="checked" id="light_theme" name="theme" type="radio" value="light">
-            Light theme
-          </label>
-          <label for="dark_theme">
-            <input id="dark_theme" name="theme" type="radio" value="dark">
-            Dark theme
-          </label>
-        </div>
-        <p class="help-block">
-          Black on white (light) or white on black (dark)? Decisions, decisions.
-        </p>
-      </fieldset>
-      <hr class="stations-divider hidden">
-      <fieldset class="stations-options hidden">
-        <legend>
-          Known Stations
-          <span class="station-count"></span>
-        </legend>
-        <button class="refresh-stations">
-          Refresh List
-        </button>
-        <p class="stations-list"></p>
-      </fieldset>
-    </main>
-    <script src="settings.js"></script>
-  </body>
-</html>
+<p class="hidden alert" id="status-message"></p>
+<fieldset>
+  <legend>Last.fm Authentication</legend>
+  <div class="hidden" id="lastfm-is-authenticated">
+    <p class="help-block">
+      Connected as:
+      <a id="lastfm-user"></a>
+      &mdash;
+      <a href="#" id="lastfm-disconnect">
+        Disconnect
+      </a>
+    </p>
+    <p>
+      <button class="lastfm-auth hidden" type="button">
+        <i class="fa fa-lastfm"></i>
+        Authenticate with Last.fm
+      </button>
+      <span class="help-inline">
+        You can re-authenticate if scrobbling isn't working
+      </span>
+    </p>
+  </div>
+  <div class="hidden" id="lastfm-is-not-authenticated">
+    <button class="lastfm-auth hidden btn-lastfm" type="button">
+      <i class="fa fa-lastfm"></i>
+      Authenticate with Last.fm
+    </button>
+  </div>
+  <div class="hidden" id="lastfm-is-authenticating">
+    <p class="help-block">
+      Click here when you have finished authenticating in your browser:
+    </p>
+    <button type="button" class="lastfm-get-session">
+      Done Authorizing
+    </button>
+  </div>
+</fieldset>
+<hr>
+<fieldset>
+  <legend>Track Scrobbling</legend>
+  <div class="controls hidden">
+    <label for="enable_scrobbling">
+      <input disabled="disabled" id="enable_scrobbling" name="scrobbling" type="radio" value="enabled">
+      Enable scrobbling
+    </label>
+    <label for="disable_scrobbling">
+      <input checked="checked" id="disable_scrobbling" name="scrobbling" type="radio" value="disabled">
+      Disable scrobbling
+    </label>
+  </div>
+  <p class="help-block">
+    Requires Last.fm authentication. Only stations supported by the
+    <a href="http://api.somascrobbler.com/">SomaScrobbler</a>
+    will get notifications/scrobbling.
+  </p>
+</fieldset>
+<hr>
+<fieldset>
+  <legend>Desktop Notifications</legend>
+  <div class="controls hidden">
+    <label for="enable_notifications">
+      <input checked="checked" id="enable_notifications" name="notifications" type="radio" value="enabled">
+      Enable notifications
+    </label>
+    <label for="disable_notifications">
+      <input id="disable_notifications" name="notifications" type="radio" value="disabled">
+      Disable notifications
+    </label>
+  </div>
+  <p class="help-block">
+    Desktop notifications when the track changes.
+  </p>
+</fieldset>
+<hr>
+<fieldset>
+  <legend>Theme</legend>
+  <div class="controls hidden">
+    <label for="light_theme">
+      <input checked="checked" id="light_theme" name="theme" type="radio" value="light">
+      Light theme
+    </label>
+    <label for="dark_theme">
+      <input id="dark_theme" name="theme" type="radio" value="dark">
+      Dark theme
+    </label>
+  </div>
+  <p class="help-block">
+    Black on white (light) or white on black (dark)? Decisions, decisions.
+  </p>
+</fieldset>
+<hr class="stations-divider hidden">
+<fieldset class="stations-options hidden">
+  <legend>
+    Known Stations
+    <span class="station-count"></span>
+  </legend>
+  <button class="refresh-stations">
+    Refresh List
+  </button>
+  <p class="stations-list"></p>
+</fieldset>
+<script src="settings.js"></script>

@@ -1,6 +1,26 @@
 const storage = require('electron-json-storage');
+const shell = require('electron').shell;
+const fs = require('fs');
 
 module.exports = class SomaPlayerUtil {
+  static loadPage(path, pageID) {
+    return this.loadPageContent(path).
+                then(this.onPageLoaded.bind(this, pageID)).
+                catch(this.onPageLoadError.bind(this, path));
+  }
+
+  static loadPageContent(path) {
+    return new Promise((resolve, reject) => {
+      fs.readFile(path, (err, data) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(data);
+        }
+      });
+    });
+  }
+
   static retrieve(key) {
     return new Promise((resolve, reject) => {
       storage.get(key, (error, value) => {
@@ -39,17 +59,45 @@ module.exports = class SomaPlayerUtil {
     return this.store('options', options);
   }
 
+  static onPageLoaded(pageID, data) {
+    document.body.classList.remove('player');
+    document.body.classList.remove('settings');
+    document.body.classList.remove('about');
+    document.body.classList.add(pageID);
+    document.getElementById('page-container').innerHTML = data;
+  }
+
+  static onPageLoadError(path, err) {
+    console.error('failed to load page', path, err);
+  }
+
+  static onInternalLinkClick(e) {
+    e.preventDefault();
+    let link = e.target;
+    if (link.nodeName !== 'A') {
+      link = link.closest('a');
+    }
+    const path = link.getAttribute('data-page-path');
+    const pageID = link.getAttribute('data-page-id');
+    this.loadPage(path, pageID);
+  }
+
+  onExternalLinkClick(url, e) {
+    e.preventDefault();
+    shell.openExternal(url);
+  }
+
+  static handleLink(link) {
+    const url = link.href;
+    if (url.indexOf('http') === 0) {
+      link.addEventListener('click', this.onExternalLinkClick.bind(this, url));
+    } else {
+      link.addEventListener('click', this.onInternalLinkClick.bind(this));
+    }
+  }
+
   static handleLinks() {
-    const shell = require('electron').shell;
-    const links = document.querySelectorAll('a[href]');
-    Array.prototype.forEach.call(links, function(link) {
-      const url = link.getAttribute('href');
-      if (url.indexOf('http') === 0) {
-        link.addEventListener('click', function(e) {
-          e.preventDefault();
-          shell.openExternal(url);
-        });
-      }
-    });
+    Array.prototype.forEach.call(document.querySelectorAll('a[href]'),
+                                 this.handleLink.bind(this));
   }
 }
