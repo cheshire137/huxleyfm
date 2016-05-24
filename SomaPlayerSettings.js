@@ -16,10 +16,7 @@ module.exports = class SomaPlayerSettings {
   }
 
   applyTheme() {
-    const theme = this.options.theme || 'light';
-    document.body.classList.remove('theme-light');
-    document.body.classList.remove('theme-dark');
-    document.body.classList.add('theme-' + theme);
+    Util.applyTheme(this.options.theme);
   }
 
   findElements() {

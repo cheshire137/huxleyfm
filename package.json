@@ -31,7 +31,10 @@
     "SomaPlayer.js",
     "SomaPlayerSettings.js",
     "SomaPlayerUtil.js",
-    "Lastfm.js"
+    "Lastfm.js",
+    "about.html",
+    "about.css",
+    "about.js"
   ],
   "keywords": [
     "electron-app",

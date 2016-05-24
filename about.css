@@ -1,0 +1,12 @@
+body.about {
+  font-size: 17px;
+}
+body.about .icon-dark {
+  display: none;
+}
+body.about.theme-dark .icon-light {
+  display: none;
+}
+body.about.theme-dark .icon-dark {
+  display: block;
+}

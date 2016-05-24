@@ -7,8 +7,7 @@ module.exports = class SomaPlayer {
 
   applyTheme() {
     Util.getOptions().then((options) => {
-      const theme = options.theme || 'light';
-      document.body.classList.add('theme-' + theme);
+      Util.applyTheme(options.theme);
     });
   }
 }

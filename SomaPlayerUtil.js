@@ -13,6 +13,12 @@ module.exports = class SomaPlayerUtil {
     });
   }
 
+  static applyTheme(theme) {
+    document.body.classList.remove('theme-light');
+    document.body.classList.remove('theme-dark');
+    document.body.classList.add('theme-' + (theme || 'light'));
+  }
+
   static getOptions() {
     return this.retrieve('options');
   }
