@@ -22,3 +22,12 @@ body.player #last-known-header {
   text-transform: uppercase;
   font-size: 12px;
 }
+body.player #album:before {
+  content: "\201C";
+}
+body.player #album:after {
+  content: "\201D";
+}
+body.player #duration:before {
+  content: "\a0\b7\a0";
+}

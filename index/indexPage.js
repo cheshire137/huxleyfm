@@ -241,8 +241,18 @@ module.exports = class IndexPage extends Eventful {
     if (track.artist || track.title || track.album || duration) {
       this.titleEl.textContent = track.title;
       this.artistEl.textContent = track.artist;
-      this.durationEl.textContent = duration;
-      this.albumEl.textContent = track.album;
+      if (duration) {
+        this.durationEl.textContent = duration;
+        this.durationEl.classList.remove('hidden');
+      } else {
+        this.durationEl.classList.add('hidden');
+      }
+      if (track.album && track.album.length > 0) {
+        this.albumEl.textContent = track.album;
+        this.albumEl.classList.remove('hidden');
+      } else {
+        this.albumEl.classList.add('hidden');
+      }
       this.currentInfoEl.classList.remove('hidden');
     } else {
       this.currentInfoEl.classList.add('hidden');
@@ -303,8 +313,10 @@ module.exports = class IndexPage extends Eventful {
   }
 
   onScrobbled(response) {
-    console.log('scrobbled', response);
-    this.emit('notice', 'Scrobbled track!');
+    const scrobble = response.scrobbles.scrobble;
+    console.log('scrobble', scrobble, 'track', scrobble.track);
+    const title = scrobble.track['#text'];
+    this.emit('notice', 'Scrobbled "' + title + '"!');
   }
 
   onScrobbleError(error) {

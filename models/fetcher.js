@@ -10,10 +10,7 @@ module.exports = class Fetcher {
   post(url, params) {
     const body = [];
     for (const key in params) {
-      const value = params[key];
-      if (value !== null && typeof value !== 'undefined') {
-        body.push(key + '=' + encodeURIComponent(value));
-      }
+      body.push(key + '=' + encodeURIComponent(params[key]));
     }
     const options = { method: 'POST', body: body.join('&') };
     return this.fetchJSON(url, options);

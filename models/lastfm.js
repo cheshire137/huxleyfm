@@ -37,7 +37,7 @@ module.exports = class Lastfm extends Fetcher {
     if (durationInSeconds === 0) {
       durationInSeconds = null;
     }
-    const params = {
+    const possibleParams = {
       artist: track.artist || '',
       track: track.title || '',
       mbid: track.trackMBID,
@@ -46,12 +46,19 @@ module.exports = class Lastfm extends Fetcher {
       user: auth.user,
       sk: auth.sessionKey,
       api_key: Config.lastfm_api_key,
-      timestamp: Math.round((new Date()).getTime() / 1000),
-      format: 'json'
+      chosenByUser: 0,
+      method: 'track.scrobble',
+      timestamp: Math.round((new Date()).getTime() / 1000)
     };
+    const params = {};
+    for (const key in possibleParams) {
+      const value = possibleParams[key];
+      if (typeof value !== 'undefined' && value !== null) {
+        params[key] = value;
+      }
+    }
     params.api_sig = this.getSignature(params);
-    const url = Config.lastfm_api_url;
-    console.log('scrobble params', url, params);
+    const url = Config.lastfm_api_url + '?format=json';
     return this.post(url, params);
   }
 
