@@ -16,7 +16,7 @@ module.exports = class IndexPage extends Eventful {
     this.settings = settings;
     this.onTrack = __bind(this.onTrack, this);
     this.findElements();
-    this.listenForStationChanges();
+    this.listenForMusicChanges();
     this.getStations().then(this.insertStationOptions.bind(this)).
                        catch(this.loadDefaultStations.bind(this));
   }
@@ -31,9 +31,13 @@ module.exports = class IndexPage extends Eventful {
     this.audioTag = document.querySelector('audio');
   }
 
-  listenForStationChanges() {
+  listenForMusicChanges() {
     this.stationSelect.addEventListener('change',
                                         this.onStationChange.bind(this));
+    this.stationSelect.addEventListener('keypress',
+                                        this.onStationKeypress.bind(this));
+    this.playButton.addEventListener('click', this.play.bind(this));
+    this.pauseButton.addEventListener('click', this.pause.bind(this));
   }
 
   onStationChange() {
@@ -54,22 +58,50 @@ module.exports = class IndexPage extends Eventful {
     }
   }
 
+  onStationKeypress(event) {
+    const keyCode = event.keyCode;
+    if (keyCode !== 13) { // Enter
+      return;
+    }
+    if (this.stationSelect.value === '') {
+      return;
+    }
+    if (!this.playButton.disabled &&
+        !this.playButton.classList.contains('hidden')) {
+      this.play();
+    } else if (!this.pauseButton.disabled &&
+               !this.pauseButton.classList.contains('hidden')) {
+      this.pause();
+    }
+  }
+
   pause() {
-    const station = this.stationSelect.value;
-    this.unsubscribe(station).catch(this.unsubscribeError.bind(this));
+    const station = this.audioTag.getAttribute('data-station');
+    if (station) {
+      this.unsubscribe(station).catch(this.unsubscribeError.bind(this));
+    }
     this.audioTag.pause();
     this.audioTag.currentTime = 0;
     this.audioTag.setAttribute('data-paused', 'true');
+    this.pauseButton.classList.add('hidden');
+    this.playButton.classList.remove('hidden');
+    this.playButton.disabled = false;
+    this.stationSelect.focus();
   }
 
   play() {
     const station = this.stationSelect.value;
     this.resetTrackInfoIfNecessary(station);
     this.subscribe(station).then(() => {
+      this.updateTrackInfo(station);
       this.socket.on('track', this.onTrack);
       this.audioTag.src = Config.soma_station_url + station;
       this.audioTag.setAttribute('data-station', station);
       this.audioTag.removeAttribute('data-paused');
+      this.playButton.classList.add('hidden');
+      this.pauseButton.classList.remove('hidden');
+      this.pauseButton.disabled = false;
+      this.stationSelect.focus();
     }).catch(this.subscribeError.bind(this));
   }
 
@@ -77,8 +109,7 @@ module.exports = class IndexPage extends Eventful {
     if (this.audioTag.getAttribute('data-station') === station) {
       return;
     }
-    this.titleEl.textContent = '';
-    this.artistEl.textContent = '';
+    this.hideTrackInfo();
   }
 
   subscribe(station) {
@@ -158,6 +189,12 @@ module.exports = class IndexPage extends Eventful {
     });
   }
 
+  updateTrackInfo(station) {
+    const soma = new Soma();
+    soma.getStationInfo(station).then(this.showTrackInfo.bind(this)).
+                                 catch(this.getStationInfoError.bind(this));
+  }
+
   saveStations(stations) {
     this.settings.stations = stations;
     Settings.save(this.settings).then(() => {
@@ -175,6 +212,11 @@ module.exports = class IndexPage extends Eventful {
       this.artistEl.textContent = info.artist;
       this.currentInfoEl.classList.remove('hidden');
     }
+  }
+
+  getStationInfoError(error) {
+    console.error('failed getting station current track info', error);
+    this.emit('error', 'Could not get current track info for station.')
   }
 
   hideTrackInfo() {

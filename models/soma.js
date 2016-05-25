@@ -17,5 +17,6 @@ module.exports = class Soma extends Fetcher {
   }
 
   getStationInfo(station) {
+    return this.get(Config.scrobbler_api_url + '/api/v1/nowplaying/' + station);
   }
 }
