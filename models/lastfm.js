@@ -22,10 +22,37 @@ module.exports = class Lastfm extends Fetcher {
       method: 'auth.getsession',
       format: 'json'
     };
-    const url = this.getUrl(params);
+    const url = this.getGETUrl(params);
     return new Promise((resolve, reject) => {
       this.get(url).then((json) => resolve(json.session)).catch(reject);
     });
+  }
+
+  // http://www.last.fm/api/show/track.scrobble
+  scrobble(track, auth) {
+    let durationInSeconds = null;
+    if (typeof track.duration === 'number') {
+      durationInSeconds = track.duration / 1000;
+    }
+    if (durationInSeconds === 0) {
+      durationInSeconds = null;
+    }
+    const params = {
+      artist: track.artist || '',
+      track: track.title || '',
+      mbid: track.trackMBID,
+      duration: durationInSeconds,
+      album: track.album,
+      user: auth.user,
+      sk: auth.sessionKey,
+      api_key: Config.lastfm_api_key,
+      timestamp: Math.round((new Date()).getTime() / 1000),
+      format: 'json'
+    };
+    params.api_sig = this.getSignature(params);
+    const url = Config.lastfm_api_url;
+    console.log('scrobble params', url, params);
+    return this.post(url, params);
   }
 
   getToken() {
@@ -34,13 +61,13 @@ module.exports = class Lastfm extends Fetcher {
       method: 'auth.gettoken',
       format: 'json'
     };
-    const url = this.getUrl(params);
+    const url = this.getGETUrl(params);
     return new Promise((resolve, reject) => {
       this.get(url).then((json) => resolve(json.token)).catch(reject);
     });
   }
 
-  getUrl(params) {
+  getGETUrl(params) {
     params.api_sig = this.getSignature(params);
     const query = [];
     for (const key in params) {

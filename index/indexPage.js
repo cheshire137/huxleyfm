@@ -3,6 +3,7 @@ const Settings = require('../models/settings');
 const DefaultStations = require('../defaultStations.json');
 const Eventful = require('../models/eventful');
 const Config = require('../config.json');
+const Lastfm = require('../models/lastfm');
 
 const __bind = function(fn, me) {
   return function() {
@@ -31,6 +32,8 @@ module.exports = class IndexPage extends Eventful {
     this.currentInfoEl = document.getElementById('currently-playing');
     this.titleEl = document.getElementById('title');
     this.artistEl = document.getElementById('artist');
+    this.albumEl = document.getElementById('album');
+    this.durationEl = document.getElementById('duration');
   }
 
   listenForMusicChanges() {
@@ -233,12 +236,30 @@ module.exports = class IndexPage extends Eventful {
     console.error('failed to save stations', error);
   }
 
-  showTrackInfo(info) {
-    if (info.artist || info.title) {
-      this.titleEl.textContent = info.title;
-      this.artistEl.textContent = info.artist;
+  showTrackInfo(track) {
+    const duration = this.getDuration(track);
+    if (track.artist || track.title || track.album || duration) {
+      this.titleEl.textContent = track.title;
+      this.artistEl.textContent = track.artist;
+      this.durationEl.textContent = duration;
+      this.albumEl.textContent = track.album;
       this.currentInfoEl.classList.remove('hidden');
+    } else {
+      this.currentInfoEl.classList.add('hidden');
     }
+  }
+
+  getDuration(track) {
+    if (typeof track.duration !== 'number') {
+      return;
+    }
+    if (track.duration === 0) {
+      return;
+    }
+    const secNum = track.duration / 1000;
+    const minutes = Math.floor(secNum / 60) % 60;
+    const seconds = secNum % 60;
+    return minutes + 'm ' + seconds + 's';
   }
 
   getStationInfoError(error) {
@@ -249,6 +270,45 @@ module.exports = class IndexPage extends Eventful {
   hideTrackInfo() {
     this.titleEl.textContent = '';
     this.artistEl.textContent = '';
+    this.durationEl.textContent = '';
+    this.albumEl.textContent = '';
     this.currentInfoEl.classList.add('hidden');
+  }
+
+  onTrack(track) {
+    this.showTrackInfo(track);
+    this.notifyAboutTrack(track);
+    this.scrobbleTrack(track);
+  }
+
+  notifyAboutTrack(track) {
+    if (!this.settings.notifications) {
+      return;
+    }
+  }
+
+  scrobbleTrack(track) {
+    if (!this.settings.lastfmSessionKey || !this.settings.lastfmUser ||
+        !this.settings.scrobbling) {
+      return;
+    }
+    console.log('scrobble track', track);
+    const lastfm = new Lastfm();
+    const auth = {
+      user: this.settings.lastfmUser,
+      sessionKey: this.settings.lastfmSessionKey
+    };
+    lastfm.scrobble(track, auth).then(this.onScrobbled.bind(this)).
+                                 catch(this.onScrobbleError.bind(this));
+  }
+
+  onScrobbled(response) {
+    console.log('scrobbled', response);
+    this.emit('notice', 'Scrobbled track!');
+  }
+
+  onScrobbleError(error) {
+    console.error('failed to scrobble track', error);
+    this.emit('error', 'Failed to scrobble track.');
   }
 }
