@@ -1,9 +1,9 @@
-const Settings = require('./models/settings');
+const Settings = require('../models/settings');
 const fs = require('fs');
-const Router = require('./models/router');
-const LinkHandler = require('./models/linkHandler');
-const IndexPage = require('./index/indexPage');
-const SettingsPage = require('./settings/settingsPage');
+const Router = require('../models/router');
+const LinkHandler = require('../models/linkHandler');
+const IndexPage = require('../index/indexPage');
+const SettingsPage = require('../settings/settingsPage');
 
 class PageLoader {
   constructor() {

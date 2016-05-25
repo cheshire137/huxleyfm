@@ -19,7 +19,7 @@ function createMainWindow() {
 	// const win = new BrowserWindow({ width: 400, height: 300 });
 	const win = new BrowserWindow({ width: 800, height: 600 });
 	win.webContents.openDevTools()
-	win.loadURL(`file://${__dirname}/main.html`);
+	win.loadURL(`file://${__dirname}/page/page.html`);
 	win.on('closed', onClosed);
 	return win;
 }
