@@ -1,6 +1,7 @@
 const Settings = require('../models/settings');
 const Lastfm = require('../models/lastfm');
 const Eventful = require('../models/eventful');
+const Soma = require('../models/soma');
 
 class SettingsPage extends Eventful {
   constructor(settings) {
@@ -9,13 +10,13 @@ class SettingsPage extends Eventful {
     this.findElements();
     this.listenForChanges();
     this.listenForLastfmAuthenticateClicks();
+    this.listenForRefreshStations();
     this.restoreSettings();
   }
 
   findElements() {
     this.lastfmConnected =
         document.getElementById('lastfm-is-authenticated');
-    this.statusArea = document.getElementById('status-message');
     this.lastfmButtons = document.querySelectorAll('button.lastfm-auth');
     this.lastfmSessionButton = document.querySelector('.lastfm-get-session');
     this.lastfmIsAuthenticating =
@@ -65,6 +66,14 @@ class SettingsPage extends Eventful {
     });
   }
 
+  listenForRefreshStations() {
+    this.refreshStationsButton.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.target.blur();
+      this.refreshStations();
+    });
+  }
+
   getLastfmSession() {
     const lastfm = new Lastfm();
     lastfm.getSession(this.token).
@@ -83,7 +92,7 @@ class SettingsPage extends Eventful {
 
   onLastfmSessionLoadError(err) {
     console.error('failed to get Last.fm session', err);
-    this.flashError('There was an error connecting with Last.fm.');
+    this.emit('error', 'There was an error connecting with Last.fm.');
     this.lastfmIsAuthenticating.classList.add('hidden');
     this.lastfmNotConnected.classList.remove('hidden');
   }
@@ -102,7 +111,7 @@ class SettingsPage extends Eventful {
 
   onLastfmSessionSaved() {
     this.lastfmIsAuthenticating.classList.add('hidden');
-    this.flashMessage('Connected to Last.fm!');
+    this.emit('notice', 'Connected to Last.fm!');
     this.restoreLastfmSessionSetting();
     this.restoreLastfmUserSetting();
     this.restoreScrobblingSetting();
@@ -113,9 +122,35 @@ class SettingsPage extends Eventful {
     this.restoreLastfmUserSetting();
     this.restoreScrobblingSetting();
     this.restoreNotificationsSetting();
+    this.restoreStations();
     this.restoreThemeSetting();
     this.revealControls();
     this.revealLastfmButtons();
+  }
+
+  restoreStations() {
+    if (this.settings.stations && this.settings.stations.length > 0) {
+      this.showCachedStations(this.settings.stations);
+    }
+  }
+
+  showCachedStations(stations) {
+    this.stationsDivider.classList.remove('hidden');
+    this.stationsOptions.classList.remove('hidden');
+    this.stationCount.textContent = stations.length;
+    const titles = stations.map((s) => s.title);
+    titles.sort();
+    const textList = titles.slice(0, titles.length - 1).join(', ') +
+                     ', and ' + titles[titles.length - 1] + '.';
+    this.stationsList.textContent = textList;
+  }
+
+  refreshStations() {
+    this.stationsList.textContent = '';
+    this.refreshStationsButton.disabled = true;
+    const soma = new Soma();
+    soma.getStations().then(this.saveStations.bind(this)).
+                       catch(this.getStationsError.bind(this));
   }
 
   revealLastfmButtons() {
@@ -165,35 +200,36 @@ class SettingsPage extends Eventful {
     }
   }
 
+  saveStations(stations) {
+    this.settings.stations = stations;
+    this.refreshStationsButton.disabled = false;
+    Settings.save(this.settings).then(() => {
+      this.showCachedStations(stations);
+      this.emit('settings:change', this.settings);
+    }).catch(this.onSettingsSaveError.bind(this));
+  }
+
   saveSettings() {
     this.settings.scrobbling = this.getScrobblingOption();
     this.settings.notifications = this.getNotificationsOption();
     this.settings.theme = this.getThemeOption();
-    Settings.save(this.settings).then(this.onSettingsSaved.bind(this));
+    Settings.save(this.settings).
+             then(this.onSettingsSaved.bind(this)).
+             catch(this.onSettingsSaveError.bind(this));
   }
 
-  flashError(message) {
-    this.flashMessage(message, true);
+  getStationsError(error) {
+    console.error('failed to get Soma stations', error);
+    this.emit('error', 'Failed to get list of Soma stations.');
   }
 
-  flashMessage(message, isError) {
-    this.statusArea.textContent = message;
-    if (isError) {
-      this.statusArea.classList.add('error');
-    } else {
-      this.statusArea.classList.remove('error');
-    }
-    this.statusArea.classList.remove('hidden');
-    window.scrollTo(0, 0);
-    const delay = isError ? 10000 : 2000;
-    setTimeout(() => {
-      this.statusArea.classList.add('hidden');
-      this.statusArea.textContent = '';
-    }, delay);
+  onSettingsSaveError(error) {
+    console.error('failed to save settings', error);
+    this.emit('error', 'Failed to save settings.');
   }
 
   onSettingsSaved() {
-    this.flashMessage('Saved your settings!');
+    this.emit('notice', 'Saved your settings!');
     this.emit('settings:change', this.settings);
   }
 

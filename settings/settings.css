@@ -28,13 +28,6 @@ body.settings .refresh-stations {
 body.settings .stations-list {
   margin-bottom: 0;
 }
-body.settings .alert {
-  position: absolute;
-  left: 0;
-  width: 100%;
-  top: 55px;
-  font-size: 14px;
-}
 body.settings p {
   margin-bottom: 0;
 }

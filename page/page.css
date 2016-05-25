@@ -348,7 +348,7 @@ ul.list-inline li {
   border-color: #861418;
 }
 main {
-  padding: 0 10px 10px 10px;
+  padding: 0 10px 20px 10px;
   position: relative;
 }
 header {
@@ -357,6 +357,7 @@ header {
   border-bottom-width: 1px;
   border-bottom-style: solid;
   margin-bottom: 22px;
+  position: relative;
 }
 header h1,
 header ul {
@@ -388,6 +389,14 @@ header img {
 }
 header img.pull-left {
   margin-right: 20px;
+}
+header .alert {
+  position: absolute;
+  left: 50%;
+  width: 350px;
+  top: 6px;
+  font-size: 14px;
+  margin-left: -175px;
 }
 .theme-light header {
   border-bottom-color: #eee;

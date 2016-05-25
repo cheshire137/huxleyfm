@@ -1,18 +1,24 @@
 const Soma = require('../models/soma');
 const Settings = require('../models/settings');
 const DefaultStations = require('../defaultStations.json');
+const Eventful = require('../models/eventful');
 
-module.exports = class IndexPage {
+module.exports = class IndexPage extends Eventful {
   constructor(settings) {
+    super();
     this.settings = settings;
+    this.findElements();
+    this.getStations().then(this.insertStationOptions.bind(this)).
+                       catch(this.loadDefaultStations.bind(this));
+  }
+
+  findElements() {
     this.stationSelect = document.getElementById('station');
     this.playButton = document.getElementById('play');
     this.pauseButton = document.getElementById('pause');
     this.currentInfoEl = document.getElementById('currently-playing');
     this.titleEl = document.getElementById('title');
     this.artistEl = document.getElementById('artist');
-    this.getStations().then(this.insertStationOptions.bind(this)).
-                       catch(this.loadDefaultStations.bind(this));
   }
 
   insertStationOptions(stations) {
@@ -43,7 +49,9 @@ module.exports = class IndexPage {
 
   saveStations(stations) {
     this.settings.stations = stations;
-    Settings.save(this.settings).catch(this.saveStationError.bind(this));
+    Settings.save(this.settings).then(() => {
+      this.emit('settings:change', this.settings);
+    }).catch(this.saveStationError.bind(this));
   }
 
   saveStationError(error) {

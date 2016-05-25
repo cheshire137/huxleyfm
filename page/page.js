@@ -4,11 +4,18 @@ const Router = require('../models/router');
 const LinkHandler = require('../models/linkHandler');
 const IndexPage = require('../index/indexPage');
 const SettingsPage = require('../settings/settingsPage');
+const FlashMessages = require('../models/flashMessages');
 
 class PageLoader {
   constructor() {
     this.pageID = null;
+    this.findElements();
+    this.flashMessages = new FlashMessages(this.statusArea);
     Settings.load().then(this.onInitialSettingsLoad.bind(this));
+  }
+
+  findElements() {
+    this.statusArea = document.getElementById('status-message');
   }
 
   onInitialSettingsLoad(settings) {
@@ -61,15 +68,23 @@ class PageLoader {
   }
 
   onIndexPageLoaded() {
-    new IndexPage(this.settings);
+    const page = new IndexPage(this.settings);
+    page.addListener('settings:change', (s) => this.onSettingsChanged(s));
+    this.listenForPageMessages(page);
   }
 
   onSettingsPageLoaded() {
     const page = new SettingsPage(this.settings);
     page.addListener('settings:change', (s) => this.onSettingsChanged(s));
+    this.listenForPageMessages(page);
   }
 
   onAboutPageLoaded() {
+  }
+
+  listenForPageMessages(page) {
+    page.addListener('error', (e) => this.flashMessages.error(e));
+    page.addListener('notice', (m) => this.flashMessages.notice(m));
   }
 
   onSettingsChanged(settings) {
