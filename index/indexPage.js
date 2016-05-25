@@ -11,14 +11,17 @@ const __bind = function(fn, me) {
 };
 
 module.exports = class IndexPage extends Eventful {
-  constructor(settings) {
+  constructor(settings, audioTag) {
     super();
     this.settings = settings;
+    this.audioTag = audioTag;
     this.onTrack = __bind(this.onTrack, this);
     this.findElements();
     this.listenForMusicChanges();
     this.getStations().then(this.insertStationOptions.bind(this)).
+                       then(this.restorePlayingInfo.bind(this)).
                        catch(this.loadDefaultStations.bind(this));
+    this.stationSelect.focus();
   }
 
   findElements() {
@@ -28,7 +31,6 @@ module.exports = class IndexPage extends Eventful {
     this.currentInfoEl = document.getElementById('currently-playing');
     this.titleEl = document.getElementById('title');
     this.artistEl = document.getElementById('artist');
-    this.audioTag = document.querySelector('audio');
   }
 
   listenForMusicChanges() {
@@ -72,6 +74,31 @@ module.exports = class IndexPage extends Eventful {
     } else if (!this.pauseButton.disabled &&
                !this.pauseButton.classList.contains('hidden')) {
       this.pause();
+    }
+  }
+
+  restorePlayingInfo() {
+    const isPaused = this.audioTag.getAttribute('data-paused') === 'true';
+    const station = this.audioTag.getAttribute('data-station');
+    if (isPaused) {
+      this.pauseButton.classList.add('hidden');
+      this.playButton.classList.remove('hidden');
+      this.playButton.disabled = false;
+    } else if (station) {
+      this.playButton.classList.add('hidden');
+      this.pauseButton.classList.remove('hidden');
+      this.pauseButton.disabled = false;
+    }
+    if (station) {
+      const options = this.stationSelect.querySelectorAll('option');
+      for (let i = 0; i < options.length; i++) {
+        const option = options[i];
+        if (option.value === station) {
+          option.selected = 'selected';
+          break;
+        }
+      }
+      this.updateTrackInfo(station);
     }
   }
 

@@ -16,6 +16,7 @@ class PageLoader {
 
   findElements() {
     this.statusArea = document.getElementById('status-message');
+    this.audioTag = document.querySelector('audio');
   }
 
   onInitialSettingsLoad(settings) {
@@ -68,7 +69,7 @@ class PageLoader {
   }
 
   onIndexPageLoaded() {
-    const page = new IndexPage(this.settings);
+    const page = new IndexPage(this.settings, this.audioTag);
     page.addListener('settings:change', (s) => this.onSettingsChanged(s));
     this.listenForPageMessages(page);
   }
