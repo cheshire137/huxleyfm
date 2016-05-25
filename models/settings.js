@@ -14,7 +14,7 @@ module.exports = class Settings {
   }
 
   static load() {
-    return this.retrieve('options');
+    return this.retrieve('settings');
   }
 
   static store(key, value) {
@@ -29,7 +29,7 @@ module.exports = class Settings {
     });
   }
 
-  static save(options) {
-    return this.store('options', options);
+  static save(settings) {
+    return this.store('settings', settings);
   }
 }

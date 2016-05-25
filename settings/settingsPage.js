@@ -1,5 +1,5 @@
 const Settings = require('../models/settings');
-const Lastfm = require('../models/Lastfm');
+const Lastfm = require('../models/lastfm');
 const Eventful = require('../models/eventful');
 
 class SettingsPage extends Eventful {
