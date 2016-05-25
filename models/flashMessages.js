@@ -20,10 +20,9 @@ module.exports = class FlashMessages {
     }
     this.statusArea.classList.remove('hidden');
     window.scrollTo(0, 0);
-    const delay = isError ? 10000 : 2000;
     setTimeout(() => {
       this.statusArea.classList.add('hidden');
       this.statusArea.textContent = '';
-    }, delay);
+    }, 10000);
   }
 }

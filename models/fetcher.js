@@ -21,8 +21,6 @@ module.exports = class Fetcher {
       options.headers = {};
     }
     options.headers['User-Agent'] = Config.user_agent;
-    if (options.method === 'POST')
-      console.log('post params', url, options);
     return new Promise((resolve, reject) => {
       fetch(url, options).then((response) => {
         response.json().then((json) => {

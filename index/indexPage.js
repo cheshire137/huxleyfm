@@ -302,7 +302,6 @@ module.exports = class IndexPage extends Eventful {
         !this.settings.scrobbling) {
       return;
     }
-    console.log('scrobble track', track);
     const lastfm = new Lastfm();
     const auth = {
       user: this.settings.lastfmUser,
@@ -314,7 +313,6 @@ module.exports = class IndexPage extends Eventful {
 
   onScrobbled(response) {
     const scrobble = response.scrobbles.scrobble;
-    console.log('scrobble', scrobble, 'track', scrobble.track);
     const title = scrobble.track['#text'];
     this.emit('notice', 'Scrobbled "' + title + '"!');
   }
