@@ -11,6 +11,10 @@ Configure config.json with [your Last.fm API key and secret](http://www.last.fm/
     npm install
     npm start
 
+To view the JavaScript console for debugging, run:
+
+    NODE_ENV=development npm start
+
 ### How to Build
 
     npm run build

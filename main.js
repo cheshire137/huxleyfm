@@ -16,9 +16,13 @@ function onClosed() {
 }
 
 function createMainWindow() {
-	// const win = new BrowserWindow({ width: 400, height: 300 });
-	const win = new BrowserWindow({ width: 800, height: 600 });
-	win.webContents.openDevTools()
+	let win;
+	if (process.env.NODE_ENV === 'development') {
+		win = new BrowserWindow({ width: 800, height: 600 });
+		win.webContents.openDevTools()
+	} else {
+		win = new BrowserWindow({ width: 400, height: 300 });
+	}
 	win.loadURL(`file://${__dirname}/page/page.html`);
 	win.on('closed', onClosed);
 	return win;
