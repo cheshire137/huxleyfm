@@ -1,6 +1,6 @@
 {
   "name": "soma-electron",
-  "productName": "SomaElectron",
+  "productName": "SomaPlayer",
   "version": "0.0.1",
   "main": "main.js",
   "description": "SomaFM Electron desktop app",
@@ -14,7 +14,8 @@
   "scripts": {
     "test": "xo",
     "start": "electron .",
-    "build": "electron-packager . --out=dist --app-version=$npm_package_version --prune --asar --overwrite --all"
+    "build": "npm run-script build-osx",
+    "build-osx": "if [ -d dist/SomaPlayer-darwin-x64 ]; then rm -r dist/SomaPlayer-darwin-x64; fi && node_modules/electron-packager/cli.js . --out=dist --app-version=$npm_package_version --prune --asar --overwrite --icon=images/icon128.png.icns --appname=SomaPlayer --platform=darwin --arch=all --ignore=dist"
   },
   "files": [
     "main.js",
@@ -29,19 +30,23 @@
     "settings/settingsPage.js",
     "images/icon48.png",
     "images/icon48-dark.png",
-    "models/settings.js",
-    "models/lastfm.js",
-    "models/soma.js",
-    "models/router.js",
-    "models/linkHandler.js",
+    "images/icon128.png",
     "models/eventful.js",
+    "models/fetcher.js",
+    "models/flashMessages.js",
+    "models/lastfm.js",
+    "models/linkHandler.js",
+    "models/router.js",
+    "models/settings.js",
+    "models/soma.js",
     "about/about.html",
-    "about/about.css",
-    "about/about.js"
+    "about/about.css"
   ],
   "keywords": [
     "electron-app",
-    "electron"
+    "electron",
+    "last.fm",
+    "somafm"
   ],
   "dependencies": {
     "crypto": "0.0.3",

@@ -18,7 +18,9 @@ function onClosed() {
 function createMainWindow() {
 	let win;
 	const windowProperties = {
-		icon: 'images/icon128.png'
+		icon: 'images/icon128.png',
+		title: 'SomaPlayer',
+		resizable: false
 	};
 	if (process.env.NODE_ENV === 'development') {
 		windowProperties.width = 800;
