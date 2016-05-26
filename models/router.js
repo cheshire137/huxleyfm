@@ -1,19 +1,23 @@
 const Eventful = require('./eventful');
+const path = require('path');
+const fs = require('fs');
 
 class Router extends Eventful {
   constructor() {
     super();
   }
 
-  loadPage(path, pageID) {
-    return this.loadPageContent(path).
+  loadPage(pathSuffix, pageID) {
+    const dir = path.join(__dirname, '..');
+    const pagePath = `${dir}/${pathSuffix}`;
+    return this.loadPageContent(pagePath).
                 then(this.onPageLoaded.bind(this, pageID)).
-                catch(this.onPageLoadError.bind(this, path));
+                catch(this.onPageLoadError.bind(this, pagePath));
   }
 
-  loadPageContent(path) {
+  loadPageContent(pagePath) {
     return new Promise((resolve, reject) => {
-      fs.readFile(path, (err, data) => {
+      fs.readFile(pagePath, (err, data) => {
         if (err) {
           reject(err);
         } else {
@@ -27,8 +31,8 @@ class Router extends Eventful {
     this.emit('page:loaded', pageID, data);
   }
 
-  onPageLoadError(path, err) {
-    console.error('failed to load page', path, err);
+  onPageLoadError(pagePath, err) {
+    console.error('failed to load page', pagePath, err);
   }
 }
 

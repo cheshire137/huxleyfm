@@ -26,14 +26,14 @@ body.about.theme-light .donate-link:hover,
 body.about.theme-light .donate-link:focus {
   background-color: #EBBA6C;
 }
-body.about ul {
+body.about footer ul {
   padding-left: 0;
   text-align: center;
 }
-body.about ul li {
+body.about footer ul li {
   display: inline-block;
 }
-body.about ul li + li {
+body.about footer ul li + li {
   margin-left: 20px;
 }
 body.about .container {
