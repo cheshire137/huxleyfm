@@ -21,6 +21,7 @@ class LinkHandler extends Eventful {
 
   onExternalLinkClick(url, e) {
     e.preventDefault();
+    e.target.blur();
     shell.openExternal(url);
   }
 
@@ -32,7 +33,9 @@ class LinkHandler extends Eventful {
     }
     const path = link.getAttribute('data-page-path');
     const pageID = link.getAttribute('data-page-id');
-    this.emit('page:load', path, pageID);
+    if (path && pageID) {
+      this.emit('page:load', path, pageID);
+    }
   }
 }
 

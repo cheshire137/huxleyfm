@@ -70,13 +70,11 @@ class PageLoader {
 
   onIndexPageLoaded() {
     const page = new IndexPage(this.settings, this.audioTag);
-    page.addListener('settings:change', (s) => this.onSettingsChanged(s));
     this.listenForPageMessages(page);
   }
 
   onSettingsPageLoaded() {
     const page = new SettingsPage(this.settings);
-    page.addListener('settings:change', (s) => this.onSettingsChanged(s));
     this.listenForPageMessages(page);
   }
 
@@ -84,6 +82,7 @@ class PageLoader {
   }
 
   listenForPageMessages(page) {
+    page.addListener('settings:change', (s) => this.onSettingsChanged(s));
     page.addListener('error', (e) => this.flashMessages.error(e));
     page.addListener('notice', (m) => this.flashMessages.notice(m));
   }

@@ -64,6 +64,11 @@ class SettingsPage extends Eventful {
       e.target.blur();
       this.getLastfmSession();
     });
+    this.lastfmDisconnect.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.target.blur();
+      this.disconnectFromLastfm();
+    });
   }
 
   listenForRefreshStations() {
@@ -87,7 +92,8 @@ class SettingsPage extends Eventful {
     this.settings.lastfmUser = session.name;
     this.settings.scrobbling = true;
     Settings.save(this.settings).
-         then(this.onLastfmSessionSaved.bind(this));
+             then(this.onLastfmSessionSaved.bind(this)).
+             catch(this.onSettingsSaveError.bind(this));
   }
 
   onLastfmSessionLoadError(err) {
@@ -95,6 +101,15 @@ class SettingsPage extends Eventful {
     this.emit('error', 'There was an error connecting with Last.fm.');
     this.lastfmIsAuthenticating.classList.add('hidden');
     this.lastfmNotConnected.classList.remove('hidden');
+  }
+
+  disconnectFromLastfm() {
+    this.settings.lastfmSessionKey = null;
+    this.settings.lastfmUser = null;
+    this.settings.scrobbling = false;
+    Settings.save(this.settings).
+             then(this.onLastfmDisconnected.bind(this)).
+             catch(this.onSettingsSaveError.bind(this));
   }
 
   authenticateLastfm() {
@@ -112,6 +127,15 @@ class SettingsPage extends Eventful {
   onLastfmSessionSaved() {
     this.lastfmIsAuthenticating.classList.add('hidden');
     this.emit('notice', 'Connected to Last.fm!');
+    this.restoreLastfmSessionSetting();
+    this.restoreLastfmUserSetting();
+    this.restoreScrobblingSetting();
+  }
+
+  onLastfmDisconnected() {
+    this.lastfmConnected.classList.add('hidden');
+    this.lastfmNotConnected.classList.remove('hidden');
+    this.emit('notice', 'Disconnected from Last.fm!');
     this.restoreLastfmSessionSetting();
     this.restoreLastfmUserSetting();
     this.restoreScrobblingSetting();
