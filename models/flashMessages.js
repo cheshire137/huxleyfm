@@ -11,18 +11,43 @@ module.exports = class FlashMessages {
     this.flashMessage(message, false);
   }
 
+  dismissAlert() {
+    this.statusArea.classList.add('hidden');
+    while (this.statusArea.hasChildNodes()) {
+      this.statusArea.removeChild(this.statusArea.lastChild);
+    }
+  }
+
   flashMessage(message, isError) {
-    this.statusArea.textContent = message;
+    this.dismissAlert();
+    this.statusArea.appendChild(this.getMessageSpan(message));
+    this.statusArea.appendChild(this.getDismissLink());
     if (isError) {
       this.statusArea.classList.add('error');
     } else {
       this.statusArea.classList.remove('error');
     }
     this.statusArea.classList.remove('hidden');
-    window.scrollTo(0, 0);
-    setTimeout(() => {
-      this.statusArea.classList.add('hidden');
-      this.statusArea.textContent = '';
-    }, 10000);
+    setTimeout(this.dismissAlert.bind(this), 10000);
+  }
+
+  getMessageSpan(message) {
+    const messageSpan = document.createElement('span');
+    messageSpan.appendChild(document.createTextNode(message));
+    return messageSpan;
+  }
+
+  getDismissLink() {
+    const link = document.createElement('a');
+    link.className = 'dismiss-alert';
+    link.href = '#';
+    const icon = document.createElement('i');
+    icon.className = 'fa fa-times';
+    link.appendChild(icon);
+    link.addEventListener('click', (event) => {
+      event.preventDefault();
+      this.dismissAlert();
+    }, false);
+    return link;
   }
 }

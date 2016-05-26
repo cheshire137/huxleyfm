@@ -1,26 +1,38 @@
 body.player {
-  min-width: 19em;
+  overflow: hidden;
+}
+body.player .form-group {
   text-align: center;
+  margin-bottom: 20px;
 }
 body.player #currently-playing {
-  margin-bottom: 10px;
+  margin-bottom: 20px;
+  display: table;
+  width: 100%;
 }
-body.player footer {
-  margin-top: 0;
+body.player #currently-playing.hidden {
+  display: none;
+}
+body.player #last-known-header,
+body.player #track-info {
+  display: table-cell;
+  vertical-align: middle;
 }
 body.player #title {
   font-weight: 700;
 }
 body.player #artist {
-  display: block;
 }
 body.player #artist:before {
-  content: "by ";
+  content: " by ";
+}
+body.player #album-and-duration {
+  display: block;
 }
 body.player #last-known-header {
-  display: block;
   text-transform: uppercase;
   font-size: 12px;
+  padding-right: 20px;
 }
 body.player #album:before {
   content: "\201C";
@@ -30,4 +42,17 @@ body.player #album:after {
 }
 body.player #duration:before {
   content: "\a0\b7\a0";
+}
+body.player #play,
+body.player #pause {
+  border-radius: 100%;
+  font-size: 48px;
+  text-align: center;
+  line-height: 1;
+}
+body.player #play {
+  padding: 22px 26px 22px 32px;
+}
+body.player #pause {
+  padding: 22px 27px;
 }

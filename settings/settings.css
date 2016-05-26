@@ -10,12 +10,6 @@ body.settings.theme-dark .icon-dark {
 body.settings.theme-dark .help-block {
   color: #999;
 }
-body.settings footer a,
-body.settings footer a:link,
-body.settings footer a:visited,
-body.settings footer a:active {
-  text-decoration: none;
-}
 body.settings .station-count:before {
   content: "(";
 }

@@ -21,7 +21,7 @@ function createMainWindow() {
 		win = new BrowserWindow({ width: 800, height: 600 });
 		win.webContents.openDevTools()
 	} else {
-		win = new BrowserWindow({ width: 400, height: 300 });
+		win = new BrowserWindow({ width: 400, height: 350 });
 	}
 	win.loadURL(`file://${__dirname}/page/page.html`);
 	win.on('closed', onClosed);

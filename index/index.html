@@ -1,11 +1,11 @@
 <div id="currently-playing" class="hidden">
-  <span id="last-known-header">
-    Last known track:
+  <span id="last-known-header">Last known track:</span>
+  <span id="track-info">
+    <span id="title"></span><span id="artist"></span>
+    <span id="album-and-duration">
+      <span id="album"></span><span id="duration"></span>
+    </span>
   </span>
-  <span id="title"></span>
-  <span id="artist"></span>
-  <span id="album"></span>
-  <span id="duration"></span>
 </div>
 <div class="form-group">
   <label class="sr-only" for="station">Station:</label>
@@ -16,10 +16,8 @@
 <div class="form-group">
   <button id="play" type="button" disabled="disabled">
     <i class="fa fa-play"></i>
-    Play
   </button>
   <button id="pause" type="button" class="hidden">
     <i class="fa fa-pause"></i>
-    Pause
   </button>
 </div>

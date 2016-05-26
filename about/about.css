@@ -1,12 +1,41 @@
-body.about .icon-dark {
-  display: none;
-}
-body.about.theme-dark .icon-light {
-  display: none;
-}
-body.about.theme-dark .icon-dark {
-  display: block;
+body.about {
 }
 body.about.theme-dark .help-block {
   color: #999;
+}
+body.about .donate-link-wrapper {
+  text-align: center;
+  margin-bottom: 20px;
+}
+body.about .donate-link {
+  display: inline-block;
+  padding: 5px 10px;
+  text-decoration: none;
+  font-weight: 700;
+  border-radius: 4px;
+}
+body.about.theme-dark .donate-link {
+
+}
+body.about.theme-light .donate-link {
+  background-color: #D8A24D;
+  color: #373737;
+  text-shadow: 0 1px 1px #EBBA6C;
+}
+body.about.theme-light .donate-link:hover,
+body.about.theme-light .donate-link:focus {
+  background-color: #EBBA6C;
+}
+body.about ul {
+  padding-left: 0;
+  text-align: center;
+}
+body.about ul li {
+  display: inline-block;
+}
+body.about ul li + li {
+  margin-left: 20px;
+}
+body.about .container {
+  flex: 1;
 }
