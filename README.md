@@ -19,7 +19,11 @@ To view the JavaScript console for debugging, run:
 
     npm run build
 
-Builds the app for OS X, Linux, and Windows, using [electron-packager](https://github.com/electron-userland/electron-packager).
+Builds the app for OS X using [electron-packager](https://github.com/electron-userland/electron-packager).
+
+    npm run-script build-windows
+
+Builds the app for Windows.
 
 ## License
 

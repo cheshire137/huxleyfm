@@ -15,7 +15,8 @@
     "test": "xo",
     "start": "electron .",
     "build": "npm run-script build-osx",
-    "build-osx": "if [ -d dist/SomaPlayer-darwin-x64 ]; then rm -r dist/SomaPlayer-darwin-x64; fi && node_modules/electron-packager/cli.js . --out=dist --app-version=$npm_package_version --prune --asar --overwrite --icon=images/icon128.png.icns --appname=SomaPlayer --platform=darwin --arch=all --ignore=dist"
+    "build-osx": "if [ -d dist/SomaPlayer-darwin-x64 ]; then rm -r dist/SomaPlayer-darwin-x64; fi && node_modules/electron-packager/cli.js . --out=dist --app-version=$npm_package_version --prune --asar --overwrite --icon=images/icon128.png.icns --appname=SomaPlayer --platform=darwin --arch=all --ignore=dist",
+    "build-windows": "node node_modules\\electron-packager\\cli.js . --out=dist --prune --asar --overwrite --appname=SomaPlayer --platform=win32 --arch=all --ignore=dist"
   },
   "files": [
     "main.js",
