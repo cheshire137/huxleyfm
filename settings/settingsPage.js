@@ -2,6 +2,7 @@ const Settings = require('../models/settings');
 const Lastfm = require('../models/lastfm');
 const Eventful = require('../models/eventful');
 const Soma = require('../models/soma');
+const shell = require('electron').shell;
 
 class SettingsPage extends Eventful {
   constructor(settings) {
@@ -202,7 +203,11 @@ class SettingsPage extends Eventful {
   restoreLastfmUserSetting() {
     if (this.settings.lastfmUser) {
       this.lastfmUser.textContent = this.settings.lastfmUser;
-      this.lastfmUser.href = 'http://last.fm/user/' + this.settings.lastfmUser;
+      this.lastfmUser.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.target.blur();
+        shell.openExternal('http://last.fm/user/' + this.settings.lastfmUser);
+      });
     }
   }
 
