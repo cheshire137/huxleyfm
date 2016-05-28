@@ -63,12 +63,11 @@ body.player #station-menu {
   border-style: solid;
   border-width: 1px;
   font-size: 16px;
-  text-align: center;
+  text-align: left;
   border-radius: 2px;
   box-sizing: border-box;
   list-style: none;
-  line-height: 37px;
-  height: 49px;
+  height: 60px;
   z-index: 2;
   overflow: hidden;
 }
@@ -93,7 +92,15 @@ body.player #station-menu.expanded li.selected {
 body.player #station-menu li a {
   text-decoration: none;
   display: block;
-  padding: 5px 10px;
+  padding: 0 10px;
+  line-height: 60px;
+}
+body.player #station-menu li a img {
+  display: inline-block;
+  height: 50px;
+  vertical-align: middle;
+  margin-right: 10px;
+  border-radius: 4px;
 }
 body.player.theme-light #station-menu li a {
   background-color: #fff;

@@ -271,7 +271,11 @@ module.exports = class IndexPage extends Eventful {
     stations.forEach((station) => {
       const link = document.createElement('a');
       link.href = '#' + station.id;
-      link.textContent = station.title;
+      const img = document.createElement('img');
+      img.src = '../images/' + station.id + '.png';
+      img.alt = station.title + ' image';
+      link.appendChild(img);
+      link.appendChild(document.createTextNode(station.title));
       const listItem = document.createElement('li');
       listItem.className = 'hidden';
       listItem.setAttribute('data-index', index);
