@@ -16,7 +16,7 @@
     "postinstall": "if [ ! -f config.json ]; then cp config.json.example config.json; fi",
     "start": "electron .",
     "build": "npm run-script build-osx",
-    "build-osx": "if [ -d dist/HuxleyFM-darwin-x64 ]; then rm -r dist/HuxleyFM-darwin-x64; fi && node_modules/electron-packager/cli.js . --out=dist --app-version=$npm_package_version --prune --asar --overwrite --icon=images/icon128.png.icns --appname=HuxleyFM --platform=darwin --arch=all --ignore=dist",
+    "build-osx": "if [ -d dist/HuxleyFM-darwin-x64 ]; then rm -r dist/HuxleyFM-darwin-x64; fi && node_modules/electron-packager/cli.js . --out=dist --app-version=$npm_package_version --prune --asar --overwrite --icon=images/icon512.png.icns --appname=HuxleyFM --platform=darwin --arch=all --ignore=dist",
     "build-windows": "node node_modules\\electron-packager\\cli.js . --out=dist --prune --asar --overwrite --appname=HuxleyFM --platform=win32 --arch=all --ignore=dist"
   },
   "files": [
@@ -31,8 +31,9 @@
     "settings/settings.html",
     "settings/settingsPage.js",
     "images/icon48.png",
-    "images/icon48-dark.png",
     "images/icon128.png",
+    "images/icon512.png",
+    "images/icon512.png.icns",
     "models/eventful.js",
     "models/fetcher.js",
     "models/flashMessages.js",
