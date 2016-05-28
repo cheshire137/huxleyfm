@@ -1,4 +1,4 @@
-# HuxleyFM
+# ![logo](https://raw.githubusercontent.com/cheshire137/huxleyfm/master/images/icon48.png) HuxleyFM
 
 A desktop player for [SomaFM](http://somafm.com/). Compare to my [Chrome extension](https://github.com/cheshire137/soma-chrome) for listening to SomaFM.
 
