@@ -72,7 +72,7 @@ body.player #station-menu {
   overflow: hidden;
 }
 body.player #station-menu.expanded {
-  height: 250px;
+  height: 248px;
   overflow: auto;
 }
 body.player.theme-dark #station-menu {
