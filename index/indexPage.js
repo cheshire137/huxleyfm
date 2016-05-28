@@ -19,14 +19,14 @@ module.exports = class IndexPage extends Eventful {
     this.onTrack = __bind(this.onTrack, this);
     this.findElements();
     this.listenForMusicChanges();
-    this.getStations().then(this.insertStationOptions.bind(this)).
+    this.getStations().then(this.insertStationLinks.bind(this)).
                        then(this.restorePlayingInfo.bind(this)).
                        catch(this.loadDefaultStations.bind(this));
-    this.stationSelect.focus();
+    this.stationMenu.focus();
   }
 
   findElements() {
-    this.stationSelect = document.getElementById('station');
+    this.stationMenu = document.getElementById('station-menu');
     this.playButton = document.getElementById('play');
     this.pauseButton = document.getElementById('pause');
     this.currentInfoEl = document.getElementById('currently-playing');
@@ -37,30 +37,86 @@ module.exports = class IndexPage extends Eventful {
   }
 
   listenForMusicChanges() {
-    this.stationSelect.addEventListener('change',
-                                        this.onStationChange.bind(this));
-    this.stationSelect.addEventListener('keypress',
-                                        this.onStationKeypress.bind(this));
+    const stationLinks = this.stationMenu.querySelectorAll('a');
+    Array.prototype.forEach.call(stationLinks, (link) => {
+      link.addEventListener('click', this.onStationLinkClick.bind(this));
+      link.addEventListener('keypress', this.onStationKeypress.bind(this));
+    });
     this.playButton.addEventListener('click', this.play.bind(this));
     this.pauseButton.addEventListener('click', this.pause.bind(this));
   }
 
-  onStationChange() {
-    const newStation = this.stationSelect.value;
-    if (newStation === '') {
-      this.playButton.disabled = true;
-      this.hideTrackInfo();
-      const oldStation = this.audioTag.getAttribute('data-station');
-      this.unsubscribe(oldStation).catch(this.unsubscribeError.bind(this));
-      this.audioTag.pause();
-      this.audioTag.currentTime = 0;
-      this.audioTag.removeAttribute('data-station');
-      this.audioTag.removeAttribute('data-paused');
+  restoreListItemPosition(listItem) {
+    const index = parseInt(listItem.getAttribute('data-index'), 10);
+    const newNextListItem = this.stationMenu.
+        querySelector('li[data-index="' + (index + 1) + '"]');
+    this.stationMenu.insertBefore(listItem, newNextListItem);
+  }
+
+  moveListItemToTop(listItem) {
+    const firstListItem = this.stationMenu.querySelector('li:first-child');
+    this.stationMenu.insertBefore(listItem, firstListItem);
+  }
+
+  onStationLinkClick(event) {
+    const link = event.target.closest('a');
+    const listItem = link.closest('li');
+    const listItems = Array.from(this.stationMenu.querySelectorAll('li'));
+    listItems.forEach(li => li.classList.remove('selected'));
+    listItem.classList.add('selected');
+    const newStation = this.getStationFromLink(link);
+    const oldStation = this.audioTag.getAttribute('data-station');
+    let firstListItem = this.stationMenu.querySelector('li:first-child');
+    const chooseStationListItem = this.stationMenu.
+        querySelector('li[data-index="0"]');
+    if (firstListItem !== listItem) {
+      this.restoreListItemPosition(firstListItem);
+    }
+    if (newStation === oldStation || newStation === '') {
+      if (this.stationMenu.classList.contains('expanded')) {
+        console.debug('collapsing station menu');
+        listItems.forEach(li => li.classList.add('hidden'));
+        this.stationMenu.classList.remove('expanded');
+      } else {
+        console.debug('expanding station menu');
+        this.moveListItemToTop(chooseStationListItem);
+        listItems.forEach(li => li.classList.remove('hidden'));
+        this.stationMenu.classList.add('expanded');
+      }
+      if (newStation === '') {
+        this.playButton.disabled = true;
+        this.pause();
+        this.hideTrackInfo();
+        if (oldStation) {
+          this.unsubscribe(oldStation).catch(this.unsubscribeError.bind(this));
+        }
+        this.audioTag.pause();
+        this.audioTag.currentTime = 0;
+        this.audioTag.removeAttribute('data-station');
+        this.audioTag.removeAttribute('data-paused');
+      }
     } else {
+      console.debug('changing to station ' + newStation);
       this.playButton.disabled = false;
       this.pause();
-      this.play();
+      this.play(newStation);
+      this.stationMenu.classList.remove('expanded');
     }
+    if (firstListItem !== listItem) {
+      this.moveListItemToTop(listItem);
+    }
+    listItem.classList.remove('hidden');
+  }
+
+  getCurrentStation() {
+    const listItem = this.stationMenu.querySelector('.selected');
+    const link = listItem.querySelector('a');
+    return this.getStationFromLink(link);
+  }
+
+  getStationFromLink(link) {
+    const index = link.href.indexOf('#');
+    return link.href.slice(index + 1);
   }
 
   onStationKeypress(event) {
@@ -68,7 +124,7 @@ module.exports = class IndexPage extends Eventful {
     if (keyCode !== 13) { // Enter
       return;
     }
-    if (this.stationSelect.value === '') {
+    if (this.getCurrentStation() === '') {
       return;
     }
     if (!this.playButton.disabled &&
@@ -93,14 +149,18 @@ module.exports = class IndexPage extends Eventful {
       this.pauseButton.disabled = false;
     }
     if (station) {
-      const options = this.stationSelect.querySelectorAll('option');
-      for (let i = 0; i < options.length; i++) {
-        const option = options[i];
-        if (option.value === station) {
-          option.selected = 'selected';
-          break;
-        }
+      const selected = this.stationMenu.querySelector('li.selected');
+      if (selected) {
+        selected.classList.remove('selected');
+        selected.classList.add('hidden');
+        this.restoreListItemPosition(selected);
       }
+      const link = this.stationMenu.
+          querySelector('a[href="#' + station + '"]');
+      const listItem = link.parentNode;
+      listItem.classList.add('selected');
+      listItem.classList.remove('hidden');
+      this.moveListItemToTop(listItem);
       this.updateTrackInfo(station);
     }
   }
@@ -116,11 +176,13 @@ module.exports = class IndexPage extends Eventful {
     this.pauseButton.classList.add('hidden');
     this.playButton.classList.remove('hidden');
     this.playButton.disabled = false;
-    this.stationSelect.focus();
+    this.stationMenu.focus();
   }
 
-  play() {
-    const station = this.stationSelect.value;
+  play(station) {
+    if (typeof station === 'undefined') {
+      station = this.getCurrentStation();
+    }
     this.resetTrackInfoIfNecessary(station);
     this.subscribe(station).then(() => {
       this.updateTrackInfo(station);
@@ -131,7 +193,7 @@ module.exports = class IndexPage extends Eventful {
       this.playButton.classList.add('hidden');
       this.pauseButton.classList.remove('hidden');
       this.pauseButton.disabled = false;
-      this.stationSelect.focus();
+      this.stationMenu.focus();
     }).catch(this.subscribeError.bind(this));
   }
 
@@ -144,12 +206,15 @@ module.exports = class IndexPage extends Eventful {
 
   subscribe(station) {
     if (this.socket && this.socket.connected) {
+      console.debug('socket already defined and is connected');
       return this.emitSubscribe(station);
     }
     return new Promise((resolve, reject) => {
       if (!this.socket) {
+        console.debug('socket not yet defined');
         this.socket = require('socket.io-client')(Config.scrobbler_api_url);
       }
+      console.debug('listening for socket connect');
       this.socket.on('connect', () => {
         this.emitSubscribe(station).then(resolve).catch(reject);
       });
@@ -162,10 +227,11 @@ module.exports = class IndexPage extends Eventful {
 
   unsubscribe(station) {
     return new Promise((resolve, reject) => {
-      if (!this.socket) {
+      if (!this.socket || !station) {
         resolve();
         return;
       }
+      console.debug('unsubscribing from ' + station);
       this.socket.emit('unsubscribe', station, (response) => {
         if (response.unsubscribed) {
           this.socket.removeListener('track', this.onTrack);
@@ -183,6 +249,7 @@ module.exports = class IndexPage extends Eventful {
 
   emitSubscribe(station) {
     return new Promise((resolve, reject) => {
+      console.debug('subscribing to ' + station);
       this.socket.emit('subscribe', station, (response) => {
         if (response.subscribed) {
           resolve(station);
@@ -193,18 +260,26 @@ module.exports = class IndexPage extends Eventful {
     });
   }
 
-  insertStationOptions(stations) {
+  insertStationLinks(stations) {
+    let index = 1;
     stations.forEach((station) => {
-      const option = document.createElement('option');
-      option.value = station.id;
-      option.textContent = station.title;
-      this.stationSelect.appendChild(option);
+      const link = document.createElement('a');
+      link.href = '#' + station.id;
+      link.textContent = station.title;
+      const listItem = document.createElement('li');
+      listItem.className = 'hidden';
+      listItem.setAttribute('data-index', index);
+      listItem.appendChild(link);
+      this.stationMenu.appendChild(listItem);
+      link.addEventListener('click', this.onStationLinkClick.bind(this));
+      link.addEventListener('keypress', this.onStationKeypress.bind(this));
+      index++;
     });
-    this.stationSelect.disabled = false;
+    this.stationMenu.classList.remove('disabled');
   }
 
   loadDefaultStations() {
-    this.insertStationOptions(DefaultStations);
+    this.insertStationLinks(DefaultStations);
   }
 
   getStations() {
