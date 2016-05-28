@@ -4,13 +4,14 @@ A desktop player for [SomaFM](http://somafm.com/). Compare to my [Chrome extensi
 
 ## How to Develop
 
-    cp config.json.example config.json
+    npm install
+
+This will install necessary packages as well as create config.json for you to modify.
 
 If you want to be able to scrobble songs to your Last.fm account, you will need to configure config.json with [your Last.fm API key and secret](http://www.last.fm/api/account/create).
 
 Specify `user_agent` in config.json to something custom for your app. The user agent is sent in request headers to Last.fm and the Soma API.
 
-    npm install
     npm start
 
 To view the JavaScript console for debugging, run:
