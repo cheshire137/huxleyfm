@@ -4,6 +4,7 @@ const DefaultStations = require('../defaultStations.json');
 const Eventful = require('../models/eventful');
 const Config = require('../config.json');
 const Lastfm = require('../models/lastfm');
+const path = require('path');
 
 const __bind = function(fn, me) {
   return function() {
@@ -382,6 +383,17 @@ module.exports = class IndexPage extends Eventful {
     if (!this.settings.notifications) {
       return;
     }
+    let message = track.title;
+    if (typeof track.artist === 'string' && track.artist.length > 0) {
+      message += ' by ' + track.artist;
+    }
+    const station = this.getCurrentStation();
+    const options = {
+      title: track.title,
+      body: message,
+      icon: path.join(__dirname, '..', 'images', station + '.png')
+    };
+    new Notification(message, options);
   }
 
   scrobbleTrack(track) {
