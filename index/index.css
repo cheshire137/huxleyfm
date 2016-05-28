@@ -34,6 +34,7 @@ body.player #last-known-header {
   text-transform: uppercase;
   font-size: 12px;
   padding-right: 20px;
+  width: 12em;
 }
 body.player #album:before {
   content: "\201C";
