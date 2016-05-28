@@ -49,6 +49,10 @@ body.player #play {
 body.player #pause {
   padding: 22px 27px;
 }
+body.player.theme-dark #play:disabled,
+body.player.theme-dark #pause:disabled {
+  border-color: #444;
+}
 body.player #station-menu {
   width: 100%;
   border-style: solid;

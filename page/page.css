@@ -158,7 +158,7 @@ a:focus {
   border: 1px solid rgba(216, 162, 77, 0.5);
 }
 .theme-dark hr {
-  border-top-color: #444;
+  border-top-color: #333;
   border-bottom-color: transparent;
 }
 button {
@@ -385,7 +385,7 @@ header a:hover, header a:focus {
   border-bottom-color: #eee;
 }
 .theme-dark header {
-  border-bottom-color: #444;
+  border-bottom-color: #333;
 }
 .theme-dark header a,
 .theme-dark header a:link,
