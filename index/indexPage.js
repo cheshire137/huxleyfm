@@ -172,6 +172,7 @@ module.exports = class IndexPage extends Eventful {
   }
 
   pause() {
+    console.debug('pausing...');
     const station = this.audioTag.getAttribute('data-station');
     if (station) {
       this.unsubscribe(station).catch(this.unsubscribeError.bind(this));
@@ -186,7 +187,8 @@ module.exports = class IndexPage extends Eventful {
   }
 
   play(station) {
-    if (typeof station === 'undefined') {
+    console.debug('playing...');
+    if (typeof station !== 'string') {
       station = this.getCurrentStation();
     }
     this.resetTrackInfoIfNecessary(station);
