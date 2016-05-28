@@ -69,10 +69,11 @@ body.player #station-menu {
   line-height: 37px;
   height: 49px;
   z-index: 2;
-  overflow: auto;
+  overflow: hidden;
 }
 body.player #station-menu.expanded {
   height: 250px;
+  overflow: auto;
 }
 body.player.theme-dark #station-menu {
 }
@@ -95,6 +96,10 @@ body.player #station-menu li a {
 }
 body.player.theme-light #station-menu li a {
   background-color: #fff;
+}
+body.player.theme-light #station-menu.expanded li:first-child a,
+body.player.theme-light #station-menu.expanded li.selected a {
+  background-color: #f8f8f8;
 }
 body.player.theme-light #station-menu.disabled li a {
   color: #777;

@@ -109,6 +109,7 @@ module.exports = class IndexPage extends Eventful {
     }
     if (firstListItem !== listItem) {
       this.moveListItemToTop(listItem);
+      this.stationMenu.scrollTop = 0;
     }
     listItem.classList.remove('hidden');
   }
