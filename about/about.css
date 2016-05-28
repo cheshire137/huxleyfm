@@ -13,18 +13,13 @@ body.about .donate-link {
   text-decoration: none;
   font-weight: 700;
   border-radius: 4px;
-}
-body.about.theme-dark .donate-link {
-
-}
-body.about.theme-light .donate-link {
-  background-color: #D8A24D;
+  background-color: #FEAE5E;
   color: #373737;
-  text-shadow: 0 1px 1px #EBBA6C;
+  text-shadow: 0 1px 1px #FFBB77;
 }
-body.about.theme-light .donate-link:hover,
-body.about.theme-light .donate-link:focus {
-  background-color: #EBBA6C;
+body.about .donate-link:hover,
+body.about .donate-link:focus {
+  background-color: #FFBB77;
 }
 body.about footer ul {
   padding-left: 0;

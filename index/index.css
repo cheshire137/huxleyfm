@@ -13,6 +13,8 @@ body.player #currently-playing.hidden {
 }
 body.player #track-info {
   text-align: center;
+  height: 67px;
+  overflow: auto;
 }
 body.player #title {
   font-weight: 700;
@@ -65,12 +67,16 @@ body.player #station-menu.expanded {
   overflow: auto;
 }
 body.player.theme-dark #station-menu {
+  border-color: #133C46;
 }
 body.player.theme-light #station-menu {
   border-color: #F79534;
 }
 body.player.theme-light #station-menu.disabled {
   border-color: #ccc;
+}
+body.player.theme-dark #station-menu.disabled {
+  border-color: #133C46;
 }
 body.player #station-menu li {
 }
@@ -98,6 +104,16 @@ body.player.theme-light #station-menu.expanded li:first-child a,
 body.player.theme-light #station-menu.expanded li.selected a {
   background-color: #f8f8f8;
 }
+body.player.theme-dark #station-menu li a {
+  background-color: #222;
+}
+body.player.theme-dark #station-menu.expanded li:first-child a,
+body.player.theme-dark #station-menu.expanded li.selected a {
+  background-color: #24250D;
+}
 body.player.theme-light #station-menu.disabled li a {
   color: #777;
+}
+body.player.theme-dark #station-menu.disabled li a {
+  color: #999;
 }
