@@ -19,7 +19,7 @@ function createMainWindow() {
 	let win;
 	const windowProperties = {
 		icon: 'images/icon128.png',
-		title: 'SomaPlayer',
+		title: 'HuxleyFM',
 		resizable: false
 	};
 	if (process.env.NODE_ENV === 'development') {

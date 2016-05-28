@@ -1,11 +1,11 @@
 {
-  "name": "soma-electron",
-  "productName": "SomaPlayer",
+  "name": "huxleyfm",
+  "productName": "HuxleyFM",
   "version": "0.0.1",
   "main": "main.js",
-  "description": "SomaFM Electron desktop app",
+  "description": "An unofficial desktop app for listening to SomaFM radio stations.",
   "license": "MIT",
-  "repository": "cheshire137/soma-electron",
+  "repository": "cheshire137/huxleyfm",
   "author": {
     "name": "Sarah Vessels",
     "email": "cheshire137@gmail.com",
@@ -15,8 +15,8 @@
     "test": "xo",
     "start": "electron .",
     "build": "npm run-script build-osx",
-    "build-osx": "if [ -d dist/SomaPlayer-darwin-x64 ]; then rm -r dist/SomaPlayer-darwin-x64; fi && node_modules/electron-packager/cli.js . --out=dist --app-version=$npm_package_version --prune --asar --overwrite --icon=images/icon128.png.icns --appname=SomaPlayer --platform=darwin --arch=all --ignore=dist",
-    "build-windows": "node node_modules\\electron-packager\\cli.js . --out=dist --prune --asar --overwrite --appname=SomaPlayer --platform=win32 --arch=all --ignore=dist"
+    "build-osx": "if [ -d dist/HuxleyFM-darwin-x64 ]; then rm -r dist/HuxleyFM-darwin-x64; fi && node_modules/electron-packager/cli.js . --out=dist --app-version=$npm_package_version --prune --asar --overwrite --icon=images/icon128.png.icns --appname=HuxleyFM --platform=darwin --arch=all --ignore=dist",
+    "build-windows": "node node_modules\\electron-packager\\cli.js . --out=dist --prune --asar --overwrite --appname=HuxleyFM --platform=win32 --arch=all --ignore=dist"
   },
   "files": [
     "main.js",
@@ -46,8 +46,9 @@
   "keywords": [
     "electron-app",
     "electron",
-    "last.fm",
-    "somafm"
+    "somafm",
+    "radio",
+    "desktop"
   ],
   "dependencies": {
     "crypto": "0.0.3",
