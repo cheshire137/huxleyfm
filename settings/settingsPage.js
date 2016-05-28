@@ -3,12 +3,14 @@ const Lastfm = require('../models/lastfm');
 const Eventful = require('../models/eventful');
 const Soma = require('../models/soma');
 const shell = require('electron').shell;
+const Config = require('../config.json');
 
 class SettingsPage extends Eventful {
   constructor(settings) {
     super();
     this.settings = settings;
     this.findElements();
+    this.enableLastfmIfConfigSet();
     this.listenForChanges();
     this.listenForLastfmAuthenticateClicks();
     this.listenForRefreshStations();
@@ -16,6 +18,9 @@ class SettingsPage extends Eventful {
   }
 
   findElements() {
+    this.lastfmAuthContainer = document.getElementById('lastfm-auth-container');
+    this.lastfmScrobblingContainer =
+        document.getElementById('lastfm-scrobbling-container');
     this.lastfmConnected =
         document.getElementById('lastfm-is-authenticated');
     this.lastfmButtons = document.querySelectorAll('button.lastfm-auth');
@@ -39,6 +44,23 @@ class SettingsPage extends Eventful {
     this.stationsList = document.querySelector('.stations-list');
     this.refreshStationsButton =
         document.querySelector('button.refresh-stations');
+  }
+
+  enableLastfmIfConfigSet() {
+    const haveKey = typeof Config.lastfm_api_key === 'string' &&
+                    Config.lastfm_api_key.length > 0;
+    const haveSecret = typeof Config.lastfm_api_secret === 'string' &&
+                       Config.lastfm_api_secret.length > 0;
+    if (!haveKey || !haveSecret) {
+      if (this.settings.scrobbling) {
+        this.settings.scrobbling = false;
+        Settings.save(this.settings).
+                 catch(this.onSettingsSaveError.bind(this));
+      }
+      return;
+    }
+    this.lastfmAuthContainer.removeClass('hidden');
+    this.lastfmScrobblingContainer.removeClass('hidden');
   }
 
   listenForChanges() {
