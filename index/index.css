@@ -7,17 +7,12 @@ body.player .form-group {
   position: relative;
 }
 body.player #currently-playing {
-  margin-bottom: 20px;
-  display: table;
-  width: 100%;
 }
 body.player #currently-playing.hidden {
   display: none;
 }
-body.player #last-known-header,
 body.player #track-info {
-  display: table-cell;
-  vertical-align: middle;
+  text-align: center;
 }
 body.player #title {
   font-weight: 700;
@@ -29,12 +24,6 @@ body.player #artist:before {
 }
 body.player #album-and-duration {
   display: block;
-}
-body.player #last-known-header {
-  text-transform: uppercase;
-  font-size: 12px;
-  padding-right: 20px;
-  width: 12em;
 }
 body.player #album:before {
   content: "\201C";
