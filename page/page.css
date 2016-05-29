@@ -89,6 +89,15 @@ button {
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
   border: 1px solid #d6e9c6;
   border-radius: 4px;
+  position: fixed;
+  left: 50%;
+  top: 10px;
+  width: 350px;
+  font-size: 14px;
+  margin-left: -175px;
+  z-index: 99999;
+  -webkit-box-shadow: 0 0 5px 0 rgba(0,0,0,0.3);
+  box-shadow: 0 0 5px 0 rgba(0,0,0,0.3);
 }
 .alert.error {
   background-color: #f2dede;
@@ -103,6 +112,7 @@ body {
   line-height: 1.6;
   font-size: 14px;
   text-shadow: 0 1px 1px #fff;
+  position: relative;
 }
 .theme-light {
   background-color: #f8f8f8;
@@ -401,33 +411,22 @@ header img.pull-left {
 header .material-icons {
   vertical-align: middle;
 }
-header .alert {
-  position: fixed;
-  left: 50%;
-  top: 10px;
-  width: 350px;
-  font-size: 14px;
-  margin-left: -175px;
-  z-index: 99999;
-  -webkit-box-shadow: 0 0 5px 0 rgba(0,0,0,0.3);
-  box-shadow: 0 0 5px 0 rgba(0,0,0,0.3);
-}
-header .dismiss-alert {
+.dismiss-alert {
   position: fixed;
   left: 50%;
   top: 30px;
   margin-left: 155px;
 }
-.theme-dark header a.dismiss-alert,
-.theme-dark header a.dismiss-alert:link,
-.theme-dark header a.dismiss-alert:visited,
-.theme-dark header a.dismiss-alert:active {
+.theme-dark a.dismiss-alert,
+.theme-dark a.dismiss-alert:link,
+.theme-dark a.dismiss-alert:visited,
+.theme-dark a.dismiss-alert:active {
   color: #fff;
 }
-.theme-light header a.dismiss-alert,
-.theme-light header a.dismiss-alert:link,
-.theme-light header a.dismiss-alert:visited,
-.theme-light header a.dismiss-alert:active {
+.theme-light a.dismiss-alert,
+.theme-light a.dismiss-alert:link,
+.theme-light a.dismiss-alert:visited,
+.theme-light a.dismiss-alert:active {
   color: #2F7130;
 }
 header a:hover, header a:focus {

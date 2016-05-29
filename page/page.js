@@ -98,17 +98,17 @@ class PageLoader {
     this.listenForPageMessages(page);
     page.addListener('play', this.onPlay.bind(this));
     page.addListener('pause', this.onPause.bind(this));
-    this.returnLinkWrapper.classList.add('hidden');
+    this.hideBackLink();
   }
 
   onSettingsPageLoaded() {
     const page = new SettingsPage(this.settings);
     this.listenForPageMessages(page);
-    this.returnLinkWrapper.classList.remove('hidden');
+    this.showBackLink();
   }
 
   onAboutPageLoaded() {
-    this.returnLinkWrapper.classList.remove('hidden');
+    this.showBackLink();
   }
 
   listenForPageMessages(page) {
@@ -119,12 +119,12 @@ class PageLoader {
 
   onPlay(station, url) {
     this.station = station;
-    this.chromecastWrapper.classList.remove('hidden');
+    this.showChromecastLink();
   }
 
   onPause(station) {
     this.station = null;
-    this.chromecastWrapper.classList.add('hidden');
+    this.hideChromecastLink();
   }
 
   onChromecast() {
@@ -134,6 +134,35 @@ class PageLoader {
   onSettingsChanged(settings) {
     this.settings = settings;
     this.applyTheme(settings.theme);
+  }
+
+  anyHeaderItemsShown() {
+    return !this.chromecastWrapper.classList.contains('hidden') ||
+           !this.returnLinkWrapper.classList.contains('hidden');
+  }
+
+  hideBackLink() {
+    this.returnLinkWrapper.classList.add('hidden');
+    if (!this.anyHeaderItemsShown()) {
+      this.returnLinkWrapper.closest('header').classList.add('hidden');
+    }
+  }
+
+  showBackLink() {
+    this.returnLinkWrapper.classList.remove('hidden');
+    this.returnLinkWrapper.closest('header').classList.remove('hidden');
+  }
+
+  hideChromecastLink() {
+    this.chromecastWrapper.classList.add('hidden');
+    if (!this.anyHeaderItemsShown()) {
+      this.chromecastWrapper.closest('header').classList.add('hidden');
+    }
+  }
+
+  showChromecastLink() {
+    this.chromecastWrapper.classList.remove('hidden');
+    this.chromecastWrapper.closest('header').classList.remove('hidden');
   }
 }
 
