@@ -79,41 +79,28 @@ module.exports = class IndexPage extends Eventful {
   handleStationLinkClick(link) {
     const listItem = link.closest('li');
     const listItems = Array.from(this.stationMenu.querySelectorAll('li'));
+    const chooseStationListItem = this.stationMenu.
+        querySelector('li[data-index="0"]');
+    if (chooseStationListItem) {
+      chooseStationListItem.remove();
+    }
     listItems.forEach(li => li.classList.remove('selected'));
     listItem.classList.add('selected');
     const newStation = this.getStationFromLink(link);
     const oldStation = this.audioTag.getAttribute('data-station');
     let firstListItem = this.stationMenu.querySelector('li:first-child');
-    const chooseStationListItem = this.stationMenu.
-        querySelector('li[data-index="0"]');
     if (firstListItem !== listItem) {
       this.restoreListItemPosition(firstListItem);
     }
     if (newStation === oldStation || newStation === '') {
-      const icon = chooseStationListItem.querySelector('.material-icons');
       if (this.stationMenu.classList.contains('expanded')) {
         console.debug('collapsing station menu');
         listItems.forEach(li => li.classList.add('hidden'));
         this.stationMenu.classList.remove('expanded');
-        icon.textContent = 'keyboard_arrow_right';
       } else {
         console.debug('expanding station menu');
-        this.moveListItemToTop(chooseStationListItem);
         listItems.forEach(li => li.classList.remove('hidden'));
         this.stationMenu.classList.add('expanded');
-        icon.textContent = 'keyboard_arrow_down';
-      }
-      if (newStation === '') {
-        this.playButton.disabled = true;
-        this.pause();
-        this.hideTrackInfo();
-        if (oldStation) {
-          this.unsubscribe(oldStation).catch(this.unsubscribeError.bind(this));
-        }
-        this.audioTag.pause();
-        this.audioTag.currentTime = 0;
-        this.audioTag.removeAttribute('data-station');
-        this.audioTag.removeAttribute('data-paused');
       }
     } else {
       console.debug('changing to station ' + newStation);
