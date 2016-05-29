@@ -19,12 +19,12 @@ module.exports = class IndexPage extends Eventful {
     this.settings = settings;
     this.audioTag = audioTag;
     this.onTrack = __bind(this.onTrack, this);
+    this.stationQuery = '';
     this.findElements();
     this.listenForMusicChanges();
     this.getStations().then(this.insertStationLinks.bind(this)).
                        then(this.restorePlayingInfo.bind(this)).
                        catch(this.loadDefaultStations.bind(this));
-    this.stationMenu.focus();
     this.listenForMediaKeys();
   }
 
@@ -56,6 +56,7 @@ module.exports = class IndexPage extends Eventful {
     });
     this.playButton.addEventListener('click', this.play.bind(this));
     this.pauseButton.addEventListener('click', this.pause.bind(this));
+    window.addEventListener('keydown', this.onKeydown.bind(this));
   }
 
   restoreListItemPosition(listItem) {
@@ -72,6 +73,10 @@ module.exports = class IndexPage extends Eventful {
 
   onStationLinkClick(event) {
     const link = event.target.closest('a');
+    this.handleStationLinkClick(link);
+  }
+
+  handleStationLinkClick(link) {
     const listItem = link.closest('li');
     const listItems = Array.from(this.stationMenu.querySelectorAll('li'));
     listItems.forEach(li => li.classList.remove('selected'));
@@ -179,7 +184,6 @@ module.exports = class IndexPage extends Eventful {
     if (currentStation.length > 0) {
       this.playButton.disabled = false;
     }
-    this.stationMenu.focus();
     this.emit('pause', station);
   }
 
@@ -212,7 +216,6 @@ module.exports = class IndexPage extends Eventful {
     this.playButton.classList.add('hidden');
     this.pauseButton.classList.remove('hidden');
     this.pauseButton.disabled = false;
-    this.stationMenu.focus();
     this.emit('play', station, stationUrl);
   }
 
@@ -445,5 +448,45 @@ module.exports = class IndexPage extends Eventful {
   onScrobbleError(error) {
     console.error('failed to scrobble track', error);
     this.emit('error', 'Failed to scrobble track.');
+  }
+
+  onKeydown(event) {
+    if (!this.stationMenu.classList.contains('expanded')) {
+      this.stationQuery = '';
+      this.filterStations();
+      return;
+    }
+    const keyCode = event.keyCode || event.charCode;
+    if (keyCode === 8) { // Backspace
+      this.stationQuery =
+          this.stationQuery.slice(0, this.stationQuery.length - 1);
+      this.filterStations();
+    } else if (keyCode === 13) { // Enter
+      const listItems = Array.from(this.stationMenu.querySelectorAll('li'));
+      const visible = listItems.filter(li => !li.classList.contains('hidden'));
+      if (visible.length > 0) {
+        const link = visible[0].querySelector('a');
+        this.handleStationLinkClick(link);
+        this.stationQuery = '';
+        this.filterStations();
+      }
+    } else if (keyCode >= 65 && keyCode <= 90) {
+      const char = String.fromCharCode(keyCode).toLowerCase();
+      this.stationQuery += char;
+      this.filterStations();
+    }
+  }
+
+  filterStations() {
+    const stationLinks = this.stationMenu.querySelectorAll('a');
+    Array.prototype.forEach.call(stationLinks, (link) => {
+      const stationName = link.textContent;
+      const listItem = link.closest('li');
+      if (stationName.toLowerCase().indexOf(this.stationQuery) < 0) {
+        listItem.classList.add('hidden');
+      } else {
+        listItem.classList.remove('hidden');
+      }
+    });
   }
 }

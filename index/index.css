@@ -108,6 +108,7 @@ body.player #station-menu li a img {
   margin-right: 10px;
   border-radius: 4px;
 }
+body.player.theme-light #station-menu,
 body.player.theme-light #station-menu li a {
   background-color: #fff;
 }
@@ -115,6 +116,7 @@ body.player.theme-light #station-menu.expanded li:first-child a,
 body.player.theme-light #station-menu.expanded li.selected a {
   background-color: #f8f8f8;
 }
+body.player.theme-dark #station-menu,
 body.player.theme-dark #station-menu li a {
   background-color: #222;
 }
