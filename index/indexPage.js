@@ -76,6 +76,24 @@ module.exports = class IndexPage extends Eventful {
     this.handleStationLinkClick(link);
   }
 
+  expandStationMenu(listItems) {
+    console.debug('expanding station menu');
+    if (typeof listItems === 'undefined') {
+      listItems = Array.from(this.stationMenu.querySelectorAll('li'));
+    }
+    listItems.forEach(li => li.classList.remove('hidden'));
+    this.stationMenu.classList.add('expanded');
+  }
+
+  collapseStationMenu(listItems) {
+    console.debug('collapsing station menu');
+    if (typeof listItems === 'undefined') {
+      listItems = Array.from(this.stationMenu.querySelectorAll('li'));
+    }
+    listItems.forEach(li => li.classList.add('hidden'));
+    this.stationMenu.classList.remove('expanded');
+  }
+
   handleStationLinkClick(link) {
     const listItem = link.closest('li');
     const listItems = Array.from(this.stationMenu.querySelectorAll('li'));
@@ -94,13 +112,9 @@ module.exports = class IndexPage extends Eventful {
     }
     if (newStation === oldStation || newStation === '') {
       if (this.stationMenu.classList.contains('expanded')) {
-        console.debug('collapsing station menu');
-        listItems.forEach(li => li.classList.add('hidden'));
-        this.stationMenu.classList.remove('expanded');
+        this.collapseStationMenu(listItems);
       } else {
-        console.debug('expanding station menu');
-        listItems.forEach(li => li.classList.remove('hidden'));
-        this.stationMenu.classList.add('expanded');
+        this.expandStationMenu(listItems);
       }
     } else {
       console.debug('changing to station ' + newStation);
@@ -438,12 +452,15 @@ module.exports = class IndexPage extends Eventful {
   }
 
   onKeydown(event) {
+    const keyCode = event.keyCode || event.charCode;
+    if (keyCode !== 8 && keyCode !== 13 && (keyCode < 65  || keyCode > 90)) {
+      return;
+    }
     if (!this.stationMenu.classList.contains('expanded')) {
       this.stationQuery = '';
       this.filterStations();
-      return;
+      this.expandStationMenu();
     }
-    const keyCode = event.keyCode || event.charCode;
     if (keyCode === 8) { // Backspace
       this.stationQuery =
           this.stationQuery.slice(0, this.stationQuery.length - 1);
