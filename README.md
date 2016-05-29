@@ -18,6 +18,37 @@ To view the JavaScript console for debugging, run:
 
     NODE_ENV=development npm start
 
+### Troubleshooting
+
+If you run into an error about a module version mismatch, try running `npm version`. My output looks like:
+
+```
+% npm version
+{ huxleyfm: '0.0.1',
+  npm: '3.9.3',
+  ares: '1.10.1-DEV',
+  http_parser: '2.7.0',
+  icu: '57.1',
+  modules: '48',
+  node: '6.2.0',
+  openssl: '1.0.2h',
+  uv: '1.9.1',
+  v8: '5.0.71.47',
+  zlib: '1.2.8' }
+```
+
+If your `modules` is not 48, upgrade node. In OS X if you installed via Homebrew:
+
+    brew update
+    brew upgrade node
+    npm install -g npm
+
+After upgrading node:
+
+    npm install -g node-gyp
+    cd node_modules/mdns
+    node-gyp BUILDTYPE=Release rebuild
+
 ### How to Build
 
     npm run build

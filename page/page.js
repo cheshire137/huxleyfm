@@ -5,24 +5,32 @@ const LinkHandler = require('../models/linkHandler');
 const IndexPage = require('../index/indexPage');
 const SettingsPage = require('../settings/settingsPage');
 const FlashMessages = require('../models/flashMessages');
+const chromecast = require('chromecast');
 
 class PageLoader {
   constructor() {
     this.pageID = null;
+    this.station = null;
     this.findElements();
     this.flashMessages = new FlashMessages(this.statusArea);
     Settings.load().then(this.onInitialSettingsLoad.bind(this));
+    this.listenForCast();
   }
 
   findElements() {
     this.statusArea = document.getElementById('status-message');
     this.audioTag = document.querySelector('audio');
     this.chromecastLink = document.getElementById('chromecast-link');
+    this.chromecastIcon = this.chromecastLink.querySelector('.material-icons');
   }
 
   onInitialSettingsLoad(settings) {
     this.settings = settings;
     this.setupRouter();
+  }
+
+  listenForCast() {
+    this.chromecastLink.addEventListener('click', this.onChromecast.bind(this));
   }
 
   setupRouter() {
@@ -91,11 +99,27 @@ class PageLoader {
   }
 
   onPlay(station, url) {
+    this.station = station;
     this.chromecastLink.classList.remove('hidden');
   }
 
   onPause(station) {
+    this.station = null;
     this.chromecastLink.classList.add('hidden');
+  }
+
+  onChromecast() {
+    console.log('onChromecast');
+    chromecast((receivers) => {
+      console.log('chromecast receivers', receivers);
+      new Promise((resolve, reject) => {
+        // TODO: let user choose receiver
+        const chosenReceiver = receivers[0];
+        this.chromecastIcon.textContent = 'cast_connected';
+        console.log('resolving with', chosenReceiver);
+        resolve(chosenReceiver);
+      });
+    });
   }
 
   onSettingsChanged(settings) {
