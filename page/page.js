@@ -17,6 +17,7 @@ class PageLoader {
   findElements() {
     this.statusArea = document.getElementById('status-message');
     this.audioTag = document.querySelector('audio');
+    this.chromecastLink = document.getElementById('chromecast-link');
   }
 
   onInitialSettingsLoad(settings) {
@@ -71,6 +72,8 @@ class PageLoader {
   onIndexPageLoaded() {
     const page = new IndexPage(this.settings, this.audioTag);
     this.listenForPageMessages(page);
+    page.addListener('play', this.onPlay.bind(this));
+    page.addListener('pause', this.onPause.bind(this));
   }
 
   onSettingsPageLoaded() {
@@ -85,6 +88,14 @@ class PageLoader {
     page.addListener('settings:change', (s) => this.onSettingsChanged(s));
     page.addListener('error', (e) => this.flashMessages.error(e));
     page.addListener('notice', (m) => this.flashMessages.notice(m));
+  }
+
+  onPlay(station, url) {
+    this.chromecastLink.classList.remove('hidden');
+  }
+
+  onPause(station) {
+    this.chromecastLink.classList.add('hidden');
   }
 
   onSettingsChanged(settings) {

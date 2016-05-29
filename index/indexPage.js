@@ -183,6 +183,7 @@ module.exports = class IndexPage extends Eventful {
     this.playButton.classList.remove('hidden');
     this.playButton.disabled = false;
     this.stationMenu.focus();
+    this.emit('pause', station);
   }
 
   play(station) {
@@ -201,6 +202,7 @@ module.exports = class IndexPage extends Eventful {
       this.pauseButton.classList.remove('hidden');
       this.pauseButton.disabled = false;
       this.stationMenu.focus();
+      this.emit('play', station, stationUrl);
     }).catch(this.subscribeError.bind(this));
   }
 
