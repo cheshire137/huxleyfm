@@ -124,6 +124,22 @@ a:focus {
   color: #EEE;
   text-shadow: 0 1px 1px #111;
 }
+.theme-dark header h1 a,
+.theme-dark header h1 a:link,
+.theme-dark header h1 a:visited,
+.theme-dark header h1 a:active,
+.theme-dark header h1 a:hover,
+.theme-dark header h1 a:focus {
+  color: #999;
+}
+.theme-light header h1 a,
+.theme-light header h1 a:link,
+.theme-light header h1 a:visited,
+.theme-light header h1 a:active,
+.theme-light header h1 a:hover,
+.theme-light header h1 a:focus {
+  color: #373737;
+}
 .theme-dark a,
 .theme-dark a:link,
 .theme-dark a:visited,
@@ -133,9 +149,6 @@ a:focus {
 .theme-dark a:hover,
 .theme-dark a:focus {
   color: #F79534;
-}
-.theme-dark h1 {
-  color: #999;
 }
 .theme-dark .help-inline {
   color: #888;
@@ -367,6 +380,14 @@ header h1 {
   font-weight: 300;
   margin-top: 0;
   margin-bottom: 10px;
+}
+header h1 a,
+header h1 a:link,
+header h1 a:visited,
+header h1 a:active,
+header h1 a:hover,
+header h1 a:focus {
+  text-decoration: none;
 }
 header ul,
 header .material-icons {

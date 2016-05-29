@@ -24,6 +24,11 @@ module.exports = class AppMenu extends Eventful {
         submenu: [
           aboutOption,
           {
+            label: 'Preferences...',
+            accelerator: 'Command+,',
+            click() { self.emit('preferences'); }
+          },
+          {
             label: 'Quit',
             accelerator: 'Command+Q',
             click() { app.quit(); }
@@ -31,6 +36,15 @@ module.exports = class AppMenu extends Eventful {
         ]
       });
     } else {
+      this.template.unshift({
+        label: 'Options',
+        submenu: [
+          {
+            label: 'Options',
+            click() { self.emit('preferences'); }
+          }
+        ]
+      });
       this.template.unshift({
         label: 'Help',
         submenu: [

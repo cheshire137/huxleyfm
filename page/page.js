@@ -42,6 +42,9 @@ class PageLoader {
     menu.addListener('about-app', () => {
       this.router.loadPage('about/about.html', 'about');
     });
+    menu.addListener('preferences', () => {
+      this.router.loadPage('settings/settings.html', 'settings');
+    });
   }
 
   setupRouter() {
