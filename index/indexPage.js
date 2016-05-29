@@ -74,20 +74,18 @@ module.exports = class IndexPage extends Eventful {
       this.restoreListItemPosition(firstListItem);
     }
     if (newStation === oldStation || newStation === '') {
-      const icon = chooseStationListItem.querySelector('.fa');
+      const icon = chooseStationListItem.querySelector('.material-icons');
       if (this.stationMenu.classList.contains('expanded')) {
         console.debug('collapsing station menu');
         listItems.forEach(li => li.classList.add('hidden'));
         this.stationMenu.classList.remove('expanded');
-        icon.classList.remove('fa-chevron-down');
-        icon.classList.add('fa-chevron-right');
+        icon.textContent = 'keyboard_arrow_right';
       } else {
         console.debug('expanding station menu');
         this.moveListItemToTop(chooseStationListItem);
         listItems.forEach(li => li.classList.remove('hidden'));
         this.stationMenu.classList.add('expanded');
-        icon.classList.remove('fa-chevron-right');
-        icon.classList.add('fa-chevron-down');
+        icon.textContent = 'keyboard_arrow_down';
       }
       if (newStation === '') {
         this.playButton.disabled = true;

@@ -2,7 +2,6 @@
    v2.0 | 20110126
    License: none (public domain)
 */
-
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -46,7 +45,32 @@ table {
   border-collapse: collapse;
   border-spacing: 0;
 }
-
+@font-face {
+  font-family: 'Material Icons';
+  font-style: normal;
+  font-weight: 400;
+  src: url(../fonts/MaterialIcons-Regular.eot); /* For IE6-8 */
+  src: local('Material Icons'),
+       local('MaterialIcons-Regular'),
+       url(../fonts/MaterialIcons-Regular.woff2) format('woff2'),
+       url(../fonts/MaterialIcons-Regular.woff) format('woff'),
+       url(../fonts/MaterialIcons-Regular.ttf) format('truetype');
+}
+.material-icons {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;  /* Preferred icon size */
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
 a,
 a:link,
 button {
@@ -344,6 +368,10 @@ header h1 {
   margin-top: 0;
   margin-bottom: 10px;
 }
+header ul,
+header .material-icons {
+  font-size: 16px;
+}
 header ul {
   padding: 10px 10px 10px 0;
   text-align: right;
@@ -361,6 +389,9 @@ header img {
 header img.pull-left {
   margin-right: 20px;
 }
+header .material-icons {
+  vertical-align: middle;
+}
 header .alert {
   position: fixed;
   left: 50%;
@@ -377,6 +408,18 @@ header .dismiss-alert {
   left: 50%;
   top: 30px;
   margin-left: 155px;
+}
+.theme-dark header a.dismiss-alert,
+.theme-dark header a.dismiss-alert:link,
+.theme-dark header a.dismiss-alert:visited,
+.theme-dark header a.dismiss-alert:active {
+  color: #fff;
+}
+.theme-light header a.dismiss-alert,
+.theme-light header a.dismiss-alert:link,
+.theme-light header a.dismiss-alert:visited,
+.theme-light header a.dismiss-alert:active {
+  color: #2F7130;
 }
 header a:hover, header a:focus {
   text-decoration: none;

@@ -42,7 +42,8 @@ module.exports = class FlashMessages {
     link.className = 'dismiss-alert';
     link.href = '#';
     const icon = document.createElement('i');
-    icon.className = 'fa fa-times';
+    icon.className = 'material-icons';
+    icon.textContent = 'close';
     link.appendChild(icon);
     link.addEventListener('click', (event) => {
       event.preventDefault();
