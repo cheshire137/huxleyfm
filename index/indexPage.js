@@ -195,15 +195,16 @@ module.exports = class IndexPage extends Eventful {
     this.subscribe(station).then(() => {
       this.updateTrackInfo(station);
       this.socket.on('track', this.onTrack);
-      this.audioTag.src = Config.soma_station_url + station;
-      this.audioTag.setAttribute('data-station', station);
-      this.audioTag.removeAttribute('data-paused');
-      this.playButton.classList.add('hidden');
-      this.pauseButton.classList.remove('hidden');
-      this.pauseButton.disabled = false;
-      this.stationMenu.focus();
-      this.emit('play', station, stationUrl);
     }).catch(this.subscribeError.bind(this));
+    const stationUrl = Config.soma_station_url + station;
+    this.audioTag.src = stationUrl;
+    this.audioTag.setAttribute('data-station', station);
+    this.audioTag.removeAttribute('data-paused');
+    this.playButton.classList.add('hidden');
+    this.pauseButton.classList.remove('hidden');
+    this.pauseButton.disabled = false;
+    this.stationMenu.focus();
+    this.emit('play', station, stationUrl);
   }
 
   resetTrackInfoIfNecessary(station) {
