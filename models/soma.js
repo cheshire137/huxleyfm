@@ -11,6 +11,9 @@ module.exports = class Soma extends Fetcher {
           const station = rawStations[i];
           stations.push({ id: station.id, title: station.title });
         }
+        stations.sort((a, b) => {
+          return a.title.toLowerCase().localeCompare(b.title.toLowerCase());
+        });
         resolve(stations);
       }).catch(reject);
     });
