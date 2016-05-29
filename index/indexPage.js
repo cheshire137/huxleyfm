@@ -221,11 +221,12 @@ module.exports = class IndexPage extends Eventful {
     }
     return new Promise((resolve, reject) => {
       if (!this.socket) {
-        console.debug('socket not yet defined');
+        console.debug('opening socket to ' + Config.scrobbler_api_url);
         this.socket = require('socket.io-client')(Config.scrobbler_api_url);
       }
-      console.debug('listening for socket connect');
+      console.debug('listening for socket connect...');
       this.socket.on('connect', () => {
+        console.debug('socket connected');
         this.emitSubscribe(station).then(resolve).catch(reject);
       });
     });
