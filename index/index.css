@@ -73,8 +73,9 @@ body.player #station-menu .material-icons {
   vertical-align: middle;
 }
 body.player #station-menu.expanded {
-  height: 248px;
+  height: 308px;
   overflow: auto;
+  position: absolute;
 }
 body.player.theme-dark #station-menu {
   border-color: #133C46;

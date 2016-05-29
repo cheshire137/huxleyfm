@@ -378,16 +378,25 @@ header {
 }
 header ul {
   font-size: 22px;
+  display: table;
+  width: 100%;
+  list-style: none;
+  padding: 0;
 }
 header ul .material-icons {
   font-size: 32px;
 }
-header ul {
+header ul li {
+  display: table-cell;
+  vertical-align: middle;
+  width: 50%;
   padding: 10px;
 }
-header ul li.active,
-header ul li a {
-  padding: 10px;
+header ul li#return-link-wrapper {
+  text-align: left;
+}
+header ul li#chromecast-wrapper {
+  text-align: right;
 }
 header ul li#return-link-wrapper .material-icons {
   margin-right: -8px;
@@ -447,4 +456,7 @@ header a:hover, header a:focus {
 .theme-dark header a:hover,
 .theme-dark header a:focus {
   color: #F79534;
+}
+main#page-container {
+  padding: 10px;
 }

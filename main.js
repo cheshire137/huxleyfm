@@ -30,7 +30,7 @@ function createMainWindow() {
 		win.webContents.openDevTools();
 	} else {
 		windowProperties.width = 400;
-		windowProperties.height = 390;
+		windowProperties.height = 370;
 		win = new BrowserWindow(windowProperties);
 	}
 	win.loadURL(`file://${__dirname}/page/page.html`);
