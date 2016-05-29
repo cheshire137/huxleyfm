@@ -53,7 +53,6 @@ module.exports = class IndexPage extends Eventful {
     const stationLinks = this.stationMenu.querySelectorAll('a');
     Array.prototype.forEach.call(stationLinks, (link) => {
       link.addEventListener('click', this.onStationLinkClick.bind(this));
-      link.addEventListener('keypress', this.onStationKeypress.bind(this));
     });
     this.playButton.addEventListener('click', this.play.bind(this));
     this.pauseButton.addEventListener('click', this.pause.bind(this));
@@ -134,23 +133,6 @@ module.exports = class IndexPage extends Eventful {
   getStationFromLink(link) {
     const index = link.href.indexOf('#');
     return link.href.slice(index + 1);
-  }
-
-  onStationKeypress(event) {
-    const keyCode = event.keyCode;
-    if (keyCode !== 13) { // Enter
-      return;
-    }
-    if (this.getCurrentStation() === '') {
-      return;
-    }
-    if (!this.playButton.disabled &&
-        !this.playButton.classList.contains('hidden')) {
-      this.play();
-    } else if (!this.pauseButton.disabled &&
-               !this.pauseButton.classList.contains('hidden')) {
-      this.pause();
-    }
   }
 
   restorePlayingInfo() {
@@ -321,7 +303,6 @@ module.exports = class IndexPage extends Eventful {
     link.appendChild(this.getStationImage(station));
     link.appendChild(document.createTextNode(station.title));
     link.addEventListener('click', this.onStationLinkClick.bind(this));
-    link.addEventListener('keypress', this.onStationKeypress.bind(this));
     return link;
   }
 

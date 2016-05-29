@@ -366,10 +366,6 @@ ul.list-inline li {
   background-color: #9d171c;
   border-color: #861418;
 }
-main {
-  padding: 0 10px 20px 10px;
-  position: relative;
-}
 header {
   border-bottom-width: 1px;
   border-bottom-style: solid;
@@ -458,5 +454,6 @@ header a:hover, header a:focus {
   color: #F79534;
 }
 main#page-container {
-  padding: 10px;
+  padding: 10px 10px 20px 10px;
+  position: relative;
 }
