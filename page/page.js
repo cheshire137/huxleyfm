@@ -5,7 +5,9 @@ const LinkHandler = require('../models/linkHandler');
 const IndexPage = require('../index/indexPage');
 const SettingsPage = require('../settings/settingsPage');
 const FlashMessages = require('../models/flashMessages');
-const chromecast = require('chromecast');
+// const Client = require('castv2-client').Client;
+// const DefaultMediaReceiver = require('castv2-client').DefaultMediaReceiver;
+// const mdns = require('mdns');
 
 class PageLoader {
   constructor() {
@@ -110,16 +112,7 @@ class PageLoader {
 
   onChromecast() {
     console.log('onChromecast');
-    chromecast((receivers) => {
-      console.log('chromecast receivers', receivers);
-      new Promise((resolve, reject) => {
-        // TODO: let user choose receiver
-        const chosenReceiver = receivers[0];
-        this.chromecastIcon.textContent = 'cast_connected';
-        console.log('resolving with', chosenReceiver);
-        resolve(chosenReceiver);
-      });
-    });
+
   }
 
   onSettingsChanged(settings) {

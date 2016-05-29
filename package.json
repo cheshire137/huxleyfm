@@ -53,10 +53,11 @@
     "desktop"
   ],
   "dependencies": {
+    "castv2-client": "^1.1.1",
     "crypto": "0.0.3",
-    "electron-chromecast": "^1.0.4",
     "electron-debug": "^1.0.0",
     "electron-json-storage": "^2.0.0",
+    "mdns": "^2.3.3",
     "node-fetch": "^1.5.2",
     "socket.io-client": "^1.4.6"
   },

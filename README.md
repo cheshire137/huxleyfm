@@ -49,6 +49,8 @@ After upgrading node:
     cd node_modules/mdns
     node-gyp BUILDTYPE=Release rebuild
 
+If you hit errors installing `castv2-client`, try running `npm install castv2-client --no-optional`.
+
 ### How to Build
 
     npm run build
