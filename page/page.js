@@ -8,6 +8,7 @@ const FlashMessages = require('../models/flashMessages');
 // const Client = require('castv2-client').Client;
 // const DefaultMediaReceiver = require('castv2-client').DefaultMediaReceiver;
 // const mdns = require('mdns');
+const AppMenu = require('../models/appMenu');
 
 class PageLoader {
   constructor() {
@@ -17,6 +18,7 @@ class PageLoader {
     this.flashMessages = new FlashMessages(this.statusArea);
     Settings.load().then(this.onInitialSettingsLoad.bind(this));
     this.listenForCast();
+    new AppMenu();
   }
 
   findElements() {
