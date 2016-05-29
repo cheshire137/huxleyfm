@@ -56,6 +56,9 @@ body.player.theme-dark #play:disabled,
 body.player.theme-dark #pause:disabled {
   border-color: #444;
 }
+body.player #station-query {
+  margin-bottom: 5px;
+}
 body.player #station-menu {
   width: 100%;
   border-style: solid;
@@ -68,14 +71,23 @@ body.player #station-menu {
   height: 60px;
   z-index: 2;
   overflow: hidden;
+  margin-bottom: 20px;
 }
 body.player #station-menu .material-icons {
   vertical-align: middle;
 }
 body.player #station-menu.expanded {
-  height: 308px;
+  height: auto;
   overflow: auto;
   position: absolute;
+  left: 10px;
+  right: 10px;
+  top: 103px;
+  bottom: 0;
+  width: auto;
+}
+body.player #station-query.hidden + #station-menu.expanded {
+  top: 55px;
 }
 body.player.theme-dark #station-menu {
   border-color: #133C46;
@@ -129,4 +141,10 @@ body.player.theme-light #station-menu.disabled li a {
 }
 body.player.theme-dark #station-menu.disabled li a {
   color: #999;
+}
+body.player main#page-container {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }

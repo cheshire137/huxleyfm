@@ -1,19 +1,16 @@
-<div class="form-group">
-  <label class="sr-only" for="station">Station:</label>
-  <ol id="station-menu" class="disabled">
-    <li class="selected" data-index="0">
-      <a href="#">Choose a station</a>
-    </li>
-  </ol>
-</div>
-<div class="form-group">
-  <button id="play" type="button" disabled="disabled">
-    <i class="material-icons">play_arrow</i>
-  </button>
-  <button id="pause" type="button" class="hidden">
-    <i class="material-icons">pause</i>
-  </button>
-</div>
+<label class="sr-only" for="station">Station:</label>
+<div id="station-query" class="hidden"></div>
+<ol id="station-menu" class="disabled">
+  <li class="selected" data-index="0">
+    <a href="#">Choose a SomaFM station</a>
+  </li>
+</ol>
+<button id="play" type="button" disabled="disabled">
+  <i class="material-icons">play_arrow</i>
+</button>
+<button id="pause" type="button" class="hidden">
+  <i class="material-icons">pause</i>
+</button>
 <div id="currently-playing" class="hidden">
   <div id="track-info">
     <span id="title"></span><span id="artist"></span>

@@ -10,24 +10,28 @@
     <link rel="stylesheet" href="../settings/settings.css" media="screen" type="text/css">
   </head>
   <body>
-    <p class="hidden alert" id="status-message"></p>
-    <header class="hidden">
-      <ul>
-        <li id="return-link-wrapper" class="hidden">
-          <a href="#" data-page-path="index/index.html" data-page-id="player" title="Back to player">
-            <i class="material-icons">keyboard_arrow_left</i>
-            Back
-          </a>
-        </li>
-        <li id="chromecast-wrapper" class="hidden">
-          <a href="#" title="Chromecast">
-            <i class="material-icons">cast</i>
-          </a>
-        </li>
-      </ul>
-    </header>
-    <main id="page-container">
-    </main>
+    <div class="flexbox-parent">
+      <p class="hidden alert" id="status-message"></p>
+      <header>
+        <ul>
+          <li id="return-link-wrapper" class="hidden">
+            <a href="#" data-page-path="index/index.html" data-page-id="player" title="Back to player">
+              <i class="material-icons">keyboard_arrow_left</i>
+              Back
+            </a>
+          </li>
+          <li id="chromecast-wrapper" class="hidden">
+            <a href="#" title="Chromecast">
+              <i class="material-icons">cast</i>
+            </a>
+          </li>
+        </ul>
+      </header>
+      <div class="fill-area flexbox-item-grow">
+        <main id="page-container" class="fill-area-content flexbox-item-grow">
+        </main>
+      </div>
+    </div>
     <audio autoplay="true" data-station=""></audio>
     <script src="page.js"></script>
   </body>

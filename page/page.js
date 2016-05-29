@@ -136,33 +136,20 @@ class PageLoader {
     this.applyTheme(settings.theme);
   }
 
-  anyHeaderItemsShown() {
-    return !this.chromecastWrapper.classList.contains('hidden') ||
-           !this.returnLinkWrapper.classList.contains('hidden');
-  }
-
   hideBackLink() {
     this.returnLinkWrapper.classList.add('hidden');
-    if (!this.anyHeaderItemsShown()) {
-      this.returnLinkWrapper.closest('header').classList.add('hidden');
-    }
   }
 
   showBackLink() {
     this.returnLinkWrapper.classList.remove('hidden');
-    this.returnLinkWrapper.closest('header').classList.remove('hidden');
   }
 
   hideChromecastLink() {
     this.chromecastWrapper.classList.add('hidden');
-    if (!this.anyHeaderItemsShown()) {
-      this.chromecastWrapper.closest('header').classList.add('hidden');
-    }
   }
 
   showChromecastLink() {
     this.chromecastWrapper.classList.remove('hidden');
-    this.chromecastWrapper.closest('header').classList.remove('hidden');
   }
 }
 

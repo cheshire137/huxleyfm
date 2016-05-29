@@ -37,6 +37,7 @@ module.exports = class IndexPage extends Eventful {
     this.artistEl = document.getElementById('artist');
     this.albumEl = document.getElementById('album');
     this.durationEl = document.getElementById('duration');
+    this.stationQueryEl = document.getElementById('station-query');
   }
 
   listenForMediaKeys() {
@@ -451,32 +452,49 @@ module.exports = class IndexPage extends Eventful {
     this.emit('error', 'Failed to scrobble track.');
   }
 
+  updateStationQuery(query) {
+    this.stationQuery = query;
+    this.stationQueryEl.textContent = this.stationQuery;
+    if (query.length > 0) {
+      this.stationQueryEl.classList.remove('hidden');
+    } else {
+      this.stationQueryEl.classList.add('hidden');
+    }
+  }
+
   onKeydown(event) {
     const keyCode = event.keyCode || event.charCode;
-    if (keyCode !== 8 && keyCode !== 13 && (keyCode < 65  || keyCode > 90)) {
+    if (keyCode !== 8 && keyCode !== 13 && keyCode !== 27 &&
+        (keyCode < 65  || keyCode > 90)) {
       return;
     }
     if (!this.stationMenu.classList.contains('expanded')) {
-      this.stationQuery = '';
+      this.updateStationQuery('');
       this.filterStations();
       this.expandStationMenu();
     }
-    if (keyCode === 8) { // Backspace
-      this.stationQuery =
-          this.stationQuery.slice(0, this.stationQuery.length - 1);
+    if (keyCode === 27) { // Esc
+      this.updateStationQuery('');
+      this.filterStations();
+      this.collapseStationMenu();
+      this.stationMenu.querySelector('li:first-child').classList.
+           remove('hidden');
+    } else if (keyCode === 8) { // Backspace
+      this.updateStationQuery(this.stationQuery.
+                                   slice(0, this.stationQuery.length - 1));
       this.filterStations();
     } else if (keyCode === 13) { // Enter
       const listItems = Array.from(this.stationMenu.querySelectorAll('li'));
       const visible = listItems.filter(li => !li.classList.contains('hidden'));
       if (visible.length > 0) {
         const link = visible[0].querySelector('a');
-        this.handleStationLinkClick(link);
-        this.stationQuery = '';
+        this.updateStationQuery('');
         this.filterStations();
+        this.handleStationLinkClick(link);
       }
     } else if (keyCode >= 65 && keyCode <= 90) {
       const char = String.fromCharCode(keyCode).toLowerCase();
-      this.stationQuery += char;
+      this.updateStationQuery(this.stationQuery + char);
       this.filterStations();
     }
   }
