@@ -18,7 +18,7 @@ class PageLoader {
     this.flashMessages = new FlashMessages(this.statusArea);
     Settings.load().then(this.onInitialSettingsLoad.bind(this));
     this.listenForCast();
-    new AppMenu();
+    this.setupAppMenu();
   }
 
   findElements() {
@@ -35,6 +35,13 @@ class PageLoader {
 
   listenForCast() {
     this.chromecastLink.addEventListener('click', this.onChromecast.bind(this));
+  }
+
+  setupAppMenu() {
+    const menu = new AppMenu();
+    menu.addListener('about-app', () => {
+      this.router.loadPage('about/about.html', 'about');
+    });
   }
 
   setupRouter() {
@@ -114,7 +121,6 @@ class PageLoader {
 
   onChromecast() {
     console.log('onChromecast');
-
   }
 
   onSettingsChanged(settings) {
