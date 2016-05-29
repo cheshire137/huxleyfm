@@ -236,12 +236,12 @@ module.exports = class IndexPage extends Eventful {
   }
 
   unsubscribe(station) {
+    console.debug('unsubscribing from ' + station);
     return new Promise((resolve, reject) => {
       if (!this.socket || !station) {
         resolve();
         return;
       }
-      console.debug('unsubscribing from ' + station);
       this.socket.emit('unsubscribe', station, (response) => {
         if (response.unsubscribed) {
           this.socket.removeListener('track', this.onTrack);
@@ -258,8 +258,8 @@ module.exports = class IndexPage extends Eventful {
   }
 
   emitSubscribe(station) {
+    console.debug('subscribing to ' + station);
     return new Promise((resolve, reject) => {
-      console.debug('subscribing to ' + station);
       this.socket.emit('subscribe', station, (response) => {
         if (response.subscribed) {
           resolve(station);
@@ -299,8 +299,10 @@ module.exports = class IndexPage extends Eventful {
   getStations() {
     return new Promise((resolve, reject) => {
       if (this.settings.stations && this.settings.stations.length > 0) {
+        console.debug('loading cached list of stations');
         resolve(this.settings.stations);
       } else {
+        console.debug('fetching stations list from SomaFM');
         const soma = new Soma();
         soma.getStations().then(this.saveStations.bind(this)).
                            then(resolve).catch(reject);
@@ -309,12 +311,14 @@ module.exports = class IndexPage extends Eventful {
   }
 
   updateTrackInfo(station) {
+    console.debug('getting track info for station ' + station);
     const soma = new Soma();
     soma.getStationInfo(station).then(this.showTrackInfo.bind(this)).
                                  catch(this.getStationInfoError.bind(this));
   }
 
   saveStations(stations) {
+    console.debug('saving stations list');
     this.settings.stations = stations;
     Settings.save(this.settings).then(() => {
       this.emit('settings:change', this.settings);
