@@ -98,17 +98,17 @@ class PageLoader {
     this.listenForPageMessages(page);
     page.addListener('play', this.onPlay.bind(this));
     page.addListener('pause', this.onPause.bind(this));
-    this.hideBackLink();
+    this.returnLinkWrapper.classList.add('hidden');
   }
 
   onSettingsPageLoaded() {
     const page = new SettingsPage(this.settings);
     this.listenForPageMessages(page);
-    this.showBackLink();
+    this.returnLinkWrapper.classList.remove('hidden');
   }
 
   onAboutPageLoaded() {
-    this.showBackLink();
+    this.returnLinkWrapper.classList.remove('hidden');
   }
 
   listenForPageMessages(page) {
@@ -119,37 +119,28 @@ class PageLoader {
 
   onPlay(station, url) {
     this.station = station;
-    this.showChromecastLink();
+    if (process.env.ENABLE_CHROMECAST) {
+      this.chromecastWrapper.classList.remove('hidden');
+    }
   }
 
   onPause(station) {
     this.station = null;
-    this.hideChromecastLink();
+    if (process.env.ENABLE_CHROMECAST) {
+      this.chromecastWrapper.classList.add('hidden');
+    }
   }
 
   onChromecast() {
+    if (!process.env.ENABLE_CHROMECAST) {
+      return;
+    }
     console.log('onChromecast');
   }
 
   onSettingsChanged(settings) {
     this.settings = settings;
     this.applyTheme(settings.theme);
-  }
-
-  hideBackLink() {
-    this.returnLinkWrapper.classList.add('hidden');
-  }
-
-  showBackLink() {
-    this.returnLinkWrapper.classList.remove('hidden');
-  }
-
-  hideChromecastLink() {
-    this.chromecastWrapper.classList.add('hidden');
-  }
-
-  showChromecastLink() {
-    this.chromecastWrapper.classList.remove('hidden');
   }
 }
 
