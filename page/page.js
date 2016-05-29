@@ -24,8 +24,10 @@ class PageLoader {
   findElements() {
     this.statusArea = document.getElementById('status-message');
     this.audioTag = document.querySelector('audio');
-    this.chromecastLink = document.getElementById('chromecast-link');
+    this.chromecastWrapper = document.getElementById('chromecast-wrapper');
+    this.chromecastLink = this.chromecastWrapper.querySelector('a');
     this.chromecastIcon = this.chromecastLink.querySelector('.material-icons');
+    this.returnLinkWrapper = document.getElementById('return-link-wrapper');
   }
 
   onInitialSettingsLoad(settings) {
@@ -96,14 +98,17 @@ class PageLoader {
     this.listenForPageMessages(page);
     page.addListener('play', this.onPlay.bind(this));
     page.addListener('pause', this.onPause.bind(this));
+    this.returnLinkWrapper.classList.add('hidden');
   }
 
   onSettingsPageLoaded() {
     const page = new SettingsPage(this.settings);
     this.listenForPageMessages(page);
+    this.returnLinkWrapper.classList.remove('hidden');
   }
 
   onAboutPageLoaded() {
+    this.returnLinkWrapper.classList.remove('hidden');
   }
 
   listenForPageMessages(page) {
@@ -114,12 +119,12 @@ class PageLoader {
 
   onPlay(station, url) {
     this.station = station;
-    this.chromecastLink.classList.remove('hidden');
+    this.chromecastWrapper.classList.remove('hidden');
   }
 
   onPause(station) {
     this.station = null;
-    this.chromecastLink.classList.add('hidden');
+    this.chromecastWrapper.classList.add('hidden');
   }
 
   onChromecast() {

@@ -253,7 +253,8 @@ fieldset legend {
 .form-group + .form-group {
   margin-top: 10px;
 }
-.hidden {
+.hidden,
+ul.list-inline li.hidden {
   display: none;
 }
 hr {
@@ -360,49 +361,36 @@ main {
   position: relative;
 }
 header {
-  display: table;
-  width: 100%;
   border-bottom-width: 1px;
   border-bottom-style: solid;
   margin-bottom: 22px;
   position: relative;
 }
-header h1,
 header ul {
-  display: table-cell;
-  vertical-align: middle;
-  margin: 0;
+  font-size: 22px;
 }
-header h1 {
-  padding: 10px;
-  text-align: left;
+header ul .material-icons {
   font-size: 32px;
-  font-weight: 300;
-  margin-top: 0;
-  margin-bottom: 10px;
-}
-header h1 a,
-header h1 a:link,
-header h1 a:visited,
-header h1 a:active,
-header h1 a:hover,
-header h1 a:focus {
-  text-decoration: none;
-}
-header ul,
-header .material-icons {
-  font-size: 16px;
 }
 header ul {
-  padding: 10px 10px 10px 0;
-  text-align: right;
+  padding: 10px;
 }
 header ul li.active,
 header ul li a {
   padding: 10px;
 }
-header ul li a {
+header ul li#return-link-wrapper .material-icons {
+  margin-right: -8px;
+  margin-top: -2px;
+}
+header ul li a,
+header ul li a:link,
+header ul li a:visited,
+header ul li a:active,
+header ul li a:hover,
+header ul li a:focus {
   display: block;
+  text-decoration: none;
 }
 header img {
   display: block;

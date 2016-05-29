@@ -11,15 +11,16 @@
   </head>
   <body>
     <header>
-      <h1 id="page-title">
-        <a href="#" data-page-path="index/index.html" data-page-id="player" title="Station select">
-          HuxleyFM
-        </a>
-      </h1>
       <p class="hidden alert" id="status-message"></p>
       <ul class="list-inline">
-        <li>
-          <a href="#" title="Chromecast" id="chromecast-link" class="hidden">
+        <li id="return-link-wrapper" class="hidden">
+          <a href="#" data-page-path="index/index.html" data-page-id="player" title="Back to player">
+            <i class="material-icons">keyboard_arrow_left</i>
+            Back
+          </a>
+        </li>
+        <li id="chromecast-wrapper" class="hidden">
+          <a href="#" title="Chromecast">
             <i class="material-icons">cast</i>
           </a>
         </li>
