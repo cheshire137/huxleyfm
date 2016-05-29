@@ -273,23 +273,35 @@ module.exports = class IndexPage extends Eventful {
   insertStationLinks(stations) {
     let index = 1;
     stations.forEach((station) => {
-      const link = document.createElement('a');
-      link.href = '#' + station.id;
-      const img = document.createElement('img');
-      img.src = '../images/' + station.id + '.png';
-      img.alt = station.title + ' image';
-      link.appendChild(img);
-      link.appendChild(document.createTextNode(station.title));
-      const listItem = document.createElement('li');
-      listItem.className = 'hidden';
-      listItem.setAttribute('data-index', index);
-      listItem.appendChild(link);
-      this.stationMenu.appendChild(listItem);
-      link.addEventListener('click', this.onStationLinkClick.bind(this));
-      link.addEventListener('keypress', this.onStationKeypress.bind(this));
+      this.stationMenu.appendChild(this.getStationListItem(index, station));
       index++;
     });
     this.stationMenu.classList.remove('disabled');
+  }
+
+  getStationListItem(index, station) {
+    const listItem = document.createElement('li');
+    listItem.className = 'hidden';
+    listItem.setAttribute('data-index', index);
+    listItem.appendChild(this.getStationLink(station));
+    return listItem;
+  }
+
+  getStationLink(station) {
+    const link = document.createElement('a');
+    link.href = '#' + station.id;
+    link.appendChild(this.getStationImage(station));
+    link.appendChild(document.createTextNode(station.title));
+    link.addEventListener('click', this.onStationLinkClick.bind(this));
+    link.addEventListener('keypress', this.onStationKeypress.bind(this));
+    return link;
+  }
+
+  getStationImage(station) {
+    const img = document.createElement('img');
+    img.src = '../images/' + station.id + '.png';
+    img.alt = station.title + ' image';
+    return img;
   }
 
   loadDefaultStations() {
