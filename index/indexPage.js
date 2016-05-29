@@ -5,6 +5,7 @@ const Eventful = require('../models/eventful');
 const Config = require('../config.json');
 const Lastfm = require('../models/lastfm');
 const path = require('path');
+const {ipcRenderer} = require('electron');
 
 const __bind = function(fn, me) {
   return function() {
@@ -24,6 +25,7 @@ module.exports = class IndexPage extends Eventful {
                        then(this.restorePlayingInfo.bind(this)).
                        catch(this.loadDefaultStations.bind(this));
     this.stationMenu.focus();
+    this.listenForMediaKeys();
   }
 
   findElements() {
@@ -35,6 +37,16 @@ module.exports = class IndexPage extends Eventful {
     this.artistEl = document.getElementById('artist');
     this.albumEl = document.getElementById('album');
     this.durationEl = document.getElementById('duration');
+  }
+
+  listenForMediaKeys() {
+    ipcRenderer.on('media-key', (event, key) => {
+      if (key === 'MediaPlayPause') {
+        this.togglePlaying();
+      } else if (key === 'MediaStop') {
+        this.pause();
+      }
+    });
   }
 
   listenForMusicChanges() {
@@ -181,9 +193,24 @@ module.exports = class IndexPage extends Eventful {
     this.audioTag.setAttribute('data-paused', 'true');
     this.pauseButton.classList.add('hidden');
     this.playButton.classList.remove('hidden');
-    this.playButton.disabled = false;
+    const currentStation = this.getCurrentStation();
+    if (currentStation.length > 0) {
+      this.playButton.disabled = false;
+    }
     this.stationMenu.focus();
     this.emit('pause', station);
+  }
+
+  togglePlaying() {
+    const station = this.getCurrentStation();
+    if (station.length < 1) {
+      return;
+    }
+    if (this.audioTag.getAttribute('data-paused') === 'true') {
+      this.play(station);
+    } else {
+      this.pause();
+    }
   }
 
   play(station) {

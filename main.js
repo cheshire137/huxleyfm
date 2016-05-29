@@ -2,6 +2,7 @@
 const electron = require('electron');
 const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
+const globalShortcut = electron.globalShortcut;
 
 // adds debug features like hotkeys for triggering dev tools and reload
 require('electron-debug')();
@@ -26,7 +27,7 @@ function createMainWindow() {
 		windowProperties.width = 800;
 		windowProperties.height = 600;
 		win = new BrowserWindow(windowProperties);
-		win.webContents.openDevTools()
+		win.webContents.openDevTools();
 	} else {
 		windowProperties.width = 400;
 		windowProperties.height = 390;
@@ -39,6 +40,7 @@ function createMainWindow() {
 
 app.on('window-all-closed', () => {
 	if (process.platform !== 'darwin') {
+		globalShortcut.unregisterAll();
 		app.quit();
 	}
 });
@@ -51,4 +53,14 @@ app.on('activate', () => {
 
 app.on('ready', () => {
 	mainWindow = createMainWindow();
+	['MediaPlayPause', 'MediaStop'].forEach(registerMediaKey);
 });
+
+function registerMediaKey(key) {
+	const success = globalShortcut.register(key, () => {
+		mainWindow.webContents.send('media-key', key);
+	});
+	if (!success) {
+		process.stderr.write('failed to bind key ' + key + '\n');
+	}
+}
