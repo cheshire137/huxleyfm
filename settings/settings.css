@@ -17,11 +17,12 @@ body.settings .station-count:after {
   content: ")";
 }
 body.settings .refresh-stations {
-  float: right;
   text-transform: none;
   text-decoration: none;
   display: inline-block;
+  vertical-align: middle;
   margin-left: 10px;
+  line-height: 1;
 }
 body.settings .refresh-stations .material-icons {
   font-size: 16px;
@@ -37,4 +38,13 @@ body.settings #lastfm-is-authenticated p.help-block {
 }
 body.settings .help-block + button {
   margin-top: 10px;
+}
+body.settings .spinner {
+  display: inline-block;
+  margin-left: 10px;
+  font-size: 15px;
+  vertical-align: middle;
+}
+body.settings .spinner.hidden {
+  display: none;
 }

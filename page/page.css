@@ -487,3 +487,16 @@ html, body {
   display: table;
   clear: both;
 }
+@keyframes spin {
+  from { transform:rotate(0deg); }
+  to { transform:rotate(360deg); }
+}
+.spinner {
+  animation: spin 3s infinite .25s linear;
+  position: relative;
+  transition: all .8s ease;
+  color: #36C6AA;
+}
+.spinner.material-icons {
+  font-size: inherit;
+}

@@ -43,6 +43,7 @@ class SettingsPage extends Eventful {
     this.stationCount = document.querySelector('.station-count');
     this.stationsList = document.querySelector('.stations-list');
     this.refreshLink = document.querySelector('.refresh-stations');
+    this.spinner = document.querySelector('.spinner');
   }
 
   enableLastfmIfConfigSet() {
@@ -192,7 +193,9 @@ class SettingsPage extends Eventful {
   }
 
   refreshStations() {
+    this.stationsList.style.height = this.stationsList.offsetHeight + 'px';
     this.stationsList.textContent = '';
+    this.spinner.classList.remove('hidden');
     const soma = new Soma();
     soma.getStations().then(this.saveStations.bind(this)).
                        catch(this.getStationsError.bind(this));
@@ -254,6 +257,8 @@ class SettingsPage extends Eventful {
     Settings.save(this.settings).then(() => {
       this.showCachedStations(stations);
       this.emit('settings:change', this.settings);
+      this.spinner.classList.add('hidden');
+      this.stationsList.style.height = 'auto';
     }).catch(this.onSettingsSaveError.bind(this));
   }
 
@@ -267,11 +272,15 @@ class SettingsPage extends Eventful {
   }
 
   getStationsError(error) {
+    this.spinner.classList.add('hidden');
+    this.stationsList.style.height = 'auto';
     console.error('failed to get Soma stations', error);
     this.emit('error', 'Failed to get list of Soma stations.');
   }
 
   onSettingsSaveError(error) {
+    this.spinner.classList.add('hidden');
+    this.stationsList.style.height = 'auto';
     console.error('failed to save settings', error);
     this.emit('error', 'Failed to save settings.');
   }
