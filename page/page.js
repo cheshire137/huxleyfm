@@ -5,10 +5,10 @@ const IndexPage = require('../index/indexPage');
 const SettingsPage = require('../settings/settingsPage');
 const AboutPage = require('../about/aboutPage');
 const FlashMessages = require('../models/flashMessages');
-// const Client = require('castv2-client').Client;
-// const DefaultMediaReceiver = require('castv2-client').DefaultMediaReceiver;
-// const mdns = require('mdns');
+const Client = require('castv2-client').Client;
+const DefaultMediaReceiver = require('castv2-client').DefaultMediaReceiver;
 const AppMenu = require('../models/appMenu');
+const Scanner = require('../models/scanner');
 
 const __bind = function(fn, me) {
   return function() {
@@ -173,6 +173,17 @@ class PageLoader {
       return;
     }
     console.log('onChromecast');
+    const scanner = new Scanner();
+    scanner.findChromecasts().then(this.onChromecastsFound.bind(this)).
+                              catch(this.onChromecastFindError.bind(this));
+  }
+
+  onChromecastsFound(chromecasts) {
+    console.log('chromecasts', chromecasts);
+  }
+
+  onChromecastFindError(error) {
+    console.error('failed to find Chromecasts', error);
   }
 
   onSettingsChanged(settings) {
