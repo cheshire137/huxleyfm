@@ -240,7 +240,7 @@ module.exports = class IndexPage extends Eventful {
     this.playButton.classList.add('hidden');
     this.pauseButton.classList.remove('hidden');
     this.pauseButton.disabled = false;
-    this.emit('play', station, stationUrl);
+    this.emit('play', stationUrl);
     this.updateTrackInfo(station);
   }
 

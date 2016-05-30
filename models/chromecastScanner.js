@@ -7,7 +7,7 @@ const __bind = function(fn, me) {
   };
 };
 
-module.exports = class Scanner extends Eventful {
+module.exports = class ChromecastScanner extends Eventful {
   constructor(opts) {
     super();
     this.options = {

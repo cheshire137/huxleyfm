@@ -8,7 +8,7 @@ const FlashMessages = require('../models/flashMessages');
 const Client = require('castv2-client').Client;
 const DefaultMediaReceiver = require('castv2-client').DefaultMediaReceiver;
 const AppMenu = require('../models/appMenu');
-const Scanner = require('../models/scanner');
+const ChromecastScanner = require('../models/chromecastScanner');
 
 const __bind = function(fn, me) {
   return function() {
@@ -181,7 +181,7 @@ class PageLoader {
     this.chromecastLink.classList.add('disabled');
     this.chromecastIcon.textContent = 'refresh';
     this.chromecastIcon.classList.add('spin');
-    const scanner = new Scanner();
+    const scanner = new ChromecastScanner();
     scanner.addListener('chromecast', this.onChromecastFound.bind(this));
     scanner.addListener('error', this.onChromecastFindError.bind(this));
     scanner.addListener('finished', this.onChromecastScanComplete.bind(this));
