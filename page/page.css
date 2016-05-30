@@ -469,14 +469,10 @@ header a:hover, header a:focus {
 .theme-dark header a:focus {
   color: #F79534;
 }
-.theme-dark header #settings-wrapper a,
-.theme-dark header #settings-wrapper a:link,
-.theme-dark header #settings-wrapper a:visited,
-.theme-dark header #settings-wrapper a:active,
-.theme-dark header #about-wrapper a,
-.theme-dark header #about-wrapper a:link,
-.theme-dark header #about-wrapper a:visited,
-.theme-dark header #about-wrapper a:active {
+.theme-dark header .right-links a,
+.theme-dark header .right-links a:link,
+.theme-dark header .right-links a:visited,
+.theme-dark header .right-links a:active {
   color: #777;
 }
 main#page-container {

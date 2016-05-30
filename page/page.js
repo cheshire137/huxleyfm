@@ -172,7 +172,6 @@ class PageLoader {
     if (!process.env.ENABLE_CHROMECAST) {
       return;
     }
-    console.log('onChromecast');
     const scanner = new Scanner();
     scanner.findChromecasts().then(this.onChromecastsFound.bind(this)).
                               catch(this.onChromecastFindError.bind(this));
