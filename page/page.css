@@ -500,3 +500,33 @@ html, body {
 .spinner.material-icons {
   font-size: inherit;
 }
+a[data-tooltip] {
+  position: relative;
+}
+a[data-tooltip]:hover:before {
+  border: solid;
+  border-color: #333 transparent;
+  border-width: 6px 6px 0 6px;
+  content: "";
+  left: 120px;
+  top: 5px;
+  position: absolute;
+  z-index: 99;
+}
+a[data-tooltip]:hover:after {
+  background: #333;
+  background: rgba(0,0,0,.8);
+  border-radius: 5px;
+  left: 110px;
+  bottom: calc(100% - 5px);
+  color: #fff;
+  content: attr(data-tooltip);
+  padding: 5px 15px;
+  position: absolute;
+  z-index: 98;
+  text-align: center;
+  width: 220px;
+  font-size: 12px;
+  line-height: 1.2;
+  text-shadow: none;
+}

@@ -310,7 +310,7 @@ module.exports = class IndexPage extends Eventful {
     link.appendChild(this.getStationImage(station));
     link.appendChild(document.createTextNode(station.title));
     link.addEventListener('click', this.onStationLinkClick.bind(this));
-    link.setAttribute('title', this.getStationDescription(station.id));
+    link.setAttribute('data-tooltip', this.getStationDescription(station.id));
     return link;
   }
 
