@@ -7,12 +7,8 @@ body.settings.theme-dark .icon-light {
 body.settings.theme-dark .icon-dark {
   display: block;
 }
-body.settings.theme-dark .help-block,
-body.settings.theme-dark .refresh-stations:before {
+body.settings.theme-dark .help-block {
   color: #999;
-}
-body.settings.theme-light .refresh-stations:before {
-  color: #373737;
 }
 body.settings .station-count:before {
   content: "(";
@@ -24,9 +20,11 @@ body.settings .refresh-stations {
   float: right;
   text-transform: none;
   text-decoration: none;
+  display: inline-block;
+  margin-left: 10px;
 }
-body.settings .refresh-stations:before {
-  content: "\a0\2014\a0";
+body.settings .refresh-stations .material-icons {
+  font-size: 16px;
 }
 body.settings .stations-list {
   margin-bottom: 0;
