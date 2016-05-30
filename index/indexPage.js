@@ -15,10 +15,15 @@ const __bind = function(fn, me) {
 
 module.exports = class IndexPage extends Eventful {
   constructor(settings, audioTag) {
+    console.debug('index page init');
     super();
     this.settings = settings;
     this.audioTag = audioTag;
     this.onTrack = __bind(this.onTrack, this);
+    this.onStationLinkClick = __bind(this.onStationLinkClick, this);
+    this.play = __bind(this.play, this);
+    this.pause = __bind(this.pause, this);
+    this.onKeydown = __bind(this.onKeydown, this);
     this.stationQuery = '';
     this.findElements();
     this.listenForMusicChanges();
@@ -26,6 +31,18 @@ module.exports = class IndexPage extends Eventful {
                        then(this.restorePlayingInfo.bind(this)).
                        catch(this.loadDefaultStations.bind(this));
     this.listenForMediaKeys();
+  }
+
+  removeListeners() {
+    console.debug('unbinding index page listeners');
+    ipcRenderer.removeAllListeners('media-key');
+    const stationLinks = this.stationMenu.querySelectorAll('a');
+    Array.prototype.forEach.call(stationLinks, (link) => {
+      link.removeEventListener('click', this.onStationLinkClick);
+    });
+    this.playButton.removeEventListener('click', this.play);
+    this.pauseButton.removeEventListener('click', this.pause);
+    window.removeEventListener('keydown', this.onKeydown);
   }
 
   findElements() {
@@ -52,11 +69,11 @@ module.exports = class IndexPage extends Eventful {
   listenForMusicChanges() {
     const stationLinks = this.stationMenu.querySelectorAll('a');
     Array.prototype.forEach.call(stationLinks, (link) => {
-      link.addEventListener('click', this.onStationLinkClick.bind(this));
+      link.addEventListener('click', this.onStationLinkClick);
     });
-    this.playButton.addEventListener('click', this.play.bind(this));
-    this.pauseButton.addEventListener('click', this.pause.bind(this));
-    window.addEventListener('keydown', this.onKeydown.bind(this));
+    this.playButton.addEventListener('click', this.play);
+    this.pauseButton.addEventListener('click', this.pause);
+    window.addEventListener('keydown', this.onKeydown);
   }
 
   restoreListItemPosition(listItem) {
@@ -310,7 +327,7 @@ module.exports = class IndexPage extends Eventful {
     link.href = '#' + station.id;
     link.appendChild(this.getStationImage(station));
     link.appendChild(document.createTextNode(station.title));
-    link.addEventListener('click', this.onStationLinkClick.bind(this));
+    link.addEventListener('click', this.onStationLinkClick);
     link.setAttribute('data-tooltip', this.getStationDescription(station.id));
     return link;
   }

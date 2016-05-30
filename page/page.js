@@ -10,10 +10,19 @@ const FlashMessages = require('../models/flashMessages');
 // const mdns = require('mdns');
 const AppMenu = require('../models/appMenu');
 
+const __bind = function(fn, me) {
+  return function() {
+    return fn.apply(me, arguments);
+  };
+};
+
 class PageLoader {
   constructor() {
+    console.debug('page loader init');
     this.pageID = null;
+    this.page = null;
     this.station = null;
+    this.onPageLoad = __bind(this.onPageLoad, this);
     this.findElements();
     this.flashMessages = new FlashMessages(this.statusArea);
     Settings.load().then(this.onInitialSettingsLoad.bind(this));
@@ -57,6 +66,9 @@ class PageLoader {
   }
 
   onPageLoaded(pageID, data) {
+    if (this.page && pageID !== this.pageID) {
+      this.page.removeListeners();
+    }
     this.updatePageClass(pageID);
     document.getElementById('page-container').innerHTML = data;
     this.handleLinks();
@@ -75,9 +87,15 @@ class PageLoader {
   }
 
   handleLinks() {
+    if (this.linkHandler) {
+      this.linkHandler.removeListener('page:load', this.onPageLoad);
+    }
     this.linkHandler = new LinkHandler();
-    this.linkHandler.
-         addListener('page:load', (p, id) => this.router.loadPage(p, id));
+    this.linkHandler.addListener('page:load', this.onPageLoad);
+  }
+
+  onPageLoad(p, id) {
+    this.router.loadPage(p, id);
   }
 
   updatePageClass(pageID) {
@@ -95,32 +113,41 @@ class PageLoader {
   }
 
   onIndexPageLoaded() {
-    const page = new IndexPage(this.settings, this.audioTag);
-    this.listenForPageMessages(page);
-    page.addListener('play', this.onPlay.bind(this));
-    page.addListener('pause', this.onPause.bind(this));
+    if (this.page && this.page instanceof IndexPage) {
+      return;
+    }
+    this.page = new IndexPage(this.settings, this.audioTag);
+    this.listenForPageMessages();
+    this.page.addListener('play', this.onPlay.bind(this));
+    this.page.addListener('pause', this.onPause.bind(this));
     this.returnLinkWrapper.classList.add('hidden');
     this.settingsLinkWrapper.classList.remove('hidden');
   }
 
   onSettingsPageLoaded() {
-    const page = new SettingsPage(this.settings);
-    this.listenForPageMessages(page);
+    if (this.page && this.page instanceof SettingsPage) {
+      return;
+    }
+    this.page = new SettingsPage(this.settings);
+    this.listenForPageMessages();
     this.returnLinkWrapper.classList.remove('hidden');
     this.settingsLinkWrapper.classList.add('hidden');
   }
 
   onAboutPageLoaded() {
-    const page = new AboutPage();
-    this.listenForPageMessages(page);
+    if (this.page && this.page instanceof AboutPage) {
+      return;
+    }
+    this.page = new AboutPage();
+    this.listenForPageMessages();
     this.returnLinkWrapper.classList.remove('hidden');
     this.settingsLinkWrapper.classList.add('hidden');
   }
 
-  listenForPageMessages(page) {
-    page.addListener('settings:change', (s) => this.onSettingsChanged(s));
-    page.addListener('error', (e) => this.flashMessages.error(e));
-    page.addListener('notice', (m) => this.flashMessages.notice(m));
+  listenForPageMessages() {
+    this.page.addListener('settings:change', (s) => this.onSettingsChanged(s));
+    this.page.addListener('error', (e) => this.flashMessages.error(e));
+    this.page.addListener('notice', (m) => this.flashMessages.notice(m));
   }
 
   onPlay(station, url) {

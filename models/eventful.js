@@ -27,7 +27,7 @@ module.exports = class Eventful {
     let index;
     if (listeners && listeners.length) {
       index = listeners.reduce((i, listener, index) => {
-        return (isFunction(listener) && listener === callback) ?
+        return (typeof listener === 'function' && listener === callback) ?
           i = index :
           i;
       }, -1);

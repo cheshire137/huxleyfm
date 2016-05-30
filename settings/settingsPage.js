@@ -5,10 +5,24 @@ const Soma = require('../models/soma');
 const shell = require('electron').shell;
 const Config = require('../config.json');
 
+const __bind = function(fn, me) {
+  return function() {
+    return fn.apply(me, arguments);
+  };
+};
+
 class SettingsPage extends Eventful {
   constructor(settings) {
+    console.debug('settings page init');
     super();
     this.settings = settings;
+    this.onLastfmDisconnectClick = __bind(this.onLastfmDisconnectClick, this);
+    this.onLastfmAuthButtonClick = __bind(this.onLastfmAuthButtonClick, this);
+    this.onLastfmSessionButtonClick =
+        __bind(this.onLastfmSessionButtonClick, this);
+    this.onSettingInputChange = __bind(this.onSettingInputChange, this);
+    this.onRefreshLinkClicked = __bind(this.onRefreshLinkClicked, this);
+    this.onLastfmUserClicked = __bind(this.onLastfmUserClicked, this);
     this.findElements();
     this.enableLastfmIfConfigSet();
     this.listenForChanges();
@@ -23,7 +37,8 @@ class SettingsPage extends Eventful {
         document.getElementById('lastfm-scrobbling-container');
     this.lastfmConnected =
         document.getElementById('lastfm-is-authenticated');
-    this.lastfmButtons = document.querySelectorAll('button.lastfm-auth');
+    this.lastfmAuthButtons =
+        Array.from(document.querySelectorAll('button.lastfm-auth'));
     this.lastfmSessionButton = document.querySelector('.lastfm-get-session');
     this.lastfmIsAuthenticating =
         document.getElementById('lastfm-is-authenticating');
@@ -44,6 +59,27 @@ class SettingsPage extends Eventful {
     this.stationsList = document.querySelector('.stations-list');
     this.refreshLink = document.querySelector('.refresh-stations');
     this.spinner = document.querySelector('.spinner');
+    this.settingInputs = Array.from(
+      document.querySelectorAll('input[name="scrobbling"], ' +
+                                'input[name="notifications"], ' +
+                                'input[name="theme"]')
+    );
+  }
+
+  removeListeners() {
+    console.debug('unbinding settings page listeners');
+    this.lastfmAuthButtons.forEach((button) => {
+      button.removeEventListener('click', this.onLastfmAuthButtonClick);
+    });
+    this.lastfmSessionButton.
+         removeEventListener('click', this.onLastfmSessionButtonClick);
+    this.lastfmDisconnect.
+         removeEventListener('click', this.onLastfmDisconnectClick);
+    this.settingInputs.forEach((input) => {
+      input.removeEventListener('change', this.onSettingInputChange);
+    });
+    this.refreshLink.removeEventListener('click', this.onRefreshLinkClicked);
+    this.lastfmUser.removeEventListener('click', this.onLastfmUserClicked);
   }
 
   enableLastfmIfConfigSet() {
@@ -64,42 +100,51 @@ class SettingsPage extends Eventful {
   }
 
   listenForChanges() {
-    const inputs = document.querySelectorAll('input[name="scrobbling"], ' +
-                                             'input[name="notifications"], ' +
-                                             'input[name="theme"]');
-    Array.prototype.forEach.call(inputs, (input) => {
-      input.addEventListener('change', (e) => {
-        this.saveSettings();
-      });
+    this.settingInputs.forEach((input) => {
+      input.addEventListener('change', this.onSettingInputChange);
     });
+  }
+
+  onSettingInputChange(e) {
+    this.saveSettings();
   }
 
   listenForLastfmAuthenticateClicks() {
-    Array.prototype.forEach.call(this.lastfmButtons, (button) => {
-      button.addEventListener('click', (e) => {
-        e.preventDefault();
-        e.target.blur();
-        this.authenticateLastfm();
-      });
+    this.lastfmAuthButtons.forEach((button) => {
+      button.addEventListener('click', this.onLastfmAuthButtonClick);
     });
-    this.lastfmSessionButton.addEventListener('click', (e) => {
-      e.preventDefault();
-      e.target.blur();
-      this.getLastfmSession();
-    });
-    this.lastfmDisconnect.addEventListener('click', (e) => {
-      e.preventDefault();
-      e.target.blur();
-      this.disconnectFromLastfm();
-    });
+    this.lastfmSessionButton.
+         addEventListener('click', this.onLastfmSessionButtonClick);
+    this.lastfmDisconnect.addEventListener('click',
+                                           this.onLastfmDisconnectClick);
+  }
+
+  onLastfmAuthButtonClick(e) {
+    e.preventDefault();
+    e.target.blur();
+    this.authenticateLastfm();
+  }
+
+  onLastfmSessionButtonClick(e) {
+    e.preventDefault();
+    e.target.blur();
+    this.getLastfmSession();
+  }
+
+  onLastfmDisconnectClick(e) {
+    e.preventDefault();
+    e.target.blur();
+    this.disconnectFromLastfm();
   }
 
   listenForRefreshStations() {
-    this.refreshLink.addEventListener('click', (e) => {
-      e.preventDefault();
-      e.target.blur();
-      this.refreshStations();
-    });
+    this.refreshLink.addEventListener('click', this.onRefreshLinkClicked);
+  }
+
+  onRefreshLinkClicked(e) {
+    e.preventDefault();
+    e.target.blur();
+    this.refreshStations();
   }
 
   getLastfmSession() {
@@ -202,7 +247,7 @@ class SettingsPage extends Eventful {
   }
 
   revealLastfmButtons() {
-    Array.prototype.forEach.call(this.lastfmButtons, (button) => {
+    this.lastfmAuthButtons.forEach((button) => {
       button.classList.remove('hidden');
     });
   }
@@ -226,12 +271,14 @@ class SettingsPage extends Eventful {
   restoreLastfmUserSetting() {
     if (this.settings.lastfmUser) {
       this.lastfmUser.textContent = this.settings.lastfmUser;
-      this.lastfmUser.addEventListener('click', (e) => {
-        e.preventDefault();
-        e.target.blur();
-        shell.openExternal('http://last.fm/user/' + this.settings.lastfmUser);
-      });
+      this.lastfmUser.addEventListener('click', this.onLastfmUserClicked);
     }
+  }
+
+  onLastfmUserClicked(e) {
+    e.preventDefault();
+    e.target.blur();
+    shell.openExternal('http://last.fm/user/' + this.settings.lastfmUser);
   }
 
   restoreNotificationsSetting() {

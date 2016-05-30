@@ -3,6 +3,7 @@ const Eventful = require('../models/eventful');
 
 module.exports = class AboutPage extends Eventful {
   constructor() {
+    console.debug('about page init');
     super();
     this.findElements();
     this.getVersionInfo();
@@ -10,6 +11,10 @@ module.exports = class AboutPage extends Eventful {
 
   findElements() {
     this.versionInfo = document.getElementById('version-info');
+  }
+
+  removeListeners() {
+    console.debug('unbinding about page listeners');
   }
 
   getVersionInfo() {
