@@ -181,11 +181,14 @@ class PageLoader {
     this.chromecastLink.classList.add('disabled');
     this.chromecastIcon.textContent = 'refresh';
     this.chromecastIcon.classList.add('spin');
-    const scanner = new ChromecastScanner();
-    scanner.addListener('chromecast', this.onChromecastFound.bind(this));
-    scanner.addListener('error', this.onChromecastFindError.bind(this));
-    scanner.addListener('finished', this.onChromecastScanComplete.bind(this));
-    scanner.findChromecasts();
+    this.chromecastScanner = new ChromecastScanner();
+    this.chromecastScanner.addListener('chromecast',
+                                       this.onChromecastFound.bind(this));
+    this.chromecastScanner.addListener('error',
+                                       this.onChromecastFindError.bind(this));
+    this.chromecastScanner.
+         addListener('finished', this.onChromecastScanComplete.bind(this));
+    this.chromecastScanner.findChromecasts();
   }
 
   onChromecastFound(chromecast) {
@@ -224,6 +227,9 @@ class PageLoader {
     this.chromecastIcon.classList.remove('spin');
     this.chromecastIcon.textContent = 'cast';
     this.chromecastList.classList.add('hidden');
+    if (this.chromecastScanner) {
+      this.chromecastScanner.close();
+    }
     this.chromecastLink.setAttribute('title', 'Casting to ' + link.textContent);
     const chromecast = new Chromecast({
       host: link.getAttribute('data-host'),
