@@ -23,34 +23,45 @@ module.exports = class Fetcher {
     options.headers['User-Agent'] = Config.user_agent;
     return new Promise((resolve, reject) => {
       fetch(url, options).then((response) => {
-        const respType = response.headers.get('Content-Type');
-        const status = response.status + ' ' + response.statusText;
-        if (respType === 'text/html') {
-          response.text().then((body) => {
-            if (response.ok) {
-              resolve({ body: body });
-            } else {
-              reject({ url: url, status: status, body: body });
-            }
-          }).catch((error) => {
-            console.error('failed to parse html response', error);
-            reject({ error: error });
-          });
+        if (response.headers.get('Content-Type') === 'text/html') {
+          this.handleHtmlResponse(response, resolve, reject);
         } else {
-          response.json().then((json) => {
-            if (response.ok) {
-              resolve(json);
-            } else {
-              json.url = url;
-              json.status = status;
-              reject(json);
-            }
-          }).catch((error) => {
-            console.error('failed to parse json response', error);
-            reject({ error: error });
-          });
+          this.handleJsonResponse(response, resolve, reject);
         }
       });
     });
+  }
+
+  handleHtmlResponse(response, resolve, reject) {
+    response.text().then((body) => {
+      if (response.ok) {
+        resolve({ body: body });
+      } else {
+        const status = this.getStatus(response);
+        reject({ url: url, status: status, body: body });
+      }
+    }).catch((error) => {
+      console.error('failed to parse html response', error);
+      reject({ error: error });
+    });
+  }
+
+  handleJsonResponse(response, resolve, reject) {
+    response.json().then((json) => {
+      if (response.ok) {
+        resolve(json);
+      } else {
+        json.url = url;
+        json.status = this.getStatus(response);
+        reject(json);
+      }
+    }).catch((error) => {
+      console.error('failed to parse json response', error);
+      reject({ error: error });
+    });
+  }
+
+  getStatus(response) {
+    return response.status + ' ' + response.statusText;
   }
 }
