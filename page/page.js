@@ -8,6 +8,7 @@ const FlashMessages = require('../models/flashMessages');
 const AppMenu = require('../models/appMenu');
 const ChromecastScanner = require('../models/chromecastScanner');
 const Chromecast = require('../models/chromecast');
+const {ipcRenderer} = require('electron');
 
 const __bind = function(fn, me) {
   return function() {
@@ -27,6 +28,7 @@ class PageLoader {
     Settings.load().then(this.onInitialSettingsLoad.bind(this));
     this.listenForCast();
     this.setupAppMenu();
+    this.listenForQuit();
   }
 
   findElements() {
@@ -48,6 +50,15 @@ class PageLoader {
 
   listenForCast() {
     this.chromecastLink.addEventListener('click', this.onChromecast.bind(this));
+  }
+
+  listenForQuit() {
+    ipcRenderer.on('quit', () => {
+      if (this.chromecast) {
+        this.chromecast.stop();
+        this.chromecast.disconnect();
+      }
+    });
   }
 
   setupAppMenu() {
@@ -160,12 +171,18 @@ class PageLoader {
     if (process.env.ENABLE_CHROMECAST) {
       this.chromecastWrapper.classList.remove('hidden');
     }
+    if (this.chromecast) {
+      this.chromecast.play();
+    }
   }
 
   onPause(station) {
     this.stationUrl = null;
     if (process.env.ENABLE_CHROMECAST) {
       this.chromecastWrapper.classList.add('hidden');
+    }
+    if (this.chromecast) {
+      this.chromecast.pause();
     }
   }
 
@@ -231,56 +248,40 @@ class PageLoader {
       this.chromecastScanner.close();
     }
     this.chromecastLink.setAttribute('title', 'Casting to ' + link.textContent);
-    const chromecast = new Chromecast({
+    this.chromecast = new Chromecast({
       host: link.getAttribute('data-host'),
       url: this.stationUrl
     });
-    chromecast.addListener('connected', this.onChromecastConnected.bind(this));
-    chromecast.addListener('launched', this.onChromecastLaunched.bind(this));
-    chromecast.addListener('launch-error',
-                           this.onChromecastLaunchError.bind(this));
-    chromecast.addListener('error', this.onChromecastError.bind(this));
-    chromecast.addListener('client-error',
-                           this.onChromecastClientError.bind(this));
-    chromecast.addListener('status', this.onChromecastStatus.bind(this));
-    chromecast.addListener('player-loaded',
-                           this.onChromecastPlayerLoaded.bind(this));
-    chromecast.addListener('player-load-error',
-                           this.onChromecastPlayerLoadError.bind(this));
-    chromecast.connect();
+    this.chromecast.addListener('connected',
+                                this.onChromecastConnected.bind(this));
+    this.chromecast.addListener('launched',
+                                this.onChromecastLaunched.bind(this));
+    this.chromecast.addListener('error', this.onChromecastError.bind(this));
+    this.chromecast.addListener('status', this.onChromecastStatus.bind(this));
+    this.chromecast.addListener('player-loaded',
+                                this.onChromecastPlayerLoaded.bind(this));
+    this.chromecast.addListener('play', this.onChromecastStatus.bind(this));
+    this.chromecast.addListener('pause', this.onChromecastStatus.bind(this));
+    this.chromecast.addListener('stop', this.onChromecastStatus.bind(this));
+    this.chromecast.connect();
   }
 
   onChromecastConnected() {
-
   }
 
-  onChromecastLaunched() {
-
+  onChromecastLaunched(player) {
   }
 
   onChromecastError(error) {
-
-  }
-
-  onChromecastPlayerLoadError(error) {
-
-  }
-
-  onChromecastClientError(error) {
-
-  }
-
-  onChromecastLaunchError(error) {
-
   }
 
   onChromecastStatus(status) {
-    console.log(status.playerState, status.media ? status.media.contentId : 'unknown', 'volume ' + status.volume.level, status.volume.muted ? 'muted' : 'not muted');
+    console.debug('Chromecast', status.playerState, status.media ? status.media.contentId : 'unknown URL', 'volume ' + status.volume.level, status.volume.muted ? 'muted' : 'not muted');
     if (status.playerState === 'PLAYING') {
       this.chromecastIcon.textContent = 'cast_connected';
     }
     if (this.page && typeof this.page.onChromecastStatus === 'function') {
-
+      this.page.onChromecastStatus(status);
     }
   }
 

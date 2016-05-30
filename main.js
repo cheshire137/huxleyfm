@@ -56,6 +56,10 @@ app.on('ready', () => {
 	['MediaPlayPause', 'MediaStop'].forEach(registerMediaKey);
 });
 
+app.on('before-quit', () => {
+	mainWindow.webContents.send('quit');
+});
+
 function registerMediaKey(key) {
 	const success = globalShortcut.register(key, () => {
 		mainWindow.webContents.send('media-key', key);

@@ -19,6 +19,7 @@ module.exports = class IndexPage extends Eventful {
     super();
     this.settings = settings;
     this.audioTag = audioTag;
+    this.chromecasting = false;
     this.onTrack = __bind(this.onTrack, this);
     this.onStationLinkClick = __bind(this.onStationLinkClick, this);
     this.play = __bind(this.play, this);
@@ -232,7 +233,7 @@ module.exports = class IndexPage extends Eventful {
       this.socket.on('track', this.onTrack);
     }).catch(this.subscribeError.bind(this));
     const stationUrl = Config.soma_station_url + station;
-    if (!process.env.DISABLE_PLAYING) {
+    if (!process.env.DISABLE_PLAYING && !this.chromecasting) {
       this.audioTag.src = stationUrl;
     }
     this.audioTag.setAttribute('data-station', station);
@@ -553,6 +554,7 @@ module.exports = class IndexPage extends Eventful {
 
   onChromecastStatus(status) {
     if (status.playerState === 'PLAYING') {
+      this.chromecasting = true;
       this.audioTag.pause();
       this.audioTag.currentTime = 0;
     }
