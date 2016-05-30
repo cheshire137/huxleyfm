@@ -415,6 +415,12 @@ header #chromecast-list {
 header #chromecast-link.disabled {
   cursor: default;
 }
+.theme-light header #chromecast-link.pulse {
+  animation: pulse-light 0.7s infinite;
+}
+.theme-dark header #chromecast-link.pulse {
+  animation: pulse-dark 0.7s infinite;
+}
 header #chromecast-list li a {
   display: block;
   padding: 0 6px;
@@ -425,6 +431,9 @@ header #chromecast-list li a:focus {
 }
 .theme-dark header #chromecast-list {
   background-color: #333;
+}
+.theme-light header #chromecast-list {
+  background-color: #f8f8f8;
 }
 .theme-dark header #chromecast-list li a,
 .theme-dark header #chromecast-list li a:link,
@@ -547,8 +556,16 @@ html, body {
   clear: both;
 }
 @keyframes spin {
-  from { transform:rotate(0deg); }
-  to { transform:rotate(360deg); }
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+@keyframes pulse-dark {
+  0% { color: #777; }
+  100% { color: #222; }
+}
+@keyframes pulse-light {
+  0% { color: #f79534; }
+  100% { color: #f8f8f8; }
 }
 .spin {
   animation: spin 3s infinite .25s linear;

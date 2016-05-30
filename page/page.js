@@ -240,6 +240,7 @@ class PageLoader {
     event.preventDefault();
     const link = event.target;
     link.blur();
+    this.chromecastLink.classList.add('pulse');
     this.chromecastLink.classList.remove('disabled');
     this.chromecastIcon.classList.remove('spin');
     this.chromecastIcon.textContent = 'cast';
@@ -270,6 +271,7 @@ class PageLoader {
   }
 
   onChromecastLaunched(player) {
+    this.chromecastIcon.textContent = 'cast_connected';
   }
 
   onChromecastError(error) {
@@ -277,8 +279,8 @@ class PageLoader {
 
   onChromecastStatus(status) {
     console.debug('Chromecast', status.playerState, status.media ? status.media.contentId : 'unknown URL', 'volume ' + status.volume.level, status.volume.muted ? 'muted' : 'not muted');
-    if (status.playerState === 'PLAYING') {
-      this.chromecastIcon.textContent = 'cast_connected';
+    if (status.playerState !== 'BUFFERING') {
+      this.chromecastLink.classList.remove('pulse');
     }
     if (this.page && typeof this.page.onChromecastStatus === 'function') {
       this.page.onChromecastStatus(status);
