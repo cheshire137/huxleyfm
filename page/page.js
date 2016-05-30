@@ -5,10 +5,9 @@ const IndexPage = require('../index/indexPage');
 const SettingsPage = require('../settings/settingsPage');
 const AboutPage = require('../about/aboutPage');
 const FlashMessages = require('../models/flashMessages');
-const Client = require('castv2-client').Client;
-const DefaultMediaReceiver = require('castv2-client').DefaultMediaReceiver;
 const AppMenu = require('../models/appMenu');
 const ChromecastScanner = require('../models/chromecastScanner');
+const Chromecast = require('../models/chromecast');
 
 const __bind = function(fn, me) {
   return function() {
@@ -21,7 +20,7 @@ class PageLoader {
     console.debug('page loader init');
     this.pageID = null;
     this.page = null;
-    this.station = null;
+    this.stationUrl = null;
     this.onPageLoad = __bind(this.onPageLoad, this);
     this.findElements();
     this.flashMessages = new FlashMessages(this.statusArea);
@@ -155,15 +154,16 @@ class PageLoader {
     this.page.addListener('notice', (m) => this.flashMessages.notice(m));
   }
 
-  onPlay(station, url) {
-    this.station = station;
+  onPlay(url) {
+    this.stationUrl = url;
+    console.debug('playing', this.stationUrl);
     if (process.env.ENABLE_CHROMECAST) {
       this.chromecastWrapper.classList.remove('hidden');
     }
   }
 
   onPause(station) {
-    this.station = null;
+    this.stationUrl = null;
     if (process.env.ENABLE_CHROMECAST) {
       this.chromecastWrapper.classList.add('hidden');
     }
@@ -192,7 +192,9 @@ class PageLoader {
     const listItem = document.createElement('li');
     const link = document.createElement('a');
     link.textContent = chromecast.name.replace(/\.local$/, '');
-    link.href = chromecast.data;
+    link.href = '#';
+    link.setAttribute('data-host', chromecast.data);
+    link.addEventListener('click', this.onChromecastSelected.bind(this));
     listItem.appendChild(link);
     this.chromecastList.appendChild(listItem);
     this.chromecastList.classList.remove('hidden');
@@ -210,6 +212,24 @@ class PageLoader {
     this.chromecastLink.classList.remove('disabled');
     this.chromecastIcon.classList.remove('spin');
     this.chromecastIcon.textContent = 'cast';
+  }
+
+  onChromecastSelected(event) {
+    event.preventDefault();
+    const link = event.target;
+    link.blur();
+    this.chromecastLink.classList.remove('disabled');
+    this.chromecastIcon.classList.remove('spin');
+    this.chromecastIcon.textContent = 'cast';
+    this.chromecastList.classList.add('hidden');
+    console.log({
+      host: link.getAttribute('data-host'),
+      url: this.stationUrl
+    });
+    new Chromecast({
+      host: link.getAttribute('data-host'),
+      url: this.stationUrl
+    });
   }
 
   onSettingsChanged(settings) {

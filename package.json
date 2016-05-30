@@ -57,6 +57,7 @@
     "crypto": "0.0.3",
     "electron-debug": "^1.0.0",
     "electron-json-storage": "^2.0.0",
+    "mdns": "^2.3.3",
     "multicast-dns": "^6.0.1",
     "node-fetch": "^1.5.2",
     "socket.io-client": "^1.4.6"
