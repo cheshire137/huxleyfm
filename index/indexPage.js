@@ -363,8 +363,8 @@ module.exports = class IndexPage extends Eventful {
       } else {
         console.debug('fetching stations list from SomaFM');
         const soma = new Soma();
-        soma.getStations().then(this.saveStations.bind(this)).
-                           then(resolve).catch(reject);
+        soma.getStations(true).then(this.saveStations.bind(this)).
+                               then(resolve).catch(reject);
       }
     });
   }
