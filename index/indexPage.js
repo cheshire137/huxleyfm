@@ -550,4 +550,11 @@ module.exports = class IndexPage extends Eventful {
       }
     });
   }
+
+  onChromecastStatus(status) {
+    if (status.playerState === 'PLAYING') {
+      this.audioTag.pause();
+      this.audioTag.currentTime = 0;
+    }
+  }
 }

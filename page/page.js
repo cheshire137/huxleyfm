@@ -204,7 +204,9 @@ class PageLoader {
     console.log('chromecast scan complete');
     this.chromecastLink.classList.remove('disabled');
     this.chromecastIcon.classList.remove('spin');
-    this.chromecastIcon.textContent = 'cast';
+    if (this.chromecastIcon.textContent === 'refresh') {
+      this.chromecastIcon.textContent = 'cast';
+    }
   }
 
   onChromecastFindError(error) {
@@ -222,6 +224,7 @@ class PageLoader {
     this.chromecastIcon.classList.remove('spin');
     this.chromecastIcon.textContent = 'cast';
     this.chromecastList.classList.add('hidden');
+    this.chromecastLink.setAttribute('title', 'Casting to ' + link.textContent);
     const chromecast = new Chromecast({
       host: link.getAttribute('data-host'),
       url: this.stationUrl
@@ -267,6 +270,12 @@ class PageLoader {
 
   onChromecastStatus(status) {
     console.log(status.playerState, status.media ? status.media.contentId : 'unknown', 'volume ' + status.volume.level, status.volume.muted ? 'muted' : 'not muted');
+    if (status.playerState === 'PLAYING') {
+      this.chromecastIcon.textContent = 'cast_connected';
+    }
+    if (this.page && typeof this.page.onChromecastStatus === 'function') {
+
+    }
   }
 
   onChromecastPlayerLoaded(status) {
