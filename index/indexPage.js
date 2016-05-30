@@ -144,6 +144,8 @@ module.exports = class IndexPage extends Eventful {
   restorePlayingInfo() {
     const isPaused = this.audioTag.getAttribute('data-paused') === 'true';
     const station = this.audioTag.getAttribute('data-station');
+    console.debug('restore playing info', station,
+                  isPaused ? 'paused' : 'playing');
     if (isPaused) {
       this.pauseButton.classList.add('hidden');
       this.playButton.classList.remove('hidden');
@@ -218,6 +220,7 @@ module.exports = class IndexPage extends Eventful {
     this.pauseButton.classList.remove('hidden');
     this.pauseButton.disabled = false;
     this.emit('play', station, stationUrl);
+    this.updateTrackInfo(station);
   }
 
   resetTrackInfoIfNecessary(station) {
