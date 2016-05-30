@@ -310,7 +310,17 @@ module.exports = class IndexPage extends Eventful {
     link.appendChild(this.getStationImage(station));
     link.appendChild(document.createTextNode(station.title));
     link.addEventListener('click', this.onStationLinkClick.bind(this));
+    link.setAttribute('title', this.getStationDescription(station.id));
     return link;
+  }
+
+  getStationDescription(id) {
+    for (let i = 0; i < DefaultStations.length; i++) {
+      const station = DefaultStations[i];
+      if (station.id === id) {
+        return station.description;
+      }
+    }
   }
 
   getStationImage(station) {
