@@ -432,11 +432,23 @@ header .material-icons {
 .theme-dark a.dismiss-alert:active {
   color: #fff;
 }
+.theme-dark .alert.error a.dismiss-alert,
+.theme-dark .alert.error a.dismiss-alert:link,
+.theme-dark .alert.error a.dismiss-alert:visited,
+.theme-dark .alert.error a.dismiss-alert:active {
+  color: #f2dede;
+}
 .theme-light a.dismiss-alert,
 .theme-light a.dismiss-alert:link,
 .theme-light a.dismiss-alert:visited,
 .theme-light a.dismiss-alert:active {
   color: #2F7130;
+}
+.theme-light .alert.error a.dismiss-alert,
+.theme-light .alert.error a.dismiss-alert:link,
+.theme-light .alert.error a.dismiss-alert:visited,
+.theme-light .alert.error a.dismiss-alert:active {
+  color: #a94442;
 }
 header a:hover, header a:focus {
   text-decoration: none;
