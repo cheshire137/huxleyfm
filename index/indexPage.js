@@ -559,4 +559,16 @@ module.exports = class IndexPage extends Eventful {
       this.audioTag.currentTime = 0;
     }
   }
+
+  onChromecastDisconnect() {
+    this.chromecasting = false;
+    if (this.audioTag.hasAttribute('data-station') &&
+        !this.audioTag.hasAttribute('data-paused')) {
+      const stationUrl = Config.soma_station_url +
+                         this.audioTag.getAttribute('data-station');
+      if (!process.env.DISABLE_PLAYING) {
+        this.audioTag.src = stationUrl;
+      }
+    }
+  }
 }

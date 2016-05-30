@@ -49,14 +49,15 @@ class PageLoader {
   }
 
   listenForCast() {
-    this.chromecastLink.addEventListener('click', this.onChromecast.bind(this));
+    this.chromecastLink.
+         addEventListener('click', this.onChromecastClick.bind(this));
   }
 
   listenForQuit() {
     ipcRenderer.on('quit', () => {
       if (this.chromecast) {
         this.chromecast.stop();
-        this.chromecast.disconnect();
+        this.chromecast.close();
       }
     });
   }
@@ -172,7 +173,11 @@ class PageLoader {
       this.chromecastWrapper.classList.remove('hidden');
     }
     if (this.chromecast) {
-      this.chromecast.play();
+      if (this.chromecast.url === this.stationUrl) {
+        this.chromecast.play();
+      } else {
+        this.setupChromecast(this.chromecast.host, this.stationUrl);
+      }
     }
   }
 
@@ -186,13 +191,34 @@ class PageLoader {
     }
   }
 
-  onChromecast() {
+  onChromecastClick(event) {
     if (!process.env.ENABLE_CHROMECAST) {
       return;
     }
+    event.preventDefault();
+    this.chromecastLink.blur();
     if (this.chromecastLink.classList.contains('disabled')) {
       return;
     }
+    if (this.chromecastIcon.textContent === 'cast_connected') {
+      if (this.chromecast) {
+        this.disconnectFromChromecast();
+      }
+    } else {
+      this.listChromecasts();
+    }
+  }
+
+  disconnectFromChromecast() {
+    this.chromecast.stop();
+    this.chromecast.close();
+    this.chromecastIcon.textContent = 'cast';
+    if (this.page && typeof this.page.onChromecastDisconnect === 'function') {
+      this.page.onChromecastDisconnect();
+    }
+  }
+
+  listChromecasts() {
     const listItems = Array.from(this.chromecastList.querySelectorAll('li'));
     listItems.forEach(li => li.remove());
     this.chromecastLink.classList.add('disabled');
@@ -249,15 +275,18 @@ class PageLoader {
       this.chromecastScanner.close();
     }
     this.chromecastLink.setAttribute('title', 'Casting to ' + link.textContent);
-    this.chromecast = new Chromecast({
-      host: link.getAttribute('data-host'),
-      url: this.stationUrl
-    });
+    this.setupChromecast(link.getAttribute('data-host'), this.stationUrl);
+  }
+
+  setupChromecast(host, url) {
+    console.debug('setting up Chromecast ' + host + ' to play ' + url);
+    this.chromecast = new Chromecast(host, url);
     this.chromecast.addListener('connected',
                                 this.onChromecastConnected.bind(this));
     this.chromecast.addListener('launched',
                                 this.onChromecastLaunched.bind(this));
     this.chromecast.addListener('error', this.onChromecastError.bind(this));
+    this.chromecast.addListener('close', this.onChromecastClose.bind(this));
     this.chromecast.addListener('status', this.onChromecastStatus.bind(this));
     this.chromecast.addListener('player-loaded',
                                 this.onChromecastPlayerLoaded.bind(this));
@@ -268,6 +297,10 @@ class PageLoader {
   }
 
   onChromecastConnected() {
+  }
+
+  onChromecastClose() {
+    this.chromecastIcon.textContent = 'cast';
   }
 
   onChromecastLaunched(player) {

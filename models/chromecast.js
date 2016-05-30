@@ -4,19 +4,21 @@ const mdns = require('mdns');
 const Eventful = require('./eventful');
 
 module.exports = class Chromecast extends Eventful {
-  constructor(opts) {
+  constructor(host, url) {
     super();
-    this.options = { host: opts.host, url: opts.url };
+    this.url = url;
+    this.host = host;
     this.client = new Client();
   }
 
   connect() {
-    this.client.connect(this.options.host, this.onConnect.bind(this));
+    this.client.connect(this.host, this.onConnect.bind(this));
     this.client.on('error', this.onClientError.bind(this));
+    this.client.on('close', this.onClientClose.bind(this));
   }
 
-  disconnect() {
-    this.client.disconnect();
+  close() {
+    this.client.close();
   }
 
   play() {
@@ -81,7 +83,7 @@ module.exports = class Chromecast extends Eventful {
       this.emit('launched', player);
     }
     const media = {
-      contentId: this.options.url,
+      contentId: this.url,
       contentType: 'audio/mpeg',
       streamType: 'LIVE'
     };
@@ -106,5 +108,10 @@ module.exports = class Chromecast extends Eventful {
     console.error('Chromecast client error', err);
     this.emit('error', err);
     this.client.close();
+  }
+
+  onClientClose() {
+    console.debug('Chromecast closed');
+    this.emit('close');
   }
 }
