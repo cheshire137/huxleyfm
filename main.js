@@ -24,8 +24,8 @@ function createMainWindow() {
 		resizable: false
 	};
 	if (process.env.NODE_ENV === 'development') {
-		windowProperties.width = 800;
-		windowProperties.height = 600;
+		windowProperties.width = 900;
+		windowProperties.height = 370;
 		win = new BrowserWindow(windowProperties);
 		win.webContents.openDevTools();
 	} else {

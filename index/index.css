@@ -1,20 +1,11 @@
 body.player {
   overflow: hidden;
 }
-body.player .form-group {
-  text-align: center;
-  margin-bottom: 20px;
-  position: relative;
-}
-body.player #currently-playing {
-}
-body.player #currently-playing.hidden {
-  display: none;
-}
-body.player #track-info {
+body.player .track-info {
   text-align: center;
   height: 67px;
   overflow: auto;
+  margin-top: 20px;
 }
 body.player #title {
   font-weight: 700;
@@ -82,12 +73,12 @@ body.player #station-menu.expanded {
   position: absolute;
   left: 10px;
   right: 10px;
-  top: 103px;
+  top: 65px;
   bottom: 0;
   width: auto;
 }
 body.player #station-query.hidden + #station-menu.expanded {
-  top: 55px;
+  top: 11px;
 }
 body.player.theme-dark #station-menu {
   border-color: #133C46;

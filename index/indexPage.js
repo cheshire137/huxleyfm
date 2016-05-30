@@ -32,7 +32,6 @@ module.exports = class IndexPage extends Eventful {
     this.stationMenu = document.getElementById('station-menu');
     this.playButton = document.getElementById('play');
     this.pauseButton = document.getElementById('pause');
-    this.currentInfoEl = document.getElementById('currently-playing');
     this.titleEl = document.getElementById('title');
     this.artistEl = document.getElementById('artist');
     this.albumEl = document.getElementById('album');
@@ -356,25 +355,30 @@ module.exports = class IndexPage extends Eventful {
   }
 
   showTrackInfo(track) {
-    const duration = this.getDuration(track);
-    if (track.artist || track.title || track.album || duration) {
+    if (track.title && track.title.length > 0) {
       this.titleEl.textContent = track.title;
-      this.artistEl.textContent = track.artist;
-      if (duration) {
-        this.durationEl.textContent = duration;
-        this.durationEl.classList.remove('hidden');
-      } else {
-        this.durationEl.classList.add('hidden');
-      }
-      if (track.album && track.album.length > 0) {
-        this.albumEl.textContent = track.album;
-        this.albumEl.classList.remove('hidden');
-      } else {
-        this.albumEl.classList.add('hidden');
-      }
-      this.currentInfoEl.classList.remove('hidden');
+      this.titleEl.classList.remove('hidden');
     } else {
-      this.currentInfoEl.classList.add('hidden');
+      this.titleEl.classList.add('hidden');
+    }
+    if (track.artist && track.artist.length > 0) {
+      this.artistEl.textContent = track.artist;
+      this.artistEl.classList.remove('hidden');
+    } else {
+      this.artistEl.classList.add('hidden');
+    }
+    const duration = this.getDuration(track);
+    if (duration) {
+      this.durationEl.textContent = duration;
+      this.durationEl.classList.remove('hidden');
+    } else {
+      this.durationEl.classList.add('hidden');
+    }
+    if (track.album && track.album.length > 0) {
+      this.albumEl.textContent = track.album;
+      this.albumEl.classList.remove('hidden');
+    } else {
+      this.albumEl.classList.add('hidden');
     }
   }
 
@@ -398,10 +402,13 @@ module.exports = class IndexPage extends Eventful {
 
   hideTrackInfo() {
     this.titleEl.textContent = '';
+    this.titleEl.classList.add('hidden');
     this.artistEl.textContent = '';
+    this.artistEl.classList.add('hidden');
     this.durationEl.textContent = '';
+    this.durationEl.classList.add('hidden');
     this.albumEl.textContent = '';
-    this.currentInfoEl.classList.add('hidden');
+    this.albumEl.classList.add('hidden');
   }
 
   onTrack(track) {
