@@ -14,6 +14,13 @@ Specify `user_agent` in config.json to something custom for your app. The user a
 
     npm start
 
+### Ubuntu 14.04 Instructions
+
+Install nodejs 6+ via instructions on [nodejs.org](https://nodejs.org/en/download/package-manager/#debian-and-ubuntu-based-linux-distributions)
+
+	curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
+	sudo apt-get install -y build-essential libavahi-compat-libdnssd-dev nodejs
+
 ### Environment Variables
 
 Pass `NODE_ENV=development` to view the JavaScript console for debugging, e.g., `NODE_ENV=development npm start`.
