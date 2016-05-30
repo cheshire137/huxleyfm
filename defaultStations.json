@@ -1,108 +1,159 @@
 [
   {
     "id": "bagel",
-    "title": "BAGeL Radio"
+    "title": "BAGeL Radio",
+    "description": "What alternative rock radio should sound like."
   }, {
     "id": "beatblender",
-    "title": "Beat Blender"
+    "title": "Beat Blender",
+    "description": "A late night blend of deep-house and downtempo chill."
   }, {
     "id": "bootliquor",
-    "title": "Boot Liquor"
+    "title": "Boot Liquor",
+    "description": "Americana Roots music for Cowhands, Cowpokes and Cowtippers"
   }, {
     "id": "brfm",
-    "title": "Black Rock FM"
+    "title": "Black Rock FM",
+    "description": "From the Playa to the world, back for the 2015 Burning Man festival."
   }, {
     "id": "christmas",
-    "title": "Christmas Lounge"
+    "title": "Christmas Lounge",
+    "description": ""
   }, {
     "id": "xmasrocks",
-    "title": "Christmas Rocks!"
+    "title": "Christmas Rocks!",
+    "description": ""
   }, {
     "id": "cliqhop",
-    "title": "cliqhop idm"
+    "title": "cliqhop idm",
+    "description": "Blips'n'beeps backed mostly w/beats. Intelligent Dance Music."
   }, {
     "id": "covers",
-    "title": "Covers"
+    "title": "Covers",
+    "description": "Just covers. Songs you know by artists you don't. We've got you covered."
   }, {
-    "id": "events",
-    "title": "DEF CON Radio"
+    "id": "defcon",
+    "title": "DEF CON Radio",
+    "description": "Music for Hacking. The DEF CON Year-Round Channel."
   }, {
     "id": "deepspaceone",
-    "title": "Deep Space One"
+    "title": "Deep Space One",
+    "description": "Deep ambient electronic, experimental and space music. For inner and outer space exploration."
   }, {
     "id": "digitalis",
-    "title": "Digitalis"
+    "title": "Digitalis",
+    "description": "Digitally affected analog rock to calm the agitated heart."
   }, {
     "id": "doomed",
-    "title": "Doomed"
+    "title": "Doomed",
+    "description": "Dark industrial/ambient music for tortured souls."
   }, {
     "id": "dronezone",
-    "title": "Drone Zone"
+    "title": "Drone Zone",
+    "description": "Served best chilled, safe with most medications. Atmospheric textures with minimal beats."
   }, {
     "id": "dubstep",
-    "title": "Dub Step Beyond"
+    "title": "Dub Step Beyond",
+    "description": "Dubstep, Dub and Deep Bass. May damage speakers at high volume."
   }, {
     "id": "earwaves",
-    "title": "Earwaves"
+    "title": "Earwaves",
+    "description": "Spanning the history of electronic and experimental music from the early pioneers to the latest innovators."
+  }, {
+    "id": "fluid",
+    "title": "Fluid",
+    "description": "Drown in the electronic sound of instrumental hiphop, future soul and liquid trap."
   }, {
     "id": "folkfwd",
-    "title": "Folk Forward"
+    "title": "Folk Forward",
+    "description": "Indie Folk, Alt-folk and the occasional folk classics."
   }, {
     "id": "groovesalad",
-    "title": "Groove Salad"
+    "title": "Groove Salad",
+    "description": "A nicely chilled plate of ambient/downtempo beats and grooves."
   }, {
     "id": "illstreet",
-    "title": "Illinois Street Lounge"
+    "title": "Illinois Street Lounge",
+    "description": "Classic bachelor pad, playful exotica and vintage music of tomorrow."
   }, {
     "id": "indiepop",
-    "title": "Indie Pop Rocks!"
+    "title": "Indie Pop Rocks!",
+    "description": "New and classic favorite indie pop tracks."
   }, {
     "id": "jollysoul",
-    "title": "Jolly Ol' Soul"
+    "title": "Jolly Ol' Soul",
+    "description": ""
   }, {
     "id": "lush",
-    "title": "Lush"
+    "title": "Lush",
+    "description": "Sensuous and mellow vocals, mostly female, with an electronic influence."
+  }, {
+    "id": "metal",
+    "title": "Metal Detector",
+    "description": "From black to doom, prog to sludge, thrash to post, stoner to crossover, punk to industrial."
   }, {
     "id": "missioncontrol",
-    "title": "Mission Control"
+    "title": "Mission Control",
+    "description": "Celebrating NASA and Space Explorers everywhere."
   }, {
     "id": "poptron",
-    "title": "PopTron"
+    "title": "PopTron",
+    "description": "Electropop and indie dance rock with sparkle and pop."
   }, {
     "id": "secretagent",
-    "title": "Secret Agent"
+    "title": "Secret Agent",
+    "description": "The soundtrack for your stylish, mysterious, dangerous life. For Spies and PIs too!"
   }, {
     "id": "7soul",
-    "title": "Seven Inch Soul"
+    "title": "Seven Inch Soul",
+    "description": "Vintage soul tracks from the original 45 RPM vinyl."
   }, {
     "id": "sf1033",
-    "title": "SF 10-33"
+    "title": "SF 10-33",
+    "description": "Ambient music mixed with the sounds of San Francisco public safety radio traffic."
+  }, {
+    "id": "seventies",
+    "title": "Left Coast 70s",
+    "description": "Mellow album rock from the Seventies. Yacht friendly."
   }, {
     "id": "live",
-    "title": "SomaFM Live"
+    "title": "SomaFM Live",
+    "description": "How Weird Street Faire 2015 Rebroadcast"
+  }, {
+    "id": "silent",
+    "title": "The Silent Channel",
+    "description": "Chilled ambient electronic music for calm inner atmospheres from Silent Records."
   }, {
     "id": "sonicuniverse",
-    "title": "Sonic Universe"
+    "title": "Sonic Universe",
+    "description": "Transcending the world of jazz with eclectic, avant-garde takes on tradition."
   }, {
     "id": "sxfm",
-    "title": "South by Soma"
+    "title": "South by Soma",
+    "description": "Music from bands who will be performing at SXSW, one of the biggest and best music festivals in the world. [explicit]"
   }, {
     "id": "spacestation",
-    "title": "Space Station Soma"
+    "title": "Space Station Soma",
+    "description": "Tune in, turn on, space out. Spaced-out ambient and mid-tempo electronica."
   }, {
     "id": "suburbsofgoa",
-    "title": "Suburbs of Goa"
+    "title": "Suburbs of Goa",
+    "description": "Desi-influenced Asian world beats and beyond."
   }, {
     "id": "thetrip",
-    "title": "The Trip"
+    "title": "The Trip",
+    "description": "Progressive house / trance. Tip top tunes."
   }, {
     "id": "thistle",
-    "title": "ThistleRadio"
+    "title": "ThistleRadio",
+    "description": "Exploring music from Celtic roots and branches"
   }, {
     "id": "u80s",
-    "title": "Underground 80s"
+    "title": "Underground 80s",
+    "description": "Early 80s UK Synthpop and a bit of New Wave."
   }, {
     "id": "xmasinfrisko",
-    "title": "Xmas in Frisko"
+    "title": "Xmas in Frisko",
+    "description": ""
   }
 ]
