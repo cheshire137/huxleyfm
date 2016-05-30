@@ -391,12 +391,6 @@ header ul li#return-link-wrapper {
 header ul li#return-link-wrapper .material-icons {
   font-size: 32px;
 }
-header ul li#chromecast-wrapper {
-  text-align: right;
-}
-header ul li#settings-wrapper {
-  text-align: right;
-}
 header ul li#return-link-wrapper .material-icons {
   margin-right: -8px;
   margin-top: -2px;
@@ -419,6 +413,18 @@ header img.pull-left {
 }
 header .material-icons {
   vertical-align: middle;
+}
+header .right-links {
+  text-align: right;
+}
+header .right-links > div {
+  display: inline-block;
+}
+header .right-links > div + div {
+  margin-left: 5px;
+}
+header .right-links > div.hidden {
+  display: none;
 }
 .dismiss-alert {
   position: fixed;
@@ -466,7 +472,11 @@ header a:hover, header a:focus {
 .theme-dark header #settings-wrapper a,
 .theme-dark header #settings-wrapper a:link,
 .theme-dark header #settings-wrapper a:visited,
-.theme-dark header #settings-wrapper a:active {
+.theme-dark header #settings-wrapper a:active,
+.theme-dark header #about-wrapper a,
+.theme-dark header #about-wrapper a:link,
+.theme-dark header #about-wrapper a:visited,
+.theme-dark header #about-wrapper a:active {
   color: #777;
 }
 main#page-container {

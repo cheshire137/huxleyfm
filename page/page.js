@@ -38,6 +38,7 @@ class PageLoader {
     this.chromecastIcon = this.chromecastLink.querySelector('.material-icons');
     this.returnLinkWrapper = document.getElementById('return-link-wrapper');
     this.settingsLinkWrapper = document.getElementById('settings-wrapper');
+    this.aboutLinkWrapper = document.getElementById('about-wrapper');
   }
 
   onInitialSettingsLoad(settings) {
@@ -122,6 +123,7 @@ class PageLoader {
     this.page.addListener('pause', this.onPause.bind(this));
     this.returnLinkWrapper.classList.add('hidden');
     this.settingsLinkWrapper.classList.remove('hidden');
+    this.aboutLinkWrapper.classList.remove('hidden');
   }
 
   onSettingsPageLoaded() {
@@ -132,6 +134,7 @@ class PageLoader {
     this.listenForPageMessages();
     this.returnLinkWrapper.classList.remove('hidden');
     this.settingsLinkWrapper.classList.add('hidden');
+    this.aboutLinkWrapper.classList.add('hidden');
   }
 
   onAboutPageLoaded() {
@@ -142,6 +145,7 @@ class PageLoader {
     this.listenForPageMessages();
     this.returnLinkWrapper.classList.remove('hidden');
     this.settingsLinkWrapper.classList.add('hidden');
+    this.aboutLinkWrapper.classList.add('hidden');
   }
 
   listenForPageMessages() {
