@@ -15,7 +15,8 @@ body.player #artist {
 body.player #artist:before {
   content: " by ";
 }
-body.player #album-and-duration {
+body.player #album-and-duration,
+body.player #last-updated {
   display: block;
 }
 body.player #album:before {
@@ -23,6 +24,9 @@ body.player #album:before {
 }
 body.player #album:after {
   content: "\201D";
+}
+body.player #last-updated {
+  font-style: italic;
 }
 body.player #duration:before {
   content: "\a0\b7\a0";

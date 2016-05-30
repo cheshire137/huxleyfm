@@ -55,6 +55,7 @@ module.exports = class IndexPage extends Eventful {
     this.albumEl = document.getElementById('album');
     this.durationEl = document.getElementById('duration');
     this.stationQueryEl = document.getElementById('station-query');
+    this.lastUpdatedEl = document.getElementById('last-updated');
   }
 
   listenForMediaKeys() {
@@ -189,7 +190,7 @@ module.exports = class IndexPage extends Eventful {
     listItem.classList.add('selected');
     listItem.classList.remove('hidden');
     this.moveListItemToTop(listItem);
-    this.updateTrackInfo(station);
+    this.updateTrackInfo(station, true);
   }
 
   pause() {
@@ -242,7 +243,7 @@ module.exports = class IndexPage extends Eventful {
     this.pauseButton.classList.remove('hidden');
     this.pauseButton.disabled = false;
     this.emit('play', stationUrl);
-    this.updateTrackInfo(station);
+    this.updateTrackInfo(station, true);
   }
 
   resetTrackInfoIfNecessary(station) {
@@ -369,11 +370,12 @@ module.exports = class IndexPage extends Eventful {
     });
   }
 
-  updateTrackInfo(station) {
+  updateTrackInfo(station, preferSomaApi) {
     console.debug('getting track info for station ' + station);
     const soma = new Soma();
-    soma.getStationInfo(station).then(this.showTrackInfo.bind(this)).
-                                 catch(this.getStationInfoError.bind(this));
+    soma.getStationInfo(station, preferSomaApi).
+         then(this.showTrackInfo.bind(this)).
+         catch(this.getStationInfoError.bind(this));
   }
 
   saveStations(stations) {
@@ -388,28 +390,50 @@ module.exports = class IndexPage extends Eventful {
     console.error('failed to save stations', error);
   }
 
-  showTrackInfo(track) {
-    if (track.title && track.title.length > 0) {
-      this.titleEl.textContent = track.title;
+  getCurrentTime() {
+    const now = new Date();
+    let hours = now.getHours();
+    let amPM = 'am';
+    if (hours >= 12) {
+      amPM = 'pm';
+    }
+    if (hours > 12) {
+      hours = hours - 12;
+    }
+    const minutes = now.getMinutes();
+    return hours + ':' + minutes + ' ' + amPM;
+  }
+
+  showTrackInfo(info) {
+    if (info.lastPlaying) {
+      this.titleEl.textContent = info.lastPlaying;
+      this.titleEl.classList.remove('hidden');
+      this.lastUpdatedEl.textContent = 'As of ' + this.getCurrentTime();
+      this.lastUpdatedEl.classList.remove('hidden');
+      return;
+    }
+    this.lastUpdatedEl.classList.add('hidden');
+    if (info.title && info.title.length > 0) {
+      this.titleEl.textContent = info.title;
       this.titleEl.classList.remove('hidden');
     } else {
       this.titleEl.classList.add('hidden');
     }
-    if (track.artist && track.artist.length > 0) {
-      this.artistEl.textContent = track.artist;
+    if (info.artist && info.artist.length > 0) {
+      this.artistEl.textContent = info.artist;
       this.artistEl.classList.remove('hidden');
     } else {
       this.artistEl.classList.add('hidden');
     }
-    const duration = this.getDuration(track);
+    const duration = this.getDuration(info);
     if (duration) {
       this.durationEl.textContent = duration;
       this.durationEl.classList.remove('hidden');
     } else {
       this.durationEl.classList.add('hidden');
     }
-    if (track.album && track.album.length > 0) {
-      this.albumEl.textContent = track.album;
+    if (info.album && info.album.length > 0) {
+      this.albumEl.textContent = info.album;
       this.albumEl.classList.remove('hidden');
     } else {
       this.albumEl.classList.add('hidden');

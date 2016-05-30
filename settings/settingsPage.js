@@ -242,8 +242,8 @@ class SettingsPage extends Eventful {
     this.stationsList.textContent = '';
     this.spinner.classList.remove('hidden');
     const soma = new Soma();
-    soma.getStations().then(this.saveStations.bind(this)).
-                       catch(this.getStationsError.bind(this));
+    soma.getStations(true).then(this.saveStations.bind(this)).
+                           catch(this.getStationsError.bind(this));
   }
 
   revealLastfmButtons() {
