@@ -173,12 +173,18 @@ class PageLoader {
       return;
     }
     const scanner = new Scanner();
-    scanner.findChromecasts().then(this.onChromecastsFound.bind(this)).
-                              catch(this.onChromecastFindError.bind(this));
+    scanner.addListener('chromecast', this.onChromecastFound.bind(this));
+    scanner.addListener('error', this.onChromecastFindError.bind(this));
+    scanner.addListener('finished', this.onChromecastScanComplete.bind(this));
+    scanner.findChromecasts();
   }
 
-  onChromecastsFound(chromecasts) {
-    console.log('chromecasts', chromecasts);
+  onChromecastFound(chromecast) {
+    console.log('chromecast', chromecast.name, chromecast.data);
+  }
+
+  onChromecastScanComplete() {
+    console.log('chromecast scan complete');
   }
 
   onChromecastFindError(error) {

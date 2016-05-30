@@ -1,4 +1,5 @@
 const mdns = require('multicast-dns');
+const Eventful = require('./eventful');
 
 const __bind = function(fn, me) {
   return function() {
@@ -6,8 +7,9 @@ const __bind = function(fn, me) {
   };
 };
 
-module.exports = class Scanner {
+module.exports = class Scanner extends Eventful {
   constructor(opts) {
+    super();
     this.options = {
       ttl: 10000,
       serviceName: '_googlecast._tcp.local',
@@ -17,33 +19,26 @@ module.exports = class Scanner {
     if (opts) {
       this.options.name = opts.name;
     }
-    this.chromecasts = [];
-    this.resolve = null;
-    this.reject = null;
+    this.chromecastIPs = [];
     this.onResponse = __bind(this.onResponse, this);
   }
 
   findChromecasts() {
-    return new Promise((resolve, reject) => {
-      this.resolve = resolve;
-      this.reject = reject;
-      this.m = mdns(this.options.mdns);
-      this.timer = setTimeout(() => {
-        this.close();
-        if (this.chromecasts.length > 0) {
-          this.resolve(this.chromecasts);
-        } else {
-          this.reject('could not find any Chromecasts');
-        }
-      }, this.options.ttl);
-      this.m.on('response', this.onResponse);
-      this.startTime = new Date();
-      this.m.query({
-        questions: [{
-          name: this.options.serviceName,
-          type: this.options.serviceType
-        }]
-      });
+    this.m = mdns(this.options.mdns);
+    this.timer = setTimeout(() => {
+      if (this.chromecastIPs.length < 1) {
+        this.emit('error', 'no Chromecasts were found');
+      } else {
+        this.emit('finished', 'stopped searching for Chromecasts');
+      }
+      this.close();
+    }, this.options.ttl);
+    this.m.on('response', this.onResponse);
+    this.m.query({
+      questions: [{
+        name: this.options.serviceName,
+        type: this.options.serviceType
+      }]
     });
   }
 
@@ -59,7 +54,10 @@ module.exports = class Scanner {
     if (!info || (this.options.name && this.options.name !== info.name)) {
       return;
     }
-    this.chromecasts.push(info);
+    if (this.chromecastIPs.indexOf(info.data) < 0) {
+      this.chromecastIPs.push(info.data);
+      this.emit('chromecast', info);
+    }
   }
 
   close() {
