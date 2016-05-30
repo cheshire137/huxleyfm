@@ -482,3 +482,8 @@ html, body {
 .fill-area-content {
   overflow: auto;
 }
+.clearfix:after {
+  content: "";
+  display: table;
+  clear: both;
+}

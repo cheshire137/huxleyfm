@@ -42,8 +42,7 @@ class SettingsPage extends Eventful {
     this.stationsOptions = document.querySelector('.stations-options');
     this.stationCount = document.querySelector('.station-count');
     this.stationsList = document.querySelector('.stations-list');
-    this.refreshStationsButton =
-        document.querySelector('button.refresh-stations');
+    this.refreshLink = document.querySelector('.refresh-stations');
   }
 
   enableLastfmIfConfigSet() {
@@ -95,7 +94,7 @@ class SettingsPage extends Eventful {
   }
 
   listenForRefreshStations() {
-    this.refreshStationsButton.addEventListener('click', (e) => {
+    this.refreshLink.addEventListener('click', (e) => {
       e.preventDefault();
       e.target.blur();
       this.refreshStations();
@@ -194,7 +193,6 @@ class SettingsPage extends Eventful {
 
   refreshStations() {
     this.stationsList.textContent = '';
-    this.refreshStationsButton.disabled = true;
     const soma = new Soma();
     soma.getStations().then(this.saveStations.bind(this)).
                        catch(this.getStationsError.bind(this));
@@ -253,7 +251,6 @@ class SettingsPage extends Eventful {
 
   saveStations(stations) {
     this.settings.stations = stations;
-    this.refreshStationsButton.disabled = false;
     Settings.save(this.settings).then(() => {
       this.showCachedStations(stations);
       this.emit('settings:change', this.settings);

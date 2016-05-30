@@ -7,8 +7,12 @@ body.settings.theme-dark .icon-light {
 body.settings.theme-dark .icon-dark {
   display: block;
 }
-body.settings.theme-dark .help-block {
+body.settings.theme-dark .help-block,
+body.settings.theme-dark .refresh-stations:before {
   color: #999;
+}
+body.settings.theme-light .refresh-stations:before {
+  color: #373737;
 }
 body.settings .station-count:before {
   content: "(";
@@ -17,7 +21,12 @@ body.settings .station-count:after {
   content: ")";
 }
 body.settings .refresh-stations {
-  margin-bottom: 14px;
+  float: right;
+  text-transform: none;
+  text-decoration: none;
+}
+body.settings .refresh-stations:before {
+  content: "\a0\2014\a0";
 }
 body.settings .stations-list {
   margin-bottom: 0;
