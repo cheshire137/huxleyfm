@@ -14,9 +14,13 @@ Specify `user_agent` in config.json to something custom for your app. The user a
 
     npm start
 
-To view the JavaScript console for debugging, run:
+### Environment Variables
 
-    NODE_ENV=development npm start
+Pass `NODE_ENV=development` to view the JavaScript console for debugging, e.g., `NODE_ENV=development npm start`.
+
+Pass `ENABLE_CHROMECAST=1` to enable the Chromecast button when a station is played.
+
+Pass `DISABLE_PLAYING=1` to disable actually playing music when a station is selected.
 
 ### Troubleshooting
 
