@@ -428,7 +428,6 @@ module.exports = class IndexPage extends Eventful {
 
   getStationInfoError(error) {
     console.error('failed getting station current track info', error);
-    this.emit('error', 'Could not get current track info for station.')
   }
 
   hideTrackInfo() {
