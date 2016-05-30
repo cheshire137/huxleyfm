@@ -142,34 +142,36 @@ module.exports = class IndexPage extends Eventful {
   }
 
   restorePlayingInfo() {
+    const station = this.audioTag.hasAttribute('data-station') ?
+        this.audioTag.getAttribute('data-station') : null;
+    if (!station) {
+      return;
+    }
     const isPaused = this.audioTag.getAttribute('data-paused') === 'true';
-    const station = this.audioTag.getAttribute('data-station');
     console.debug('restore playing info', station,
                   isPaused ? 'paused' : 'playing');
     if (isPaused) {
       this.pauseButton.classList.add('hidden');
       this.playButton.classList.remove('hidden');
       this.playButton.disabled = false;
-    } else if (station) {
+    } else {
       this.playButton.classList.add('hidden');
       this.pauseButton.classList.remove('hidden');
       this.pauseButton.disabled = false;
     }
-    if (station) {
-      const selected = this.stationMenu.querySelector('li.selected');
-      if (selected) {
-        selected.classList.remove('selected');
-        selected.classList.add('hidden');
-        this.restoreListItemPosition(selected);
-      }
-      const link = this.stationMenu.
-          querySelector('a[href="#' + station + '"]');
-      const listItem = link.parentNode;
-      listItem.classList.add('selected');
-      listItem.classList.remove('hidden');
-      this.moveListItemToTop(listItem);
-      this.updateTrackInfo(station);
+    const selected = this.stationMenu.querySelector('li.selected');
+    if (selected) {
+      selected.classList.remove('selected');
+      selected.classList.add('hidden');
+      this.restoreListItemPosition(selected);
     }
+    const link = this.stationMenu.
+        querySelector('a[href="#' + station + '"]');
+    const listItem = link.parentNode;
+    listItem.classList.add('selected');
+    listItem.classList.remove('hidden');
+    this.moveListItemToTop(listItem);
+    this.updateTrackInfo(station);
   }
 
   pause() {
@@ -232,7 +234,6 @@ module.exports = class IndexPage extends Eventful {
 
   subscribe(station) {
     if (this.socket && this.socket.connected) {
-      console.debug('socket already defined and is connected');
       return this.emitSubscribe(station);
     }
     return new Promise((resolve, reject) => {
