@@ -24,15 +24,15 @@ module.exports = class Fetcher {
     return new Promise((resolve, reject) => {
       fetch(url, options).then((response) => {
         if (response.headers.get('Content-Type') === 'text/html') {
-          this.handleHtmlResponse(response, resolve, reject);
+          this.handleHtmlResponse(response, url, resolve, reject);
         } else {
-          this.handleJsonResponse(response, resolve, reject);
+          this.handleJsonResponse(response, url, resolve, reject);
         }
       });
     });
   }
 
-  handleHtmlResponse(response, resolve, reject) {
+  handleHtmlResponse(response, url, resolve, reject) {
     response.text().then((body) => {
       if (response.ok) {
         resolve({ body: body });
@@ -46,7 +46,7 @@ module.exports = class Fetcher {
     });
   }
 
-  handleJsonResponse(response, resolve, reject) {
+  handleJsonResponse(response, url, resolve, reject) {
     response.json().then((json) => {
       if (response.ok) {
         resolve(json);
