@@ -378,18 +378,23 @@ header ul {
   padding: 0;
 }
 header ul .material-icons {
-  font-size: 32px;
+  font-size: 18px;
 }
 header ul li {
   display: table-cell;
   vertical-align: middle;
-  width: 50%;
   padding: 10px;
 }
 header ul li#return-link-wrapper {
   text-align: left;
 }
+header ul li#return-link-wrapper .material-icons {
+  font-size: 32px;
+}
 header ul li#chromecast-wrapper {
+  text-align: right;
+}
+header ul li#settings-wrapper {
   text-align: right;
 }
 header ul li#return-link-wrapper .material-icons {
@@ -404,6 +409,7 @@ header ul li a:hover,
 header ul li a:focus {
   display: block;
   text-decoration: none;
+  line-height: 32px;
 }
 header img {
   display: block;
@@ -444,6 +450,12 @@ header a:hover, header a:focus {
 .theme-dark header a:hover,
 .theme-dark header a:focus {
   color: #F79534;
+}
+.theme-dark header #settings-wrapper a,
+.theme-dark header #settings-wrapper a:link,
+.theme-dark header #settings-wrapper a:visited,
+.theme-dark header #settings-wrapper a:active {
+  color: #777;
 }
 main#page-container {
   padding: 10px;
