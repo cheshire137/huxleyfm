@@ -34,11 +34,12 @@ class PageLoader {
     this.statusArea = document.getElementById('status-message');
     this.audioTag = document.querySelector('audio');
     this.chromecastWrapper = document.getElementById('chromecast-wrapper');
-    this.chromecastLink = this.chromecastWrapper.querySelector('a');
+    this.chromecastLink = document.getElementById('chromecast-link');
     this.chromecastIcon = this.chromecastLink.querySelector('.material-icons');
     this.returnLinkWrapper = document.getElementById('return-link-wrapper');
     this.settingsLinkWrapper = document.getElementById('settings-wrapper');
     this.aboutLinkWrapper = document.getElementById('about-wrapper');
+    this.chromecastList = document.getElementById('chromecast-list');
   }
 
   onInitialSettingsLoad(settings) {
@@ -172,6 +173,12 @@ class PageLoader {
     if (!process.env.ENABLE_CHROMECAST) {
       return;
     }
+    if (this.chromecastLink.classList.contains('disabled')) {
+      return;
+    }
+    this.chromecastLink.classList.add('disabled');
+    this.chromecastIcon.textContent = 'refresh';
+    this.chromecastIcon.classList.add('spin');
     const scanner = new Scanner();
     scanner.addListener('chromecast', this.onChromecastFound.bind(this));
     scanner.addListener('error', this.onChromecastFindError.bind(this));
@@ -180,15 +187,27 @@ class PageLoader {
   }
 
   onChromecastFound(chromecast) {
-    console.log('chromecast', chromecast.name, chromecast.data);
+    const listItem = document.createElement('li');
+    const link = document.createElement('a');
+    link.textContent = chromecast.name.replace(/\.local$/, '');
+    link.href = chromecast.data;
+    listItem.appendChild(link);
+    this.chromecastList.appendChild(listItem);
+    this.chromecastList.classList.remove('hidden');
   }
 
   onChromecastScanComplete() {
     console.log('chromecast scan complete');
+    this.chromecastLink.classList.remove('disabled');
+    this.chromecastIcon.classList.remove('spin');
+    this.chromecastIcon.textContent = 'cast';
   }
 
   onChromecastFindError(error) {
     console.error('failed to find Chromecasts', error);
+    this.chromecastLink.classList.remove('disabled');
+    this.chromecastIcon.classList.remove('spin');
+    this.chromecastIcon.textContent = 'cast';
   }
 
   onSettingsChanged(settings) {

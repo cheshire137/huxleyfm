@@ -370,40 +370,69 @@ header {
   position: relative;
   height: 55px;
 }
-header ul {
+header > ul {
   font-size: 22px;
   display: table;
   width: 100%;
   list-style: none;
   padding: 0;
 }
-header ul .material-icons {
+header > ul .material-icons {
   font-size: 18px;
 }
-header ul li {
+header > ul > li {
   display: table-cell;
   vertical-align: middle;
   padding: 10px;
 }
-header ul li#return-link-wrapper {
+header > ul > li#return-link-wrapper {
   text-align: left;
 }
-header ul li#return-link-wrapper .material-icons {
+header > ul > li#return-link-wrapper .material-icons {
   font-size: 32px;
 }
-header ul li#return-link-wrapper .material-icons {
+header > ul > li#return-link-wrapper .material-icons {
   margin-right: -8px;
   margin-top: -2px;
 }
-header ul li a,
-header ul li a:link,
-header ul li a:visited,
-header ul li a:active,
-header ul li a:hover,
-header ul li a:focus {
+header > ul > li a,
+header > ul > li a:link,
+header > ul > li a:visited,
+header > ul > li a:active,
+header > ul > li a:hover,
+header > ul > li a:focus {
   display: block;
   text-decoration: none;
   line-height: 32px;
+}
+header #chromecast-list {
+  font-size: 14px;
+  position: absolute;
+  z-index: 3;
+  text-align: left;
+  right: 10px;
+}
+header #chromecast-link.disabled {
+  cursor: default;
+}
+header #chromecast-list li a {
+  display: block;
+  padding: 0 6px;
+}
+header #chromecast-list li a:hover,
+header #chromecast-list li a:focus {
+  text-decoration: underline;
+}
+.theme-dark header #chromecast-list {
+  background-color: #333;
+}
+.theme-dark header #chromecast-list li a,
+.theme-dark header #chromecast-list li a:link,
+.theme-dark header #chromecast-list li a:visited,
+.theme-dark header #chromecast-list li a:active,
+.theme-dark header #chromecast-list li a:hover,
+.theme-dark header #chromecast-list li a:focus {
+  color: #f8f8f8;
 }
 header img {
   display: block;
@@ -520,6 +549,10 @@ html, body {
 @keyframes spin {
   from { transform:rotate(0deg); }
   to { transform:rotate(360deg); }
+}
+.spin {
+  animation: spin 3s infinite .25s linear;
+  transition: all .8s ease;
 }
 .spinner {
   animation: spin 3s infinite .25s linear;
