@@ -222,14 +222,55 @@ class PageLoader {
     this.chromecastIcon.classList.remove('spin');
     this.chromecastIcon.textContent = 'cast';
     this.chromecastList.classList.add('hidden');
-    console.log({
+    const chromecast = new Chromecast({
       host: link.getAttribute('data-host'),
       url: this.stationUrl
     });
-    new Chromecast({
-      host: link.getAttribute('data-host'),
-      url: this.stationUrl
-    });
+    chromecast.addListener('connected', this.onChromecastConnected.bind(this));
+    chromecast.addListener('launched', this.onChromecastLaunched.bind(this));
+    chromecast.addListener('launch-error',
+                           this.onChromecastLaunchError.bind(this));
+    chromecast.addListener('error', this.onChromecastError.bind(this));
+    chromecast.addListener('client-error',
+                           this.onChromecastClientError.bind(this));
+    chromecast.addListener('status', this.onChromecastStatus.bind(this));
+    chromecast.addListener('player-loaded',
+                           this.onChromecastPlayerLoaded.bind(this));
+    chromecast.addListener('player-load-error',
+                           this.onChromecastPlayerLoadError.bind(this));
+    chromecast.connect();
+  }
+
+  onChromecastConnected() {
+
+  }
+
+  onChromecastLaunched() {
+
+  }
+
+  onChromecastError(error) {
+
+  }
+
+  onChromecastPlayerLoadError(error) {
+
+  }
+
+  onChromecastClientError(error) {
+
+  }
+
+  onChromecastLaunchError(error) {
+
+  }
+
+  onChromecastStatus(status) {
+    console.log(status.playerState, status.media ? status.media.contentId : 'unknown', 'volume ' + status.volume.level, status.volume.muted ? 'muted' : 'not muted');
+  }
+
+  onChromecastPlayerLoaded(status) {
+    this.onChromecastStatus(status);
   }
 
   onSettingsChanged(settings) {
