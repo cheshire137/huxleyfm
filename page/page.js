@@ -176,6 +176,8 @@ class PageLoader {
     if (this.chromecastLink.classList.contains('disabled')) {
       return;
     }
+    const listItems = Array.from(this.chromecastList.querySelectorAll('li'));
+    listItems.forEach(li => li.remove());
     this.chromecastLink.classList.add('disabled');
     this.chromecastIcon.textContent = 'refresh';
     this.chromecastIcon.classList.add('spin');
