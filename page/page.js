@@ -3,6 +3,7 @@ const Router = require('../models/router');
 const LinkHandler = require('../models/linkHandler');
 const IndexPage = require('../index/indexPage');
 const SettingsPage = require('../settings/settingsPage');
+const AboutPage = require('../about/aboutPage');
 const FlashMessages = require('../models/flashMessages');
 // const Client = require('castv2-client').Client;
 // const DefaultMediaReceiver = require('castv2-client').DefaultMediaReceiver;
@@ -107,6 +108,8 @@ class PageLoader {
   }
 
   onAboutPageLoaded() {
+    const page = new AboutPage();
+    this.listenForPageMessages(page);
     this.returnLinkWrapper.classList.remove('hidden');
   }
 
