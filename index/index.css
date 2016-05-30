@@ -139,3 +139,11 @@ body.player main#page-container {
   flex-direction: column;
   justify-content: center;
 }
+body.player #station-menu a[data-tooltip]:hover:before,
+body.player #station-menu a[data-tooltip]:hover:after {
+  display: none;
+}
+body.player #station-menu.expanded a[data-tooltip]:hover:before,
+body.player #station-menu.expanded a[data-tooltip]:hover:after {
+  display: block;
+}
