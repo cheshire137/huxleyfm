@@ -1,11 +1,33 @@
 body.player {
   overflow: hidden;
 }
+body.player .player-controls {
+  display: table;
+  width: 100%;
+}
+body.player .menu-container,
+body.player .button-container {
+  display: table-cell;
+  vertical-align: middle;
+}
+body.player .menu-container {
+  width: 100%;
+}
+body.player .button-container {
+  padding-left: 10px;
+  text-align: right;
+}
 body.player #songs-list {
-  height: 67px;
+  height: 191px;
   overflow: auto;
   margin-top: 20px;
   list-style: none;
+}
+body.player #songs-list li {
+  line-height: 1.4;
+}
+body.player #songs-list li + li {
+  margin-top: 3px;
 }
 body.player #songs-list .title {
   font-weight: 700;
@@ -38,7 +60,7 @@ body.player #pause {
 }
 body.player #play .material-icons,
 body.player #pause .material-icons {
-  font-size: 100px;
+  font-size: 56px;
 }
 body.player #play {
   padding: 0;
@@ -65,7 +87,6 @@ body.player #station-menu {
   height: 60px;
   z-index: 2;
   overflow: hidden;
-  margin-bottom: 20px;
 }
 body.player #station-menu .material-icons {
   vertical-align: middle;
@@ -76,11 +97,11 @@ body.player #station-menu.expanded {
   position: absolute;
   left: 10px;
   right: 10px;
-  top: 65px;
+  top: 37px;
   bottom: 0;
   width: auto;
 }
-body.player #station-query.hidden + #station-menu.expanded {
+body.player #station-query.hidden + .player-controls #station-menu.expanded {
   top: 11px;
 }
 body.player.theme-dark #station-menu {

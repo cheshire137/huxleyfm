@@ -1,14 +1,19 @@
-<label class="sr-only" for="station">Station:</label>
 <div id="station-query" class="hidden"></div>
-<ol id="station-menu" class="disabled">
-  <li class="selected" data-index="0">
-    <a href="#">Choose a SomaFM station</a>
-  </li>
-</ol>
-<button id="play" type="button" disabled="disabled">
-  <i class="material-icons">play_arrow</i>
-</button>
-<button id="pause" type="button" class="hidden">
-  <i class="material-icons">pause</i>
-</button>
+<div class="player-controls">
+  <div class="menu-container">
+    <ol id="station-menu" class="disabled">
+      <li class="selected" data-index="0">
+        <a href="#">Choose a SomaFM station</a>
+      </li>
+    </ol>
+  </div>
+  <div class="button-container">
+    <button id="play" type="button" disabled="disabled">
+      <i class="material-icons">play_arrow</i>
+    </button>
+    <button id="pause" type="button" class="hidden">
+      <i class="material-icons">pause</i>
+    </button>
+  </div>
+</div>
 <ol id="songs-list"></ol>
