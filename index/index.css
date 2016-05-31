@@ -27,7 +27,7 @@ body.player #songs-list li {
   line-height: 1.4;
 }
 body.player #songs-list li + li {
-  margin-top: 3px;
+  margin-top: 5px;
 }
 body.player #songs-list .title {
   font-weight: 700;

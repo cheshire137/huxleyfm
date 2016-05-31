@@ -514,7 +514,7 @@ header a:hover, header a:focus {
   color: #777;
 }
 main#page-container {
-  padding: 10px;
+  padding: 0 20px 20px 20px;
   position: relative;
 }
 *, *:before, *:after {
