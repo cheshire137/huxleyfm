@@ -10,6 +10,6 @@ elif [[ "$TRAVIS_OS_NAME" == "windows" ]]; then
 	echo 'TODO'
 fi
 
-export OSX_RELEASE=$(ls dist/HuxleyFM-*-os-x-darwin-x64.zip)
-export LINUX_ia32=$(ls dist/HuxleyFM-*-linux-ia32.tar.gz)
-export LINUX_x64=$(ls dist/HuxleyFM-*-linux-x64.tar.gz)
+#export OSX_RELEASE=$(ls dist/HuxleyFM-*-os-x-darwin-x64.zip)
+#export LINUX_ia32=$(ls dist/HuxleyFM-*-linux-ia32.tar.gz)
+#export LINUX_x64=$(ls dist/HuxleyFM-*-linux-x64.tar.gz)
