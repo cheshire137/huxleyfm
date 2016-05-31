@@ -131,7 +131,11 @@ class PageLoader {
     if (this.page && this.page instanceof IndexPage) {
       return;
     }
-    this.page = new IndexPage(this.settings, this.audioTag);
+    let lastNotifiedSongID = null;
+    if (this.song) {
+      lastNotifiedSongID = this.song.id;
+    }
+    this.page = new IndexPage(this.settings, this.audioTag, lastNotifiedSongID);
     this.listenForPageMessages();
     this.page.addListener('play', this.onPlay.bind(this));
     this.page.addListener('pause', this.onPause.bind(this));

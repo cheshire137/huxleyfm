@@ -14,7 +14,7 @@ const __bind = function(fn, me) {
 };
 
 module.exports = class IndexPage extends Eventful {
-  constructor(settings, audioTag) {
+  constructor(settings, audioTag, lastNotifiedSongID) {
     console.debug('index page init');
     super();
     this.settings = settings;
@@ -26,6 +26,7 @@ module.exports = class IndexPage extends Eventful {
     this.pause = __bind(this.pause, this);
     this.onKeydown = __bind(this.onKeydown, this);
     this.stationQuery = '';
+    this.lastNotifiedSongID = lastNotifiedSongID;
     this.soma = new Soma();
     this.findElements();
     this.listenForMusicChanges();
@@ -461,6 +462,9 @@ module.exports = class IndexPage extends Eventful {
     if (!this.settings.notifications) {
       return;
     }
+    if (this.lastNotifiedSongID === song.id) {
+      return;
+    }
     let message = song.title;
     if (typeof song.artist === 'string' && song.artist.length > 0) {
       message += ' by ' + song.artist;
@@ -471,6 +475,7 @@ module.exports = class IndexPage extends Eventful {
       body: message,
       icon: path.join(__dirname, '..', 'images', station + '.png')
     };
+    this.lastNotifiedSongID = song.id;
     new Notification(message, options);
   }
 
