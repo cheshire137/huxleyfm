@@ -7,24 +7,15 @@ os:
 node_js:
 - '5.1'
 sudo: false
-install:
-- npm install
-script:
-- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then npm run build                                                                 ; fi
-- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then npm run-script build-linux                                                  ; fi
+#install:
+#- npm install
 addons:
   apt:
     packages:
     - libavahi-compat-libdnssd-dev
 
 before_deploy:
-- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; (cd dist; zip -r HuxleyFM-$TRAVIS_TAG-os-x-darwin-x64.zip HuxleyFM-os-x-darwin-x64 )  ; fi
-- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; export OSX_RELEASE=$(ls dist/HuxleyFM-*-os-x-darwin-x64.zip)                          ; fi
-
-- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; (cd dist; tar zcvf HuxleyFM-$TRAVIS_TAG-linux-ia32.tar.gz HuxleyFM-linux-ia32)      ; fi
-- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; (cd dist; tar zcvf HuxleyFM-$TRAVIS_TAG-linux-x64.tar.gz HuxleyFM-linux-x64)        ; fi
-- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; export LINUX_ia32=$(ls dist/HuxleyFM-*-linux-ia32.tar.gz)                           ; fi
-- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; export LINUX_x64=$(ls dist/HuxleyFM-*-linux-x64.tar.gz)                             ; fi
+- scripts/travis/before_deploy
 deploy:
   provider: releases
   api_key:
