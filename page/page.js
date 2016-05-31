@@ -169,9 +169,7 @@ class PageLoader {
   onPlay(url) {
     this.stationUrl = url;
     console.debug('playing', this.stationUrl);
-    if (process.env.ENABLE_CHROMECAST) {
-      this.chromecastWrapper.classList.remove('hidden');
-    }
+    this.chromecastWrapper.classList.remove('hidden');
     if (this.chromecast) {
       if (this.chromecast.url === this.stationUrl) {
         this.chromecast.play();
@@ -183,18 +181,13 @@ class PageLoader {
 
   onPause(station) {
     this.stationUrl = null;
-    if (process.env.ENABLE_CHROMECAST) {
-      this.chromecastWrapper.classList.add('hidden');
-    }
+    this.chromecastWrapper.classList.add('hidden');
     if (this.chromecast) {
       this.chromecast.pause();
     }
   }
 
   onChromecastClick(event) {
-    if (!process.env.ENABLE_CHROMECAST) {
-      return;
-    }
     event.preventDefault();
     this.chromecastLink.blur();
     if (this.chromecastLink.classList.contains('disabled')) {
