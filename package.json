@@ -17,7 +17,8 @@
     "start": "electron .",
     "build": "npm run-script build-osx",
     "build-osx": "if [ -d dist/HuxleyFM-darwin-x64 ]; then rm -r dist/HuxleyFM-darwin-x64; fi && node_modules/electron-packager/cli.js . --out=dist --app-version=$npm_package_version --prune --asar --overwrite --icon=images/icon512.png.icns --appname=HuxleyFM --platform=darwin --arch=all",
-    "build-windows": "node node_modules\\electron-packager\\cli.js . --out=dist --prune --asar --overwrite --appname=HuxleyFM --platform=win32 --arch=all"
+    "build-windows": "node node_modules\\electron-packager\\cli.js . --out=dist --prune --asar --overwrite --appname=HuxleyFM --platform=win32 --arch=all",
+    "build-linux": "if [ -d dist/HuxleyFM-linux-ia32 ]; then rm -r dist/HuxleyFM-linux-ia32; fi && if [ -d dist/HuxleyFM-linux-x64 ]; then rm -r dist/HuxleyFM-linux-x64; fi && node_modules/electron-packager/cli.js . --out=dist --app-version=$npm_package_version --prune --asar --overwrite --appname=HuxleyFM --platform=linux --arch=all"
   },
   "files": [
     "main.js",
