@@ -26,6 +26,7 @@ module.exports = class IndexPage extends Eventful {
     this.pause = __bind(this.pause, this);
     this.onKeydown = __bind(this.onKeydown, this);
     this.stationQuery = '';
+    this.soma = new Soma();
     this.findElements();
     this.listenForMusicChanges();
     this.getStations().then(this.insertStationLinks.bind(this)).
@@ -44,6 +45,9 @@ module.exports = class IndexPage extends Eventful {
     this.playButton.removeEventListener('click', this.play);
     this.pauseButton.removeEventListener('click', this.pause);
     window.removeEventListener('keydown', this.onKeydown);
+    if (this.songListInterval) {
+      clearInterval(this.songListInterval);
+    }
   }
 
   findElements() {
@@ -249,17 +253,33 @@ module.exports = class IndexPage extends Eventful {
   }
 
   getSongsList(station) {
-    const soma = new Soma();
+    if (this.songListInterval) {
+      clearInterval(this.songListInterval);
+    }
     this.emptySongsList();
-    soma.getStationSongs(station).
-         then(this.onSongListLoaded.bind(this)).
-         catch(this.onSongListLoadError.bind(this, station));
+    const getter = () => {
+      console.debug('refreshing songs list for ' + station);
+      this.soma.getStationSongs(station).
+           then(this.onSongListLoaded.bind(this)).
+           catch(this.onSongListLoadError.bind(this, station));
+    };
+    const seconds = 30;
+    this.songListInterval = setInterval(getter, seconds * 1000);
+    getter();
   }
 
   onSongListLoaded(songs) {
-    console.log('songs', songs);
     songs.forEach((song) => {
-      this.songsList.appendChild(this.getSongListItem(song));
+      let listItem = document.getElementById(song.id);
+      if (!listItem) {
+        listItem = this.getSongListItem(song);
+        const firstItem = this.songsList.firstChild;
+        if (firstItem) {
+          this.songsList.insertBefore(listItem, firstItem);
+        } else {
+          this.songsList.appendChild(listItem);
+        }
+      }
     });
   }
 
@@ -285,6 +305,7 @@ module.exports = class IndexPage extends Eventful {
       date.textContent = this.dateToStr(song.date);
       listItem.appendChild(date);
     }
+    listItem.id = song.id;
     return listItem;
   }
 
@@ -411,9 +432,8 @@ module.exports = class IndexPage extends Eventful {
         resolve(this.settings.stations);
       } else {
         console.debug('fetching stations list from SomaFM');
-        const soma = new Soma();
-        soma.getStations(true).then(this.saveStations.bind(this)).
-                               then(resolve).catch(reject);
+        this.soma.getStations(true).then(this.saveStations.bind(this)).
+                                    then(resolve).catch(reject);
       }
     });
   }
@@ -439,7 +459,10 @@ module.exports = class IndexPage extends Eventful {
     if (hours > 12) {
       hours = hours - 12;
     }
-    const minutes = date.getMinutes();
+    let minutes = date.getMinutes();
+    if (minutes < 10) {
+      minutes = '0' + minutes;
+    }
     return hours + ':' + minutes + ' ' + amPM;
   }
 

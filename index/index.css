@@ -121,7 +121,6 @@ body.player #station-menu.expanded li.selected {
 body.player #station-menu li a {
   text-decoration: none;
   display: block;
-  padding: 0 10px;
   line-height: 60px;
 }
 body.player #station-menu li a img {

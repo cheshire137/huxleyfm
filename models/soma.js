@@ -1,5 +1,6 @@
 const Config = require('../config.json');
 const Fetcher = require('./fetcher');
+const crypto = require('crypto');
 
 module.exports = class Soma extends Fetcher {
   getStations(simple) {
@@ -27,10 +28,22 @@ module.exports = class Soma extends Fetcher {
       const url = Config.soma_api_url + `songs/${station}.json`;
       this.get(url).then((response) => {
         const songs = response.songs.map((song) => {
+          song.id = 'song-' + crypto.createHash('md5').
+              update(song.title + song.artist + song.album + song.date, 'utf8').
+              digest('hex');
           if (typeof song.date === 'string') {
             song.date = new Date(parseInt(song.date, 10) * 1000);
           }
           return song;
+        });
+        songs.sort((a, b) => {
+          if (a.date && b.date) {
+            if (a.date < b.date) {
+              return -1;
+            }
+            return a.date > b.date ? 1 : 0;
+          }
+          return a.title.toLowerCase().localeCompare(b.title.toLowerCase());
         });
         resolve(songs);
       }).catch(reject);
