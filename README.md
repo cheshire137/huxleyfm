@@ -4,6 +4,10 @@ A desktop player for [SomaFM](http://somafm.com/). Compare to my [Chrome extensi
 
 **[Download](https://github.com/cheshire137/huxleyfm/releases)**
 
+![Screenshot of OS X app](https://raw.githubusercontent.com/cheshire137/huxleyfm/master/screenshot-os-x.png)
+
+![Screenshot of OS X notification](https://raw.githubusercontent.com/cheshire137/huxleyfm/master/screenshot-notification.png)
+
 ## How to Develop
 
     npm install
