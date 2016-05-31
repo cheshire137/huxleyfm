@@ -23,6 +23,9 @@ body.player #songs-list {
   margin-top: 20px;
   list-style: none;
 }
+body.player.theme-dark #songs-list {
+  color: #b9b9b9;
+}
 body.player #songs-list li {
   line-height: 1.4;
 }
@@ -51,6 +54,7 @@ body.player #songs-list .artist + .date:before {
 }
 body.player #songs-list .date {
   font-style: italic;
+  white-space: nowrap;
 }
 body.player #play,
 body.player #pause {
@@ -77,8 +81,6 @@ body.player #station-query {
 }
 body.player #station-menu {
   width: 100%;
-  border-style: solid;
-  border-width: 1px;
   font-size: 16px;
   text-align: left;
   border-radius: 2px;
@@ -95,26 +97,20 @@ body.player #station-menu.expanded {
   height: auto;
   overflow: auto;
   position: absolute;
-  left: 10px;
-  right: 10px;
-  top: 37px;
+  left: 20px;
+  right: 20px;
+  top: 27px;
   bottom: 0;
   width: auto;
 }
 body.player #station-query.hidden + .player-controls #station-menu.expanded {
-  top: 11px;
+  top: 1px;
 }
-body.player.theme-dark #station-menu {
-  border-color: #133C46;
+body.player.theme-dark #station-menu.expanded {
+  background-color: #222;
 }
-body.player.theme-light #station-menu {
-  border-color: #F79534;
-}
-body.player.theme-light #station-menu.disabled {
-  border-color: #ccc;
-}
-body.player.theme-dark #station-menu.disabled {
-  border-color: #133C46;
+body.player.theme-light #station-menu.expanded {
+  background-color: #fff;
 }
 body.player #station-menu li {
 }
