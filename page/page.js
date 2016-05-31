@@ -184,10 +184,6 @@ class PageLoader {
   }
 
   onPause(station) {
-    this.stationUrl = null;
-    this.station = null;
-    this.song = null;
-    this.chromecastWrapper.classList.add('hidden');
     if (this.chromecast) {
       this.chromecast.pause();
     }
