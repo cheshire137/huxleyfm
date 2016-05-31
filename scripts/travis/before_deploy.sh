@@ -8,6 +8,7 @@ elif [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
 	(cd dist; tar zcvf HuxleyFM-$TRAVIS_TAG-linux-x64.tar.gz HuxleyFM-linux-x64)
 
 	# also try windows!
-	npm run-script build-windows
-#	(cd dist; zip -r HuxleyFM-$TRAVIS_TAG-windows-x64.zip HuxleyFM-windows-x64)
+	npm run-script build-windows-wine
+	(cd dist; zip -r HuxleyFM-$TRAVIS_TAG-win32-ia32.zip HuxleyFM-win32-ia32)
+	(cd dist; zip -r HuxleyFM-$TRAVIS_TAG-win32-x64.zip HuxleyFM-win32-x64)
 fi
