@@ -95,8 +95,8 @@ class SettingsPage extends Eventful {
       }
       return;
     }
-    this.lastfmAuthContainer.removeClass('hidden');
-    this.lastfmScrobblingContainer.removeClass('hidden');
+    this.lastfmAuthContainer.classList.remove('hidden');
+    this.lastfmScrobblingContainer.classList.remove('hidden');
   }
 
   listenForChanges() {
