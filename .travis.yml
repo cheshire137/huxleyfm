@@ -10,27 +10,27 @@ sudo: false
 install:
 - npm install
 script:
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then npm run build                                                                 ; fi
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then npm run-script build-linux                                                  ; fi
-#- npm run-script build-linux
-#- (cd /home/travis/build/jgrowl/huxleyfm/dist; tar zcvf HuxleyFM-linux-ia32.tar.gz HuxleyFM-linux-ia32)
-#- (cd /home/travis/build/jgrowl/huxleyfm/dist; tar zcvf HuxleyFM-linux-x64.tar.gz HuxleyFM-linux-x64)
 addons:
   apt:
     packages:
     - libavahi-compat-libdnssd-dev
 
 before_deploy:
-#- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then npm run-script build-linux                                                  ; fi
-- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; (cd /dist; tar zcvf HuxleyFM-$TRAVIS_TAG-linux-ia32.tar.gz HuxleyFM-linux-ia32)  ; fi
-- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; (cd /dist; tar zcvf HuxleyFM-$TRAVIS_TAG-linux-x64.tar.gz HuxleyFM-linux-x64)    ; fi
-- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; export LINUX_ia32=$(ls dist/HuxleyFM-*-linux-ia32.tar.gz)                        ; fi
-- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; export LINUX_x64=$(ls dist/HuxleyFM-*-linux-x64.tar.gz)                          ; fi
-- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then npm run build                                                                 ; fi
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; (cd dist; zip -r HuxleyFM-$TRAVIS_TAG-os-x-darwin-x64.zip HuxleyFM-os-x-darwin-x64 )  ; fi
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; export OSX_RELEASE=$(ls dist/HuxleyFM-*-os-x-darwin-x64.zip)                          ; fi
+
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; (cd dist; tar zcvf HuxleyFM-$TRAVIS_TAG-linux-ia32.tar.gz HuxleyFM-linux-ia32)      ; fi
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; (cd dist; tar zcvf HuxleyFM-$TRAVIS_TAG-linux-x64.tar.gz HuxleyFM-linux-x64)        ; fi
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; export LINUX_ia32=$(ls dist/HuxleyFM-*-linux-ia32.tar.gz)                           ; fi
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; export LINUX_x64=$(ls dist/HuxleyFM-*-linux-x64.tar.gz)                             ; fi
 deploy:
   provider: releases
   api_key:
     secure: HTyVIZ5UCMEcRlTP4UhMebHkR1OeTwXxs9UBtHwORFTFYJ5YwX/KkZBesUbgWgZ1/MFCdoL47VXdbQRrchwdHFoq0rg47G9a8EKrTUG1GV+ISWRaAu3N/aEU4ZnjjFLgQfl6Mkwgrutn/D2D3hZ7/RLAmEn15cta/t8Ye2RWhtYeLhvN8oPPYNWyTP4X6yO5sZ5B6yboe2yJj5SRF/gxTBmLoJOqdJdms6hzPFhXI03zXlqfQZChq/BtptPtvHkF9GcFTRw106TVSvCWFsj339Q00+q1ijT0GtG8BheMaNRrtKFIAvyCUYUjOlWCJdy7TfqH7B/T2o7KNbsf+dMT1JNQCZRqoH3z2abomgIqoXMcbbMqcSsjbgUByGQcB2C/hBLQeMQ+M+RCNgSqiHQPaGXc6CRalvU+XF2F6NwFZz2SLrmNfx347KKmNV6htfiSS3//Vr3BRSDvTstw3hmEb3ES9DZflR/gbrb9GJZ8iH1K8p9gNJ82ikvpavfo8803w2rWpGPrCuXPnY98tErixc3rGf99Ijh4Ypy25FRy5bjBZAryxDHkeNrAqFjM/XOEA64zw83WRc+d7yQj5C601dGM8jiZwjEbsRGG7iv1gegG71vDRG+KSJksdDuhTBrJvBWnwY67kCqmAEeEDcTxa5klB1F9oaA7+rZak4QeoQk=
   file:
+   - "${OSX_RELEASE}"
    - "${LINUX_ia32}"
    - "${LINUX_x64}"
   skip_cleanup: true
