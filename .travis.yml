@@ -19,5 +19,6 @@ deploy:
   file:
   - "/home/travis/build/jgrowl/huxleyfm/dist/HuxleyFM-linux-ia32.tar.gz"
   - "/home/travis/build/jgrowl/huxleyfm/dist/HuxleyFM-linux-x64.tar.gz"
+  skip_cleanup: true
   on:
     repo: jgrowl/huxleyfm
