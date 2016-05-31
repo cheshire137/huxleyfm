@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
 	npm run build
-	(cd dist; zip -r HuxleyFM-$TRAVIS_TAG-os-x-darwin-x64.zip HuxleyFM-os-x-darwin-x64 )
+	(cd dist; zip -r HuxleyFM-$TRAVIS_TAG-darwin-x64.zip HuxleyFM-darwin-x64)
 elif [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
 	npm run-script build-linux
 	(cd dist; tar zcvf HuxleyFM-$TRAVIS_TAG-linux-ia32.tar.gz HuxleyFM-linux-ia32)
