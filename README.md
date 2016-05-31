@@ -70,6 +70,10 @@ Builds the app for OS X using [electron-packager](https://github.com/electron-us
 
 Builds the app for Windows.
 
+    npm run-script build-linux
+
+Builds the app for Linux.
+
 ## License
 
 MIT © [Sarah Vessels](http://3till7.net)
