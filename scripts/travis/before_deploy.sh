@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
 	npm run build
 	(cd dist; zip -r HuxleyFM-$TRAVIS_TAG-os-x-darwin-x64.zip HuxleyFM-os-x-darwin-x64 )

@@ -15,7 +15,7 @@ addons:
     - libavahi-compat-libdnssd-dev
 
 before_deploy:
-- scripts/travis/before_deploy
+- scripts/travis/before_deploy.sh
 deploy:
   provider: releases
   api_key:
