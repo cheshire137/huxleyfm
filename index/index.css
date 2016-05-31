@@ -21,7 +21,7 @@ body.player #songs-list {
   overflow: auto;
   margin-top: 20px;
   list-style: none;
-  height: 132px;
+  height: 152px;
 }
 body.player.theme-dark #songs-list,
 body.player.theme-dark .station-info {
@@ -96,7 +96,7 @@ body.player #station-menu .material-icons {
 }
 body.player #station-menu.expanded {
   height: auto;
-  overflow: auto;
+  overflow-y: auto;
   position: absolute;
   left: 20px;
   right: 20px;
@@ -163,11 +163,10 @@ body.player #station-menu.expanded a[data-tooltip]:hover:after {
   display: block;
 }
 body.player .station-info {
-  margin-top: 20px;
   display: table;
   width: 100%;
   line-height: 20px;
-  height: 41px;
+  height: 31px;
 }
 body.player #dj-name,
 body.player #listener-count {
@@ -177,9 +176,10 @@ body.player #listener-count {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  padding-top: 20px;
+  padding-top: 10px;
   border-top-width: 1px;
   border-top-style: solid;
+  font-size: 12px;
 }
 body.player #dj-name.hidden,
 body.player #listener-count.hidden {
