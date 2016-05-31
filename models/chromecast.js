@@ -1,6 +1,5 @@
 const Client = require('castv2-client').Client;
 const DefaultMediaReceiver = require('castv2-client').DefaultMediaReceiver;
-const mdns = require('mdns');
 const Eventful = require('./eventful');
 
 module.exports = class Chromecast extends Eventful {
