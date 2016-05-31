@@ -56,6 +56,7 @@ module.exports = class IndexPage extends Eventful {
     this.durationEl = document.getElementById('duration');
     this.stationQueryEl = document.getElementById('station-query');
     this.lastUpdatedEl = document.getElementById('last-updated');
+    this.startTimeEl = document.getElementById('start-time');
   }
 
   listenForMediaKeys() {
