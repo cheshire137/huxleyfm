@@ -204,9 +204,6 @@ module.exports = class IndexPage extends Eventful {
   pause() {
     console.debug('pausing...');
     const station = this.audioTag.getAttribute('data-station');
-    if (station) {
-      this.unsubscribe(station).catch(this.unsubscribeError.bind(this));
-    }
     this.audioTag.pause();
     this.audioTag.currentTime = 0;
     this.audioTag.setAttribute('data-paused', 'true');
@@ -237,9 +234,6 @@ module.exports = class IndexPage extends Eventful {
       station = this.getCurrentStation();
     }
     this.resetTrackInfoIfNecessary(station);
-    this.subscribe(station).then(() => {
-      this.socket.on('track', this.onTrack);
-    }).catch(this.subscribeError.bind(this));
     const stationUrl = Config.soma_station_url + station;
     if (!process.env.DISABLE_PLAYING && !this.chromecasting) {
       this.audioTag.src = stationUrl;
@@ -327,6 +321,8 @@ module.exports = class IndexPage extends Eventful {
     });
     if (isNewSong) {
       this.emit('song', latestSong);
+      this.notifyAboutTrack(latestSong);
+      this.scrobbleTrack(latestSong);
     }
   }
 
@@ -371,62 +367,6 @@ module.exports = class IndexPage extends Eventful {
     this.djName.classList.add('hidden');
     this.listenerCount.textContent = '';
     this.listenerCount.classList.add('hidden');
-  }
-
-  subscribe(station) {
-    if (this.socket && this.socket.connected) {
-      return this.emitSubscribe(station);
-    }
-    return new Promise((resolve, reject) => {
-      if (!this.socket) {
-        console.debug('opening socket to ' + Config.scrobbler_api_url);
-        this.socket = require('socket.io-client')(Config.scrobbler_api_url);
-      }
-      console.debug('listening for socket connect...');
-      this.socket.on('connect', () => {
-        console.debug('socket connected');
-        this.emitSubscribe(station).then(resolve).catch(reject);
-      });
-    });
-  }
-
-  subscribeError(station, response) {
-    console.error('failed to subscribe to ' + station, response);
-  }
-
-  unsubscribe(station) {
-    console.debug('unsubscribing from ' + station);
-    return new Promise((resolve, reject) => {
-      if (!this.socket || !station) {
-        resolve();
-        return;
-      }
-      this.socket.emit('unsubscribe', station, (response) => {
-        if (response.unsubscribed) {
-          this.socket.removeListener('track', this.onTrack);
-          resolve();
-        } else {
-          reject(station, response);
-        }
-      });
-    });
-  }
-
-  unsubscribeError(station, response) {
-    console.error('failed to unsubscribe from ' + station, response);
-  }
-
-  emitSubscribe(station) {
-    console.debug('subscribing to ' + station);
-    return new Promise((resolve, reject) => {
-      this.socket.emit('subscribe', station, (response) => {
-        if (response.subscribed) {
-          resolve(station);
-        } else {
-          reject(station, response);
-        }
-      });
-    });
   }
 
   insertStationLinks(stations) {
@@ -517,29 +457,24 @@ module.exports = class IndexPage extends Eventful {
     return hours + ':' + minutes + ' ' + amPM;
   }
 
-  onTrack(track) {
-    this.notifyAboutTrack(track);
-    this.scrobbleTrack(track);
-  }
-
-  notifyAboutTrack(track) {
+  notifyAboutTrack(song) {
     if (!this.settings.notifications) {
       return;
     }
-    let message = track.title;
-    if (typeof track.artist === 'string' && track.artist.length > 0) {
-      message += ' by ' + track.artist;
+    let message = song.title;
+    if (typeof song.artist === 'string' && song.artist.length > 0) {
+      message += ' by ' + song.artist;
     }
     const station = this.getCurrentStation();
     const options = {
-      title: track.title,
+      title: song.title,
       body: message,
       icon: path.join(__dirname, '..', 'images', station + '.png')
     };
     new Notification(message, options);
   }
 
-  scrobbleTrack(track) {
+  scrobbleTrack(song) {
     if (!this.settings.lastfmSessionKey || !this.settings.lastfmUser ||
         !this.settings.scrobbling) {
       return;
@@ -549,8 +484,9 @@ module.exports = class IndexPage extends Eventful {
       user: this.settings.lastfmUser,
       sessionKey: this.settings.lastfmSessionKey
     };
-    lastfm.scrobble(track, auth).then(this.onScrobbled.bind(this)).
-                                 catch(this.onScrobbleError.bind(this));
+    lastfm.scrobble(song, auth).
+           then(this.onScrobbled.bind(this)).
+           catch(this.onScrobbleError.bind(this));
   }
 
   onScrobbled(response) {
@@ -597,9 +533,12 @@ module.exports = class IndexPage extends Eventful {
       this.filterStations();
     } else if (keyCode === 13) { // Enter
       const listItems = Array.from(this.stationMenu.querySelectorAll('li'));
-      const visible = listItems.filter(li => !li.classList.contains('hidden'));
-      if (visible.length > 0) {
-        const link = visible[0].querySelector('a');
+      const topListItem = listItems.filter((li) => {
+        return li.getAttribute('data-index') !== '0' &&
+               !li.classList.contains('hidden');
+      })[0];
+      if (topListItem) {
+        const link = topListItem.querySelector('a');
         this.updateStationQuery('');
         this.filterStations();
         this.handleStationLinkClick(link);

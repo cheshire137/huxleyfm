@@ -29,20 +29,11 @@ module.exports = class Lastfm extends Fetcher {
   }
 
   // http://www.last.fm/api/show/track.scrobble
-  scrobble(track, auth) {
-    let durationInSeconds = null;
-    if (typeof track.duration === 'number') {
-      durationInSeconds = track.duration / 1000;
-    }
-    if (durationInSeconds === 0) {
-      durationInSeconds = null;
-    }
+  scrobble(song, auth) {
     const possibleParams = {
-      artist: track.artist || '',
-      track: track.title || '',
-      mbid: track.trackMBID,
-      duration: durationInSeconds,
-      album: track.album,
+      artist: song.artist || '',
+      track: song.title || '',
+      album: song.album,
       user: auth.user,
       sk: auth.sessionKey,
       api_key: Config.lastfm_api_key,
