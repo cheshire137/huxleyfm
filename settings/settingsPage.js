@@ -333,7 +333,6 @@ class SettingsPage extends Eventful {
   }
 
   onSettingsSaved() {
-    this.emit('notice', 'Saved your settings!');
     this.emit('settings:change', this.settings);
   }
 

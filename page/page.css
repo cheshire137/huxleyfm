@@ -460,7 +460,7 @@ header .right-links > div {
   display: inline-block;
 }
 header .right-links > div + div {
-  margin-left: 5px;
+  margin-left: 15px;
 }
 header .right-links > div.hidden {
   display: none;
