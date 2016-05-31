@@ -16,8 +16,8 @@
     "postinstall": "if [ ! -f config.json ]; then cp config.json.example config.json; fi",
     "start": "electron .",
     "build": "npm run-script build-osx",
-    "build-osx": "if [ -d dist/HuxleyFM-darwin-x64 ]; then rm -r dist/HuxleyFM-darwin-x64; fi && node_modules/electron-packager/cli.js . --out=dist --app-version=$npm_package_version --prune --asar --overwrite --icon=images/icon512.png.icns --appname=HuxleyFM --platform=darwin --arch=all --ignore=dist",
-    "build-windows": "node node_modules\\electron-packager\\cli.js . --out=dist --prune --asar --overwrite --appname=HuxleyFM --platform=win32 --arch=all --ignore=dist"
+    "build-osx": "if [ -d dist/HuxleyFM-darwin-x64 ]; then rm -r dist/HuxleyFM-darwin-x64; fi && node_modules/electron-packager/cli.js . --out=dist --app-version=$npm_package_version --prune --asar --overwrite --icon=images/icon512.png.icns --appname=HuxleyFM --platform=darwin --arch=all",
+    "build-windows": "node node_modules\\electron-packager\\cli.js . --out=dist --prune --asar --overwrite --appname=HuxleyFM --platform=win32 --arch=all"
   },
   "files": [
     "main.js",
@@ -34,6 +34,9 @@
     "images/icon128.png",
     "images/icon512.png",
     "images/icon512.png.icns",
+    "models/appMenu.js",
+    "models/chromecast.js",
+    "models/chromecastScanner.js",
     "models/eventful.js",
     "models/fetcher.js",
     "models/flashMessages.js",
@@ -42,6 +45,8 @@
     "models/router.js",
     "models/settings.js",
     "models/soma.js",
+    "defaultStations.json",
+    "config.json",
     "about/about.html",
     "about/about.css"
   ],
@@ -64,7 +69,7 @@
   },
   "devDependencies": {
     "devtron": "^1.1.0",
-    "electron-packager": "^7.0.0",
+    "electron-packager": "7.0.2",
     "electron-prebuilt": "1.1.3",
     "xo": "^0.15.0"
   },
