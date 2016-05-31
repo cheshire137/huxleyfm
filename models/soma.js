@@ -10,7 +10,7 @@ module.exports = class Soma extends Fetcher {
         const rawStations = response.channels;
         if (simple) {
           stations = rawStations.map((s) => {
-            return {id: s.id, title: s.title};
+            return { id: s.id, title: s.title, imageUrl: s.xlimage };
           });
         } else {
           stations = rawStations.slice();

@@ -22,6 +22,7 @@ class PageLoader {
     this.pageID = null;
     this.page = null;
     this.stationUrl = null;
+    this.station = null;
     this.onPageLoad = __bind(this.onPageLoad, this);
     this.findElements();
     this.flashMessages = new FlashMessages(this.statusArea);
@@ -166,8 +167,9 @@ class PageLoader {
     this.page.addListener('notice', (m) => this.flashMessages.notice(m));
   }
 
-  onPlay(url) {
+  onPlay(station, url) {
     this.stationUrl = url;
+    this.station = station;
     console.debug('playing', this.stationUrl);
     this.chromecastWrapper.classList.remove('hidden');
     if (this.chromecast) {
@@ -181,6 +183,7 @@ class PageLoader {
 
   onPause(station) {
     this.stationUrl = null;
+    this.station = null;
     this.chromecastWrapper.classList.add('hidden');
     if (this.chromecast) {
       this.chromecast.pause();
@@ -281,7 +284,13 @@ class PageLoader {
 
   setupChromecast(host, url) {
     console.debug('setting up Chromecast ' + host + ' to play ' + url);
-    this.chromecast = new Chromecast(host, url);
+    const info = this.settings.stations.filter((s) => s.id === this.station)[0];
+    this.chromecast = new Chromecast({
+      host: host,
+      url: url,
+      title: info ? info.title : null,
+      imageUrl: info ? info.imageUrl : null
+    });
     this.chromecast.addListener('connected',
                                 this.onChromecastConnected.bind(this));
     this.chromecast.addListener('launched',

@@ -4,10 +4,12 @@ const mdns = require('mdns');
 const Eventful = require('./eventful');
 
 module.exports = class Chromecast extends Eventful {
-  constructor(host, url) {
+  constructor(opts) {
     super();
-    this.url = url;
-    this.host = host;
+    this.url = opts.url;
+    this.host = opts.host;
+    this.imageUrl = opts.imageUrl;
+    this.title = opts.title;
     this.client = new Client();
   }
 
@@ -87,6 +89,14 @@ module.exports = class Chromecast extends Eventful {
       contentType: 'audio/mpeg',
       streamType: 'LIVE'
     };
+    if (this.title && this.imageUrl) {
+      media.metadata = {
+        type: 0,
+        metadataType: 0,
+        title: this.title,
+        images: [{ url: this.imageUrl }]
+      };
+    }
     player.on('status', this.onStatus.bind(this));
     player.load(media, { autoplay: true }, this.onPlayerLoad.bind(this));
   }
