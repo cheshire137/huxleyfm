@@ -198,7 +198,15 @@ class PageLoader {
         this.disconnectFromChromecast();
       }
     } else {
-      this.listChromecasts();
+      if (this.chromecastList.querySelectorAll('li').length > 0) {
+        if (this.chromecastList.classList.contains('hidden')) {
+          this.chromecastList.classList.remove('hidden');
+        } else {
+          this.chromecastList.classList.add('hidden');
+        }
+      } else {
+        this.listChromecasts();
+      }
     }
   }
 

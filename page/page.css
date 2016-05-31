@@ -410,7 +410,8 @@ header #chromecast-list {
   position: absolute;
   z-index: 3;
   text-align: left;
-  right: 10px;
+  right: 20px;
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
 }
 header #chromecast-link.disabled {
   cursor: default;
