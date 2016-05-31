@@ -465,11 +465,17 @@ module.exports = class IndexPage extends Eventful {
     if (this.lastNotifiedSongID === song.id) {
       return;
     }
+    const station = this.getCurrentStation();
+    if (station.length < 1) {
+      return;
+    }
+    if (this.audioTag.getAttribute('data-paused') === 'true') {
+      return;
+    }
     let message = song.title;
     if (typeof song.artist === 'string' && song.artist.length > 0) {
       message += ' by ' + song.artist;
     }
-    const station = this.getCurrentStation();
     const options = {
       title: song.title,
       body: message,
@@ -482,6 +488,12 @@ module.exports = class IndexPage extends Eventful {
   scrobbleTrack(song) {
     if (!this.settings.lastfmSessionKey || !this.settings.lastfmUser ||
         !this.settings.scrobbling) {
+      return;
+    }
+    if (this.getCurrentStation().length < 1) {
+      return;
+    }
+    if (this.audioTag.getAttribute('data-paused') === 'true') {
       return;
     }
     const lastfm = new Lastfm();
