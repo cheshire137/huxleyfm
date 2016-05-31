@@ -1,6 +1,9 @@
 notifications:
   email: false
 language: node_js
+os:
+- linux
+- osx
 node_js:
 - '5.1'
 sudo: false
