@@ -9,10 +9,19 @@ node_js:
 sudo: false
 script:
 - npm install
+
+cache:
+- apt: true
+- directories:
+  - "$HOME/.npm"
+  - "$HOME/.electron"
+  - /Library/Caches/Homebrew
+
 addons:
   apt:
     packages:
     - libavahi-compat-libdnssd-dev
+    - wine
 
 before_deploy:
 - scripts/travis/before_deploy.sh
