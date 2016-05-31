@@ -22,6 +22,21 @@ module.exports = class Soma extends Fetcher {
     });
   }
 
+  getStationSongs(station) {
+    return new Promise((resolve, reject) => {
+      const url = Config.soma_api_url + `songs/${station}.json`;
+      this.get(url).then((response) => {
+        const songs = response.songs.map((song) => {
+          if (typeof song.date === 'string') {
+            song.date = new Date(parseInt(song.date, 10) * 1000);
+          }
+          return song;
+        });
+        resolve(songs);
+      }).catch(reject);
+    });
+  }
+
   getScrobblerApiVersion() {
     return this.get(Config.scrobbler_api_url + '/api/v1/version');
   }

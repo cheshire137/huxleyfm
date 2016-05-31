@@ -1,37 +1,34 @@
 body.player {
   overflow: hidden;
 }
-body.player .track-info {
-  text-align: center;
+body.player #songs-list {
   height: 67px;
   overflow: auto;
   margin-top: 20px;
+  list-style: none;
 }
-body.player #title {
+body.player #songs-list .title {
   font-weight: 700;
 }
-body.player #artist {
+body.player #songs-list .artist {
 }
-body.player #artist:before {
+body.player #songs-list .artist:before {
   content: " by ";
 }
-body.player #album-and-duration,
-body.player #last-updated,
-body.player #start-time {
-  display: block;
+body.player #songs-list .album {
 }
-body.player #album:before {
-  content: "\201C";
+body.player #songs-list .album:before {
+  content: "\a0\b7\a0\201C";
 }
-body.player #album:after {
+body.player #songs-list .album:after {
   content: "\201D";
 }
-body.player #last-updated,
-body.player #start-time {
-  font-style: italic;
-}
-body.player #duration:before {
+body.player #songs-list .album + .date:before,
+body.player #songs-list .artist + .date:before {
   content: "\a0\b7\a0";
+}
+body.player #songs-list .date {
+  font-style: italic;
 }
 body.player #play,
 body.player #pause {
@@ -116,6 +113,7 @@ body.player #station-menu li a img {
   vertical-align: middle;
   margin-right: 10px;
   border-radius: 4px;
+  margin-top: -6px;
 }
 body.player.theme-light #station-menu,
 body.player.theme-light #station-menu li a {

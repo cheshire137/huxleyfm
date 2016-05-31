@@ -383,7 +383,7 @@ header > ul .material-icons {
 header > ul > li {
   display: table-cell;
   vertical-align: middle;
-  padding: 10px;
+  padding: 10px 10px 0 10px;
 }
 header > ul > li#return-link-wrapper {
   text-align: left;

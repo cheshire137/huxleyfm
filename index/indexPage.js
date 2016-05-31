@@ -50,13 +50,10 @@ module.exports = class IndexPage extends Eventful {
     this.stationMenu = document.getElementById('station-menu');
     this.playButton = document.getElementById('play');
     this.pauseButton = document.getElementById('pause');
-    this.titleEl = document.getElementById('title');
-    this.artistEl = document.getElementById('artist');
-    this.albumEl = document.getElementById('album');
-    this.durationEl = document.getElementById('duration');
     this.stationQueryEl = document.getElementById('station-query');
     this.lastUpdatedEl = document.getElementById('last-updated');
     this.startTimeEl = document.getElementById('start-time');
+    this.songsList = document.getElementById('songs-list');
   }
 
   listenForMediaKeys() {
@@ -191,7 +188,7 @@ module.exports = class IndexPage extends Eventful {
     listItem.classList.add('selected');
     listItem.classList.remove('hidden');
     this.moveListItemToTop(listItem);
-    this.updateTrackInfo(station, true);
+    this.getSongsList(station);
   }
 
   pause() {
@@ -231,7 +228,6 @@ module.exports = class IndexPage extends Eventful {
     }
     this.resetTrackInfoIfNecessary(station);
     this.subscribe(station).then(() => {
-      this.updateTrackInfo(station);
       this.socket.on('track', this.onTrack);
     }).catch(this.subscribeError.bind(this));
     const stationUrl = Config.soma_station_url + station;
@@ -244,14 +240,65 @@ module.exports = class IndexPage extends Eventful {
     this.pauseButton.classList.remove('hidden');
     this.pauseButton.disabled = false;
     this.emit('play', stationUrl);
-    this.updateTrackInfo(station, true);
+    this.getSongsList(station);
+  }
+
+  emptySongsList() {
+    const listItems = Array.from(this.songsList.querySelectorAll('li'));
+    listItems.forEach(li => li.remove());
+  }
+
+  getSongsList(station) {
+    const soma = new Soma();
+    this.emptySongsList();
+    soma.getStationSongs(station).
+         then(this.onSongListLoaded.bind(this)).
+         catch(this.onSongListLoadError.bind(this, station));
+  }
+
+  onSongListLoaded(songs) {
+    console.log('songs', songs);
+    songs.forEach((song) => {
+      this.songsList.appendChild(this.getSongListItem(song));
+    });
+  }
+
+  getSongListItem(song) {
+    const listItem = document.createElement('li');
+    const title = document.createElement('span');
+    title.className = 'title';
+    title.textContent = song.title;
+    listItem.appendChild(title);
+    const artist = document.createElement('span');
+    artist.className = 'artist';
+    artist.textContent = song.artist;
+    listItem.appendChild(artist);
+    if (typeof song.album === 'string' && song.album.length > 0) {
+      const album = document.createElement('span');
+      album.className = 'album';
+      album.textContent = song.album;
+      listItem.appendChild(album);
+    }
+    if (song.date instanceof Date) {
+      const date = document.createElement('span');
+      date.className = 'date';
+      date.textContent = this.dateToStr(song.date);
+      listItem.appendChild(date);
+    }
+    return listItem;
+  }
+
+  onSongListLoadError(station, error) {
+    console.error('failed to load list of songs playing on station', station,
+                  error);
+    this.emit('error', 'Could not get recent track list.');
   }
 
   resetTrackInfoIfNecessary(station) {
     if (this.audioTag.getAttribute('data-station') === station) {
       return;
     }
-    this.hideTrackInfo();
+    this.emptySongsList();
   }
 
   subscribe(station) {
@@ -371,14 +418,6 @@ module.exports = class IndexPage extends Eventful {
     });
   }
 
-  updateTrackInfo(station, preferSomaApi) {
-    console.debug('getting track info for station ' + station);
-    const soma = new Soma();
-    soma.getStationInfo(station, preferSomaApi).
-         then(this.showTrackInfo.bind(this)).
-         catch(this.getStationInfoError.bind(this));
-  }
-
   saveStations(stations) {
     console.debug('saving stations list');
     this.settings.stations = stations;
@@ -391,9 +430,8 @@ module.exports = class IndexPage extends Eventful {
     console.error('failed to save stations', error);
   }
 
-  getCurrentTime() {
-    const now = new Date();
-    let hours = now.getHours();
+  dateToStr(date) {
+    let hours = date.getHours();
     let amPM = 'am';
     if (hours >= 12) {
       amPM = 'pm';
@@ -401,76 +439,15 @@ module.exports = class IndexPage extends Eventful {
     if (hours > 12) {
       hours = hours - 12;
     }
-    const minutes = now.getMinutes();
+    const minutes = date.getMinutes();
     return hours + ':' + minutes + ' ' + amPM;
-  }
-
-  showTrackInfo(info) {
-    if (info.lastPlaying) {
-      this.titleEl.textContent = info.lastPlaying;
-      this.titleEl.classList.remove('hidden');
-      this.lastUpdatedEl.textContent = 'As of ' + this.getCurrentTime();
-      this.lastUpdatedEl.classList.remove('hidden');
-      return;
-    }
-    this.lastUpdatedEl.classList.add('hidden');
-    if (info.title && info.title.length > 0) {
-      this.titleEl.textContent = info.title;
-      this.titleEl.classList.remove('hidden');
-    } else {
-      this.titleEl.classList.add('hidden');
-    }
-    if (info.artist && info.artist.length > 0) {
-      this.artistEl.textContent = info.artist;
-      this.artistEl.classList.remove('hidden');
-    } else {
-      this.artistEl.classList.add('hidden');
-    }
-    const duration = this.getDuration(info);
-    if (duration) {
-      this.durationEl.textContent = duration;
-      this.durationEl.classList.remove('hidden');
-    } else {
-      this.durationEl.classList.add('hidden');
-    }
-    if (info.album && info.album.length > 0) {
-      this.albumEl.textContent = info.album;
-      this.albumEl.classList.remove('hidden');
-    } else {
-      this.albumEl.classList.add('hidden');
-    }
-  }
-
-  getDuration(track) {
-    if (typeof track.duration !== 'number') {
-      return;
-    }
-    if (track.duration === 0) {
-      return;
-    }
-    const secNum = track.duration / 1000;
-    const minutes = Math.floor(secNum / 60) % 60;
-    const seconds = secNum % 60;
-    return minutes + 'm ' + seconds + 's';
   }
 
   getStationInfoError(error) {
     console.error('failed getting station current track info', error);
   }
 
-  hideTrackInfo() {
-    this.titleEl.textContent = '';
-    this.titleEl.classList.add('hidden');
-    this.artistEl.textContent = '';
-    this.artistEl.classList.add('hidden');
-    this.durationEl.textContent = '';
-    this.durationEl.classList.add('hidden');
-    this.albumEl.textContent = '';
-    this.albumEl.classList.add('hidden');
-  }
-
   onTrack(track) {
-    this.showTrackInfo(track);
     this.notifyAboutTrack(track);
     this.scrobbleTrack(track);
   }
