@@ -18,12 +18,13 @@ body.player .button-container {
   text-align: right;
 }
 body.player #songs-list {
-  height: 191px;
   overflow: auto;
   margin-top: 20px;
   list-style: none;
+  height: 132px;
 }
-body.player.theme-dark #songs-list {
+body.player.theme-dark #songs-list,
+body.player.theme-dark .station-info {
   color: #b9b9b9;
 }
 body.player #songs-list li {
@@ -104,7 +105,7 @@ body.player #station-menu.expanded {
   width: auto;
 }
 body.player #station-query.hidden + .player-controls #station-menu.expanded {
-  top: 1px;
+  top: 0;
 }
 body.player.theme-dark #station-menu.expanded {
   background-color: #222;
@@ -131,17 +132,9 @@ body.player #station-menu li a img {
   border-radius: 4px;
   margin-top: -6px;
 }
-body.player.theme-light #station-menu,
-body.player.theme-light #station-menu li a {
-  background-color: #fff;
-}
 body.player.theme-light #station-menu.expanded li:first-child a,
 body.player.theme-light #station-menu.expanded li.selected a {
   background-color: #f8f8f8;
-}
-body.player.theme-dark #station-menu,
-body.player.theme-dark #station-menu li a {
-  background-color: #222;
 }
 body.player.theme-dark #station-menu.expanded li:first-child a,
 body.player.theme-dark #station-menu.expanded li.selected a {
@@ -168,4 +161,53 @@ body.player #station-menu.expanded .selected a[data-tooltip]:hover:after {
 body.player #station-menu.expanded a[data-tooltip]:hover:before,
 body.player #station-menu.expanded a[data-tooltip]:hover:after {
   display: block;
+}
+body.player .station-info {
+  margin-top: 20px;
+  display: table;
+  width: 100%;
+  line-height: 20px;
+  height: 41px;
+}
+body.player #dj-name,
+body.player #listener-count {
+  display: table-cell;
+  width: 50%;
+  vertical-align: middle;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-top: 20px;
+  border-top-width: 1px;
+  border-top-style: solid;
+}
+body.player #dj-name.hidden,
+body.player #listener-count.hidden {
+  display: none;
+}
+body.player.theme-dark #dj-name,
+body.player.theme-dark #listener-count {
+  border-top-color: #333;
+}
+body.player.theme-light #dj-name,
+body.player.theme-light #listener-count {
+  border-top-color: #ccc;
+}
+body.player #dj-name {
+  text-align: left;
+}
+body.player #dj-name.hidden:before {
+  content: "";
+}
+body.player #dj-name:before {
+  content: "DJ:\a0";
+}
+body.player #listener-count {
+  text-align: right;
+}
+body.player #listener-count.hidden:before {
+  content: "";
+}
+body.player #listener-count:before {
+  content: "# listeners:\a0";
 }

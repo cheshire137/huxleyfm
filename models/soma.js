@@ -54,14 +54,11 @@ module.exports = class Soma extends Fetcher {
     return this.get(Config.scrobbler_api_url + '/api/v1/version');
   }
 
-  getStationInfo(station, preferSomaApi) {
-    if (preferSomaApi) {
-      return new Promise((resolve, reject) => {
-        this.getStations().then((stations) => {
-          resolve(stations.filter((s) => s.id === station)[0]);
-        }).catch(reject);
-      });
-    }
-    return this.get(Config.scrobbler_api_url + '/api/v1/nowplaying/' + station);
+  getStationInfo(station) {
+    return new Promise((resolve, reject) => {
+      this.getStations().then((stations) => {
+        resolve(stations.filter((s) => s.id === station)[0]);
+      }).catch(reject);
+    });
   }
 }

@@ -48,6 +48,9 @@ module.exports = class IndexPage extends Eventful {
     if (this.songListInterval) {
       clearInterval(this.songListInterval);
     }
+    if (this.stationInfoInterval) {
+      clearInterval(this.stationInfoInterval);
+    }
   }
 
   findElements() {
@@ -58,6 +61,8 @@ module.exports = class IndexPage extends Eventful {
     this.lastUpdatedEl = document.getElementById('last-updated');
     this.startTimeEl = document.getElementById('start-time');
     this.songsList = document.getElementById('songs-list');
+    this.djName = document.getElementById('dj-name');
+    this.listenerCount = document.getElementById('listener-count');
   }
 
   listenForMediaKeys() {
@@ -193,6 +198,7 @@ module.exports = class IndexPage extends Eventful {
     listItem.classList.remove('hidden');
     this.moveListItemToTop(listItem);
     this.getSongsList(station);
+    this.getStationInfo(station);
   }
 
   pause() {
@@ -245,11 +251,27 @@ module.exports = class IndexPage extends Eventful {
     this.pauseButton.disabled = false;
     this.emit('play', stationUrl);
     this.getSongsList(station);
+    this.getStationInfo(station);
   }
 
   emptySongsList() {
     const listItems = Array.from(this.songsList.querySelectorAll('li'));
     listItems.forEach(li => li.remove());
+  }
+
+  getStationInfo(station) {
+    if (this.stationInfoInterval) {
+      clearInterval(this.stationInfoInterval);
+    }
+    const getter = () => {
+      console.debug('refreshing station info for ' + station);
+      this.soma.getStationInfo(station).
+                then(this.onStationInfoLoaded.bind(this)).
+                catch(this.onStationInfoError.bind(this));
+    }
+    const seconds = 5 * 60;
+    this.stationInfoInterval = setInterval(getter, seconds * 1000);
+    getter();
   }
 
   getSongsList(station) {
@@ -266,6 +288,23 @@ module.exports = class IndexPage extends Eventful {
     const seconds = 30;
     this.songListInterval = setInterval(getter, seconds * 1000);
     getter();
+  }
+
+  onStationInfoLoaded(info) {
+    console.log(info);
+    if (typeof info.dj === 'string' && info.dj.length > 0) {
+      this.djName.textContent = info.dj;
+      this.djName.classList.remove('hidden');
+    }
+    if (typeof info.listeners === 'string') {
+      this.listenerCount.textContent = info.listeners;
+      this.listenerCount.classList.remove('hidden');
+    }
+  }
+
+  onStationInfoError(error) {
+    console.error('failed to load station info', error);
+    this.emit('error', 'Could not load station info.');
   }
 
   onSongListLoaded(songs) {
@@ -320,6 +359,10 @@ module.exports = class IndexPage extends Eventful {
       return;
     }
     this.emptySongsList();
+    this.djName.textContent = '';
+    this.djName.classList.add('hidden');
+    this.listenerCount.textContent = '';
+    this.listenerCount.classList.add('hidden');
   }
 
   subscribe(station) {
@@ -464,10 +507,6 @@ module.exports = class IndexPage extends Eventful {
       minutes = '0' + minutes;
     }
     return hours + ':' + minutes + ' ' + amPM;
-  }
-
-  getStationInfoError(error) {
-    console.error('failed getting station current track info', error);
   }
 
   onTrack(track) {
