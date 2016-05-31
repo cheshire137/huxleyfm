@@ -23,6 +23,7 @@ class PageLoader {
     this.page = null;
     this.stationUrl = null;
     this.station = null;
+    this.song = null;
     this.onPageLoad = __bind(this.onPageLoad, this);
     this.findElements();
     this.flashMessages = new FlashMessages(this.statusArea);
@@ -134,6 +135,7 @@ class PageLoader {
     this.listenForPageMessages();
     this.page.addListener('play', this.onPlay.bind(this));
     this.page.addListener('pause', this.onPause.bind(this));
+    this.page.addListener('song', this.onSong.bind(this));
     this.returnLinkWrapper.classList.add('hidden');
     this.settingsLinkWrapper.classList.remove('hidden');
     this.aboutLinkWrapper.classList.remove('hidden');
@@ -184,10 +186,25 @@ class PageLoader {
   onPause(station) {
     this.stationUrl = null;
     this.station = null;
+    this.song = null;
     this.chromecastWrapper.classList.add('hidden');
     if (this.chromecast) {
       this.chromecast.pause();
     }
+  }
+
+  onSong(song) {
+    console.debug('new song', song.title, 'by', song.artist);
+    this.song = song;
+    // TODO: figure out how to update song title on Chromecast without
+    // pausing the music.
+    // if (this.chromecast) {
+    //   let title = this.song.title;
+    //   if (typeof this.song.artist === 'string' && this.song.artist.length > 0) {
+    //     title += ' by ' + this.song.artist;
+    //   }
+    //   this.chromecast.updateMedia({ title: title });
+    // }
   }
 
   onChromecastClick(event) {
@@ -284,12 +301,13 @@ class PageLoader {
 
   setupChromecast(host, url) {
     console.debug('setting up Chromecast ' + host + ' to play ' + url);
-    const info = this.settings.stations.filter((s) => s.id === this.station)[0];
+    const stationInfo = this.settings.stations.
+                             filter((s) => s.id === this.station)[0];
     this.chromecast = new Chromecast({
       host: host,
       url: url,
-      title: info ? info.title : null,
-      imageUrl: info ? info.imageUrl : null
+      title: stationInfo ? stationInfo.title : null,
+      imageUrl: stationInfo ? stationInfo.imageUrl : null
     });
     this.chromecast.addListener('connected',
                                 this.onChromecastConnected.bind(this));

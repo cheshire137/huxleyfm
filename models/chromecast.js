@@ -82,8 +82,13 @@ module.exports = class Chromecast extends Eventful {
       console.error('Chromecast launch error', err);
       this.emit('error', err);
     } else {
-      this.emit('launched', player);
+      this.emit('launched', this.player);
     }
+    this.player.on('status', this.onStatus.bind(this));
+    this.load(this.getMedia());
+  }
+
+  getMedia() {
     const media = {
       contentId: this.url,
       contentType: 'audio/mpeg',
@@ -97,8 +102,11 @@ module.exports = class Chromecast extends Eventful {
         images: [{ url: this.imageUrl }]
       };
     }
-    player.on('status', this.onStatus.bind(this));
-    player.load(media, { autoplay: true }, this.onPlayerLoad.bind(this));
+    return media;
+  }
+
+  load(media) {
+    this.player.load(media, { autoplay: true }, this.onPlayerLoad.bind(this));
   }
 
   onStatus(status) {

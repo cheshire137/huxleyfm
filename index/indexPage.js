@@ -291,7 +291,6 @@ module.exports = class IndexPage extends Eventful {
   }
 
   onStationInfoLoaded(info) {
-    console.log(info);
     if (typeof info.dj === 'string' && info.dj.length > 0) {
       this.djName.textContent = info.dj;
       this.djName.classList.remove('hidden');
@@ -308,6 +307,12 @@ module.exports = class IndexPage extends Eventful {
   }
 
   onSongListLoaded(songs) {
+    if (songs.length < 1) {
+      return;
+    }
+    const latestSong = songs[songs.length - 1];
+    const latestSongListItem = document.getElementById(latestSong.id);
+    const isNewSong = !latestSongListItem;
     songs.forEach((song) => {
       let listItem = document.getElementById(song.id);
       if (!listItem) {
@@ -320,6 +325,9 @@ module.exports = class IndexPage extends Eventful {
         }
       }
     });
+    if (isNewSong) {
+      this.emit('song', latestSong);
+    }
   }
 
   getSongListItem(song) {
