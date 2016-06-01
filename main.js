@@ -19,7 +19,7 @@ function onClosed() {
 function createMainWindow() {
 	let win;
 	const windowProperties = {
-		icon: 'images/icon128.png',
+		icon: __dirname+'/images/icon128.png',
 		title: 'HuxleyFM',
 		resizable: false
 	};
