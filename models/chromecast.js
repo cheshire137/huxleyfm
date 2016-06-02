@@ -131,4 +131,4 @@ module.exports = class Chromecast extends Eventful {
     console.debug('Chromecast closed');
     this.emit('close');
   }
-}
+};

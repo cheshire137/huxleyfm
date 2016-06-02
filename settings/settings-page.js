@@ -353,4 +353,4 @@ class SettingsPage extends Eventful {
   }
 }
 
-module.exports = SettingsPage
+module.exports = SettingsPage;

@@ -65,4 +65,4 @@ module.exports = class ChromecastScanner extends Eventful {
     clearTimeout(this.timer);
     this.m.destroy();
   }
-}
+};

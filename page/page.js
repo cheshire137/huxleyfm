@@ -8,7 +8,7 @@ const FlashMessages = require('../models/flashMessages');
 const AppMenu = require('../models/appMenu');
 const ChromecastScanner = require('../models/chromecastScanner');
 const Chromecast = require('../models/chromecast');
-const {ipcRenderer} = require('electron');
+const { ipcRenderer } = require('electron');
 
 const __bind = function(fn, me) {
   return function() {
@@ -339,7 +339,10 @@ class PageLoader {
   }
 
   onChromecastStatus(status) {
-    console.debug('Chromecast', status.playerState, status.media ? status.media.contentId : 'unknown URL', 'volume ' + status.volume.level, status.volume.muted ? 'muted' : 'not muted');
+    console.debug('Chromecast', status.playerState,
+                  status.media ? status.media.contentId : 'unknown URL',
+                  'volume ' + status.volume.level,
+                  status.volume.muted ? 'muted' : 'not muted');
     if (status.playerState !== 'BUFFERING') {
       this.chromecastLink.classList.remove('pulse');
     }

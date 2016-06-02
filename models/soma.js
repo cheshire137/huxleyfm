@@ -57,4 +57,4 @@ module.exports = class Soma extends Fetcher {
       }).catch(reject);
     });
   }
-}
+};

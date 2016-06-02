@@ -64,4 +64,4 @@ module.exports = class Fetcher {
   getStatus(response) {
     return response.status + ' ' + response.statusText;
   }
-}
+};

@@ -1,5 +1,5 @@
 const path = require('path');
-const {ipcRenderer} = require('electron');
+const { ipcRenderer } = require('electron');
 const Soma = require('../models/soma');
 const Settings = require('../models/settings');
 const DefaultStations = require('../defaultStations.json');
@@ -263,7 +263,7 @@ module.exports = class IndexPage extends Eventful {
       this.soma.getStationInfo(station).
                 then(this.onStationInfoLoaded.bind(this)).
                 catch(this.onStationInfoError.bind(this));
-    }
+    };
     const seconds = 5 * 60;
     this.stationInfoInterval = setInterval(getter, seconds * 1000);
     getter();
@@ -599,4 +599,4 @@ module.exports = class IndexPage extends Eventful {
       }
     }
   }
-}
+};

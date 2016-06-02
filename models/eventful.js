@@ -39,4 +39,4 @@ module.exports = class Eventful {
     }
     return false;
   }
-}
+};

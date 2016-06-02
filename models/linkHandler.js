@@ -39,4 +39,4 @@ class LinkHandler extends Eventful {
   }
 }
 
-module.exports = LinkHandler
+module.exports = LinkHandler;

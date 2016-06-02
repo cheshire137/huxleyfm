@@ -36,4 +36,4 @@ class Router extends Eventful {
   }
 }
 
-module.exports = Router
+module.exports = Router;

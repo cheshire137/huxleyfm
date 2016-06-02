@@ -1,5 +1,5 @@
-const {remote} = require('electron');
-const {Menu, MenuItem} = remote;
+const { remote } = require('electron');
+const { Menu, MenuItem } = remote;
 const Eventful = require('./eventful');
 
 module.exports = class AppMenu extends Eventful {
@@ -53,4 +53,4 @@ module.exports = class AppMenu extends Eventful {
       });
     }
   }
-}
+};

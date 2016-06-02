@@ -1,5 +1,8 @@
 {
-  "preset": "airbnb",
+  "preset": "google",
   "excludeFiles": ["dist/**", "node_modules/**"],
-  "validateQuoteMarks": null
+  "validateQuoteMarks": null,
+  "requireCamelCaseOrUpperCaseIdentifiers": "ignoreProperties",
+  "disallowSpacesInsideObjectBrackets": false,
+  "requireSpacesInsideObjectBrackets": "all"
 }

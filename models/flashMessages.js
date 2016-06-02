@@ -51,4 +51,4 @@ module.exports = class FlashMessages {
     }, false);
     return link;
   }
-}
+};

@@ -32,4 +32,4 @@ module.exports = class Settings {
   static save(settings) {
     return this.store('settings', settings);
   }
-}
+};
