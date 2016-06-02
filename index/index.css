@@ -18,7 +18,8 @@ body.player .button-container {
   text-align: right;
 }
 body.player #songs-list {
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
   margin-top: 20px;
   list-style: none;
   height: 152px;
@@ -97,6 +98,7 @@ body.player #station-menu .material-icons {
 body.player #station-menu.expanded {
   height: auto;
   overflow-y: auto;
+  overflow-x: hidden;
   position: absolute;
   left: 20px;
   right: 20px;
