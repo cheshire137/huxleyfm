@@ -20,8 +20,7 @@ function createMainWindow() {
   let win;
   const windowProperties = {
     icon: __dirname + '/images/icon128.png',
-    title: 'HuxleyFM',
-    resizable: false
+    title: 'HuxleyFM'
   };
   if (process.env.NODE_ENV === 'development') {
     windowProperties.width = 900;
