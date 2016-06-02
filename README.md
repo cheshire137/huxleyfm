@@ -1,5 +1,7 @@
 # ![logo](https://raw.githubusercontent.com/cheshire137/huxleyfm/master/images/icon48.png) HuxleyFM
 
+[![Build status](https://travis-ci.org/cheshire137/huxleyfm.svg?branch=master)](https://travis-ci.org/cheshire137/huxleyfm)
+
 A desktop player for [SomaFM](http://somafm.com/). Compare to my [Chrome extension](https://github.com/cheshire137/soma-chrome) for listening to SomaFM.
 
 **[Download](https://github.com/cheshire137/huxleyfm/releases)**
