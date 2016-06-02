@@ -9,29 +9,26 @@ node_js:
 sudo: false
 script:
 - npm install
-
 cache:
 - apt: true
 - directories:
   - "$HOME/.npm"
   - "$HOME/.electron"
-  - /Library/Caches/Homebrew
-
+  - "/Library/Caches/Homebrew"
 addons:
   apt:
     packages:
     - libavahi-compat-libdnssd-dev
     - wine
-
 before_deploy:
 - scripts/travis/before_deploy.sh
 deploy:
   provider: releases
   api_key:
-    secure: HTyVIZ5UCMEcRlTP4UhMebHkR1OeTwXxs9UBtHwORFTFYJ5YwX/KkZBesUbgWgZ1/MFCdoL47VXdbQRrchwdHFoq0rg47G9a8EKrTUG1GV+ISWRaAu3N/aEU4ZnjjFLgQfl6Mkwgrutn/D2D3hZ7/RLAmEn15cta/t8Ye2RWhtYeLhvN8oPPYNWyTP4X6yO5sZ5B6yboe2yJj5SRF/gxTBmLoJOqdJdms6hzPFhXI03zXlqfQZChq/BtptPtvHkF9GcFTRw106TVSvCWFsj339Q00+q1ijT0GtG8BheMaNRrtKFIAvyCUYUjOlWCJdy7TfqH7B/T2o7KNbsf+dMT1JNQCZRqoH3z2abomgIqoXMcbbMqcSsjbgUByGQcB2C/hBLQeMQ+M+RCNgSqiHQPaGXc6CRalvU+XF2F6NwFZz2SLrmNfx347KKmNV6htfiSS3//Vr3BRSDvTstw3hmEb3ES9DZflR/gbrb9GJZ8iH1K8p9gNJ82ikvpavfo8803w2rWpGPrCuXPnY98tErixc3rGf99Ijh4Ypy25FRy5bjBZAryxDHkeNrAqFjM/XOEA64zw83WRc+d7yQj5C601dGM8jiZwjEbsRGG7iv1gegG71vDRG+KSJksdDuhTBrJvBWnwY67kCqmAEeEDcTxa5klB1F9oaA7+rZak4QeoQk=
+    secure: IDZuMFpHYJiumnqrL9TRRHIAN9a45d4A6XRyEBQnutIQaQNBpI3gv8dMGi9Wub52gw/b9aKxV5QuR9iPuWbi/PJuRO6oxXpTjuMLx/Pf03OXl4itFp3y7GTUW2I2z7X5Mp6j9Tq7mCyW58J7lkIqDgdJW/BeVq/15cikCOFPq/CutMMwH3Td60LlwBjrAIU3E7yWPca1VG33i6NDMD7PAMKpVIQ3fUyBmMncSQ5q0s7s+twrxeirlsThUg96EgzG51qU8l+5jEU2yWwUtbd5JAhtKMonmCZ0+jBs18ePUBFaYP7Mavdbs3Eww/oipZsg1zLQfsc2agL8KYpY91/zhrs+mEVVdSPJNSA0hwnCDBACfKmskpDneuVygcwRzuDAFLUBt0p4ZLJJD5ZFSdjdZCkEmXZGeyIA589YZg2+AqQyrUH61TQTalGMzpjQQ9eq5rVYtSN3oNk49UDDZKREmdEcpNbu0JqMXTqqevPvfDjqE3o06EdwZvTlXOQeIj1B2IuZee1amxNTnpwJP5BcRfhK+iCK1XrTB4juMfz20cC75WkRhL5FB27g6Ekc8hK3V05fMhcDQX0tsM2W2vKxxifVU9IZ1wEddqC+HePQXx+9gA9YcpVWXORrTmcV+dJ6sDfryiQ9gaNZqRWKxCQsvynSFKoDluV2lEKOoz7yYac=
   file: dist/HuxleyFM-*.*
   file_glob: true
   skip_cleanup: true
   on:
-#    repo: jgrowl/huxleyfm
+    repo: cheshire137/huxleyfm
     tags: true
