@@ -20,8 +20,20 @@ describe('application launch', function() {
   });
 
   it('shows an initial window', function() {
-    return this.app.client.getWindowCount().then(function(count) {
+    return this.app.client.getWindowCount().then(count => {
       assert.equal(count, 1);
+    });
+  });
+
+  it('is visible', function() {
+    return this.app.browserWindow.isVisible().then(isVisible => {
+      assert(isVisible);
+    });
+  });
+
+  it('has a title', function() {
+    return this.app.client.getTitle().then(title => {
+      assert.equal('HuxleyFM', title);
     });
   });
 });
