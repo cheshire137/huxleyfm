@@ -2,7 +2,7 @@ const path = require('path');
 var Application = require('spectron').Application;
 var assert = require('assert');
 
-describe('application launch', function() {
+describe('index page', function() {
   this.timeout(10000);
 
   beforeEach(function() {
@@ -19,21 +19,9 @@ describe('application launch', function() {
     }
   });
 
-  it('shows an initial window', function() {
-    return this.app.client.getWindowCount().then(count => {
-      assert.equal(1, count);
-    });
-  });
-
-  it('is visible', function() {
-    return this.app.browserWindow.isVisible().then(isVisible => {
-      assert(isVisible);
-    });
-  });
-
-  it('has a title', function() {
-    return this.app.client.getTitle().then(title => {
-      assert.equal('HuxleyFM', title);
+  it('includes station menu when app opens', function() {
+    return this.app.client.getText('#station-menu .selected').then(text => {
+      assert.equal('Choose a SomaFM station', text);
     });
   });
 });
