@@ -1,11 +1,11 @@
+const path = require('path');
+const {ipcRenderer} = require('electron');
 const Soma = require('../models/soma');
 const Settings = require('../models/settings');
 const DefaultStations = require('../defaultStations.json');
 const Eventful = require('../models/eventful');
 const Config = require('../config.json');
 const Lastfm = require('../models/lastfm');
-const path = require('path');
-const {ipcRenderer} = require('electron');
 
 const __bind = function(fn, me) {
   return function() {

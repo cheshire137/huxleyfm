@@ -1,4 +1,3 @@
-const Soma = require('../models/soma');
 const Eventful = require('../models/eventful');
 
 module.exports = class AboutPage extends Eventful {
@@ -14,4 +13,4 @@ module.exports = class AboutPage extends Eventful {
   removeListeners() {
     console.debug('unbinding about page listeners');
   }
-}
+};

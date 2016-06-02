@@ -23,7 +23,7 @@
   },
   "files": [
     "main.js",
-    "index/indexPage.js",
+    "index/index-page.js",
     "index/index.html",
     "index/index.css",
     "page/page.js",
@@ -31,7 +31,7 @@
     "page/page.html",
     "settings/settings.css",
     "settings/settings.html",
-    "settings/settingsPage.js",
+    "settings/settings-page.js",
     "images/icon48.png",
     "images/icon128.png",
     "images/icon512.png",
@@ -50,7 +50,8 @@
     "defaultStations.json",
     "config.json",
     "about/about.html",
-    "about/about.css"
+    "about/about.css",
+    "about/about-page.js"
   ],
   "keywords": [
     "electron-app",
