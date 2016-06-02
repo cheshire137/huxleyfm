@@ -1,12 +1,12 @@
 const Settings = require('../models/settings');
 const Router = require('../models/router');
-const LinkHandler = require('../models/linkHandler');
+const LinkHandler = require('../models/link-handler');
 const IndexPage = require('../index/index-page');
 const SettingsPage = require('../settings/settings-page');
 const AboutPage = require('../about/about-page');
-const FlashMessages = require('../models/flashMessages');
-const AppMenu = require('../models/appMenu');
-const ChromecastScanner = require('../models/chromecastScanner');
+const FlashMessages = require('../models/flash-messages');
+const AppMenu = require('../models/app-menu');
+const ChromecastScanner = require('../models/chromecast-scanner');
 const Chromecast = require('../models/chromecast');
 const { ipcRenderer } = require('electron');
 
