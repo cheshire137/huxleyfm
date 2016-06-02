@@ -12,7 +12,7 @@
     "url": "3till7.net"
   },
   "scripts": {
-    "test": "node_modules/jscs/bin/jscs -c .jscsrc .",
+    "test": "node_modules/jscs/bin/jscs -c .jscsrc . && node_modules/mocha/bin/mocha",
     "postinstall": "if [ ! -f config.json ]; then cp config.json.example config.json; fi",
     "start": "electron .",
     "build": "npm run-script build-osx",

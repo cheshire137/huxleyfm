@@ -7,8 +7,6 @@ os:
 node_js:
 - '5.1'
 sudo: false
-script:
-- npm install
 cache:
 - apt: true
 - directories:
