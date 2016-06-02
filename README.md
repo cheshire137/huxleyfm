@@ -26,6 +26,8 @@ If you want to be able to scrobble songs to your Last.fm account, you will need 
 
 Specify `user_agent` in config.json to something custom for your app. The user agent is sent in request headers to Last.fm and the Soma API.
 
+Specify `new_bug_report_url` to the URL where users should report a new bug with the app.
+
     npm start
 
 ### Ubuntu 14.04 Instructions
