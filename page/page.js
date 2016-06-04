@@ -293,6 +293,7 @@ class PageLoader {
     if (this.page && typeof this.page.onChromecastDisconnect === 'function') {
       this.page.onChromecastDisconnect();
     }
+    this.chromecast = null;
   }
 
   listChromecasts() {
