@@ -496,15 +496,17 @@ header a:hover, header a:focus {
 .theme-dark header a:active {
   color: #36C6AA;
 }
-.theme-dark header a:hover,
-.theme-dark header a:focus {
-  color: #F79534;
-}
 .theme-dark header .right-links a,
 .theme-dark header .right-links a:link,
 .theme-dark header .right-links a:visited,
 .theme-dark header .right-links a:active {
   color: #777;
+}
+.theme-dark header a:hover,
+.theme-dark header a:focus,
+.theme-dark header .right-links a:hover,
+.theme-dark header .right-links a:focus {
+  color: #F79534;
 }
 main#page-container {
   padding: 0 20px 20px 20px;
