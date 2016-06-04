@@ -4,6 +4,7 @@
 
 - Fixes https://github.com/cheshire137/huxleyfm/issues/33 by showing the current version on the About page.
 - Fixes bug where trying to Chromecast from the settings or about page would not work.
+- Fixes https://github.com/cheshire137/huxleyfm/issues/31 by adding a documentation page.
 
 ## Version 0.0.2
 

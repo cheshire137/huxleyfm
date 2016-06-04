@@ -1,0 +1,13 @@
+body.help h2 {
+  font-weight: 500;
+  font-size: 18px;
+  margin-bottom: 14px;
+}
+body.help p {
+  font-size: 16px;
+}
+body.help hr {
+}
+body.help p .material-icons {
+  font-size: inherit;
+}
