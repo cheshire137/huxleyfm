@@ -179,9 +179,9 @@ class PageLoader {
     this.listenForPageMessages();
     this.returnLinkWrapper.classList.remove('hidden');
     this.settingsLinkWrapper.classList.add('hidden');
-    this.aboutLinkWrapper.classList.add('hidden');
+    this.aboutLinkWrapper.classList.remove('hidden');
     this.chromecastWrapper.classList.add('hidden');
-    this.helpLinkWrapper.classList.add('hidden');
+    this.helpLinkWrapper.classList.remove('hidden');
   }
 
   onAboutPageLoaded() {
@@ -191,7 +191,7 @@ class PageLoader {
     this.page = new AboutPage(this.appVersion);
     this.listenForPageMessages();
     this.returnLinkWrapper.classList.remove('hidden');
-    this.settingsLinkWrapper.classList.add('hidden');
+    this.settingsLinkWrapper.classList.remove('hidden');
     this.aboutLinkWrapper.classList.add('hidden');
     this.chromecastWrapper.classList.add('hidden');
     this.helpLinkWrapper.classList.remove('hidden');
@@ -204,7 +204,7 @@ class PageLoader {
     this.page = new HelpPage();
     this.listenForPageMessages();
     this.returnLinkWrapper.classList.remove('hidden');
-    this.settingsLinkWrapper.classList.add('hidden');
+    this.settingsLinkWrapper.classList.remove('hidden');
     this.aboutLinkWrapper.classList.remove('hidden');
     this.chromecastWrapper.classList.add('hidden');
     this.helpLinkWrapper.classList.add('hidden');
