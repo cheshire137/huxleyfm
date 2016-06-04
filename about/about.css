@@ -1,4 +1,8 @@
-body.about {
+body.about #version-wrapper {
+  line-height: 22px;
+  float: right;
+  font-size: 12px;
+  font-weight: 400;
 }
 body.about.theme-dark .help-block {
   color: #999;

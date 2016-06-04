@@ -104,6 +104,14 @@ button {
   color: #a94442;
   border-color: #ebccd1;
 }
+h1, h2 {
+  line-height: 22px;
+}
+h1 {
+  font-weight: 500;
+  margin-bottom: 14px;
+  font-size: 20px;
+}
 body {
   background-color: #8D8D8D;
   color: #373737;
@@ -133,22 +141,6 @@ a:focus {
   background-color: #222;
   color: #EEE;
   text-shadow: 0 1px 1px #111;
-}
-.theme-dark header h1 a,
-.theme-dark header h1 a:link,
-.theme-dark header h1 a:visited,
-.theme-dark header h1 a:active,
-.theme-dark header h1 a:hover,
-.theme-dark header h1 a:focus {
-  color: #999;
-}
-.theme-light header h1 a,
-.theme-light header h1 a:link,
-.theme-light header h1 a:visited,
-.theme-light header h1 a:active,
-.theme-light header h1 a:hover,
-.theme-light header h1 a:focus {
-  color: #373737;
 }
 .theme-dark a,
 .theme-dark a:link,
