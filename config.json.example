@@ -6,5 +6,5 @@
   "lastfm_auth_url": "http://www.last.fm/api/auth/",
   "soma_api_url": "https://api.somafm.com/",
   "soma_station_url": "http://ice.somafm.com/",
-  "new_bug_report_url": ""
+  "new_bug_report_url": "https://github.com/cheshire137/huxleyfm/issues/new"
 }
