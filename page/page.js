@@ -31,6 +31,7 @@ class PageLoader {
     this.listenForCast();
     this.setupAppMenu();
     this.listenForQuit();
+    this.listenForVersion();
   }
 
   findElements() {
@@ -61,6 +62,13 @@ class PageLoader {
         this.chromecast.stop();
         this.chromecast.close();
       }
+    });
+  }
+
+  listenForVersion() {
+    ipcRenderer.on('version', (event, version) => {
+      console.log('app version', version);
+      this.appVersion = version;
     });
   }
 
@@ -160,7 +168,7 @@ class PageLoader {
     if (this.page && this.page instanceof AboutPage) {
       return;
     }
-    this.page = new AboutPage();
+    this.page = new AboutPage(this.appVersion);
     this.listenForPageMessages();
     this.returnLinkWrapper.classList.remove('hidden');
     this.settingsLinkWrapper.classList.add('hidden');
