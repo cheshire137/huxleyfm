@@ -1,6 +1,6 @@
 const path = require('path');
-var Application = require('spectron').Application;
-var assert = require('assert');
+const Application = require('spectron').Application;
+const assert = require('assert');
 
 describe('index page', function() {
   this.timeout(10000);
