@@ -7,6 +7,19 @@ module.exports = class AppMenu extends Eventful {
   constructor() {
     super();
     this.template = [];
+    const self = this;
+    this.aboutOption = {
+      label: `About ${name}`,
+      click() { self.emit('about-app'); }
+    };
+    this.bugReportOption = {
+      label: 'Report a bug',
+      click() { shell.openExternal(Config.new_bug_report_url); }
+    };
+    this.docsOption = {
+      label: 'Documentation',
+      click() { self.emit('documentation'); }
+    };
     this.buildMenu();
     Menu.setApplicationMenu(Menu.buildFromTemplate(this.template));
   }
@@ -14,28 +27,19 @@ module.exports = class AppMenu extends Eventful {
   buildMenu() {
     const app = require('electron').remote.app;
     const name = app.getName();
-    const self = this;
-    const aboutOption = {
-      label: `About ${name}`,
-      click() { self.emit('about-app'); }
-    };
-    const bugReportOption = {
-      label: 'Report a bug',
-      click() { shell.openExternal(Config.new_bug_report_url); }
-    };
     if (process.platform === 'darwin') {
-      this.buildOSXMenu(app, name, aboutOption, bugReportOption);
+      this.buildOSXMenu(app, name);
     } else {
-      this.buildNonOSXMenu(app, aboutOption, bugReportOption);
+      this.buildNonOSXMenu(app);
     }
   }
 
-  buildOSXMenu(app, name, aboutOption, bugReportOption) {
+  buildOSXMenu(app, name) {
     const self = this;
     this.template.push({
       label: name,
       submenu: [
-        aboutOption,
+        this.aboutOption,
         {
           label: 'Preferences...',
           accelerator: 'Command+,',
@@ -52,12 +56,13 @@ module.exports = class AppMenu extends Eventful {
       label: 'Help',
       role: 'help',
       submenu: [
-        bugReportOption
+        this.docsOption,
+        this.bugReportOption
       ]
     });
   }
 
-  buildNonOSXMenu(app, aboutOption, bugReportOption) {
+  buildNonOSXMenu(app) {
     const self = this;
     this.template.push({
       label: 'File',
@@ -81,8 +86,9 @@ module.exports = class AppMenu extends Eventful {
     this.template.push({
       label: 'Help',
       submenu: [
-        aboutOption,
-        bugReportOption
+        this.docsOption,
+        this.aboutOption,
+        this.bugReportOption
       ]
     });
   }
