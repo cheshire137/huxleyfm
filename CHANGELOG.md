@@ -1,5 +1,9 @@
 # Change Log
 
+## Version 0.0.3
+
+- Fixes https://github.com/cheshire137/huxleyfm/issues/33 by showing the current version on the About page.
+
 ## Version 0.0.2
 
 - Fixes https://github.com/cheshire137/huxleyfm/issues/21 by providing a link to create a bug report.
