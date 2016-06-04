@@ -8,4 +8,5 @@ body.help p {
 }
 body.help p .material-icons {
   font-size: inherit;
+  vertical-align: middle;
 }
