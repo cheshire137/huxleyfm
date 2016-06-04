@@ -159,6 +159,9 @@ class PageLoader {
     this.returnLinkWrapper.classList.add('hidden');
     this.settingsLinkWrapper.classList.remove('hidden');
     this.aboutLinkWrapper.classList.remove('hidden');
+    if (this.stationUrl && this.station) {
+      this.chromecastWrapper.classList.remove('hidden');
+    }
   }
 
   onSettingsPageLoaded() {
@@ -170,6 +173,7 @@ class PageLoader {
     this.returnLinkWrapper.classList.remove('hidden');
     this.settingsLinkWrapper.classList.add('hidden');
     this.aboutLinkWrapper.classList.add('hidden');
+    this.chromecastWrapper.classList.add('hidden');
   }
 
   onAboutPageLoaded() {
@@ -181,6 +185,7 @@ class PageLoader {
     this.returnLinkWrapper.classList.remove('hidden');
     this.settingsLinkWrapper.classList.add('hidden');
     this.aboutLinkWrapper.classList.add('hidden');
+    this.chromecastWrapper.classList.add('hidden');
   }
 
   onHelpPageLoaded() {
@@ -189,6 +194,10 @@ class PageLoader {
     }
     this.page = new HelpPage();
     this.listenForPageMessages();
+    this.returnLinkWrapper.classList.remove('hidden');
+    this.settingsLinkWrapper.classList.add('hidden');
+    this.aboutLinkWrapper.classList.add('hidden');
+    this.chromecastWrapper.classList.add('hidden');
   }
 
   listenForPageMessages() {
@@ -232,6 +241,8 @@ class PageLoader {
   }
 
   onPause(station) {
+    this.stationUrl = null;
+    this.station = null;
     if (this.chromecast) {
       this.chromecast.pause();
     }
