@@ -3,6 +3,7 @@ const electron = require('electron');
 const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
 const globalShortcut = electron.globalShortcut;
+const { ipcMain } = require('electron');
 
 // adds debug features like hotkeys for triggering dev tools and reload
 require('electron-debug')();
@@ -20,7 +21,7 @@ function createMainWindow() {
   let win;
   const windowProperties = {
     icon: __dirname + '/images/icon128.png',
-    title: 'HuxleyFM'
+    title: app.getName()
   };
   if (process.env.NODE_ENV === 'development') {
     windowProperties.width = 900;
@@ -52,6 +53,16 @@ app.on('activate', () => {
 
 app.on('ready', () => {
   mainWindow = createMainWindow();
+  mainWindow.webContents.on('did-finish-load', function() {
+    ipcMain.on('title', function(event, prefix) {
+      let title = '';
+      if (typeof prefix === 'string' && prefix.length > 0) {
+        title += prefix + ' - ';
+      }
+      title += app.getName();
+      mainWindow.setTitle(title);
+    });
+  });
   ['MediaPlayPause', 'MediaStop'].forEach(registerMediaKey);
 });
 

@@ -196,6 +196,7 @@ class PageLoader {
   onSong(song) {
     console.debug('new song', song.title, 'by', song.artist);
     this.song = song;
+    ipcRenderer.send('title', song.title + ' by ' + song.artist);
     // TODO: figure out how to update song title on Chromecast without
     // pausing the music.
     // if (this.chromecast) {
