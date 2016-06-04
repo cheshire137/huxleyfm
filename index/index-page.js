@@ -229,13 +229,17 @@ module.exports = class IndexPage extends Eventful {
     }
   }
 
+  getStationUrl(station) {
+    return Config.soma_station_url + station;
+  }
+
   play(station) {
     console.debug('playing...');
     if (typeof station !== 'string') {
       station = this.getCurrentStation();
     }
     this.resetTrackInfoIfNecessary(station);
-    const stationUrl = Config.soma_station_url + station;
+    const stationUrl = this.getStationUrl(station);
     if (!process.env.DISABLE_PLAYING && !this.chromecasting) {
       this.audioTag.src = stationUrl;
     }
