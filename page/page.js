@@ -51,6 +51,7 @@ class PageLoader {
     this.settingsLinkWrapper = document.getElementById('settings-wrapper');
     this.aboutLinkWrapper = document.getElementById('about-wrapper');
     this.chromecastList = document.getElementById('chromecast-list');
+    this.helpLinkWrapper = document.getElementById('help-wrapper');
   }
 
   onInitialSettingsLoad(settings) {
@@ -87,6 +88,9 @@ class PageLoader {
     menu.addListener('preferences', () => {
       this.router.loadPage('settings/settings.html', 'settings');
     });
+    menu.addListener('documentation', () => {
+      this.router.loadPage('help/help.html', 'help');
+    });
   }
 
   setupRouter() {
@@ -114,6 +118,8 @@ class PageLoader {
       this.onSettingsPageLoaded();
     } else if (pageID === 'about') {
       this.onAboutPageLoaded();
+    } else if (pageID === 'help') {
+      this.onHelpPageLoaded();
     }
   }
 
@@ -159,6 +165,7 @@ class PageLoader {
     this.returnLinkWrapper.classList.add('hidden');
     this.settingsLinkWrapper.classList.remove('hidden');
     this.aboutLinkWrapper.classList.remove('hidden');
+    this.helpLinkWrapper.classList.remove('hidden');
     if (this.stationUrl && this.station) {
       this.chromecastWrapper.classList.remove('hidden');
     }
@@ -174,6 +181,7 @@ class PageLoader {
     this.settingsLinkWrapper.classList.add('hidden');
     this.aboutLinkWrapper.classList.add('hidden');
     this.chromecastWrapper.classList.add('hidden');
+    this.helpLinkWrapper.classList.add('hidden');
   }
 
   onAboutPageLoaded() {
@@ -186,6 +194,7 @@ class PageLoader {
     this.settingsLinkWrapper.classList.add('hidden');
     this.aboutLinkWrapper.classList.add('hidden');
     this.chromecastWrapper.classList.add('hidden');
+    this.helpLinkWrapper.classList.remove('hidden');
   }
 
   onHelpPageLoaded() {
@@ -196,8 +205,9 @@ class PageLoader {
     this.listenForPageMessages();
     this.returnLinkWrapper.classList.remove('hidden');
     this.settingsLinkWrapper.classList.add('hidden');
-    this.aboutLinkWrapper.classList.add('hidden');
+    this.aboutLinkWrapper.classList.remove('hidden');
     this.chromecastWrapper.classList.add('hidden');
+    this.helpLinkWrapper.classList.add('hidden');
   }
 
   listenForPageMessages() {
