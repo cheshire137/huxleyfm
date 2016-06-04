@@ -1,7 +1,7 @@
 {
   "name": "huxleyfm",
   "productName": "HuxleyFM",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "main": "main.js",
   "description": "An unofficial desktop app for listening to SomaFM radio stations.",
   "license": "MIT",
