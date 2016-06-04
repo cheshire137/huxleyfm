@@ -25,6 +25,12 @@ class PageLoader {
     this.station = null;
     this.song = null;
     this.onPageLoad = __bind(this.onPageLoad, this);
+    this.onSettingsChanged = __bind(this.onSettingsChanged, this);
+    this.flashError = __bind(this.flashError, this);
+    this.flashNotice = __bind(this.flashNotice, this);
+    this.onPlay = __bind(this.onPlay, this);
+    this.onPause = __bind(this.onPause, this);
+    this.onSong = __bind(this.onSong, this);
     this.findElements();
     this.flashMessages = new FlashMessages(this.statusArea);
     Settings.load().then(this.onInitialSettingsLoad.bind(this));
@@ -90,6 +96,7 @@ class PageLoader {
 
   onPageLoaded(pageID, data) {
     if (this.page && pageID !== this.pageID) {
+      this.stopListeningForPageMessages();
       this.page.removeListeners();
     }
     this.updatePageClass(pageID);
@@ -145,9 +152,9 @@ class PageLoader {
     }
     this.page = new IndexPage(this.settings, this.audioTag, lastNotifiedSongID);
     this.listenForPageMessages();
-    this.page.addListener('play', this.onPlay.bind(this));
-    this.page.addListener('pause', this.onPause.bind(this));
-    this.page.addListener('song', this.onSong.bind(this));
+    this.page.addListener('play', this.onPlay);
+    this.page.addListener('pause', this.onPause);
+    this.page.addListener('song', this.onSong);
     this.returnLinkWrapper.classList.add('hidden');
     this.settingsLinkWrapper.classList.remove('hidden');
     this.aboutLinkWrapper.classList.remove('hidden');
@@ -176,9 +183,29 @@ class PageLoader {
   }
 
   listenForPageMessages() {
-    this.page.addListener('settings:change', (s) => this.onSettingsChanged(s));
-    this.page.addListener('error', (e) => this.flashMessages.error(e));
-    this.page.addListener('notice', (m) => this.flashMessages.notice(m));
+    this.page.addListener('settings:change', this.onSettingsChanged);
+    this.page.addListener('error', this.flashError);
+    this.page.addListener('notice', this.flashNotice);
+  }
+
+  stopListeningForPageMessages() {
+    console.debug('unbinding page message listeners');
+    this.page.removeListener('settings:change', this.onSettingsChanged);
+    this.page.removeListener('error', this.flashError);
+    this.page.removeListener('notice', this.flashNotice);
+    if (this.page instanceof IndexPage) {
+      this.page.removeListener('play', this.onPlay);
+      this.page.removeListener('pause', this.onPause);
+      this.page.removeListener('song', this.onSong);
+    }
+  }
+
+  flashError(err) {
+    this.flashMessages.error(e);
+  }
+
+  flashNotice(msg) {
+    this.flashMessages.notice(m);
   }
 
   onPlay(station, url) {
