@@ -4,6 +4,7 @@ const LinkHandler = require('../models/link-handler');
 const IndexPage = require('../index/index-page');
 const SettingsPage = require('../settings/settings-page');
 const AboutPage = require('../about/about-page');
+const HelpPage = require('../help/help-page');
 const FlashMessages = require('../models/flash-messages');
 const AppMenu = require('../models/app-menu');
 const ChromecastScanner = require('../models/chromecast-scanner');
@@ -180,6 +181,14 @@ class PageLoader {
     this.returnLinkWrapper.classList.remove('hidden');
     this.settingsLinkWrapper.classList.add('hidden');
     this.aboutLinkWrapper.classList.add('hidden');
+  }
+
+  onHelpPageLoaded() {
+    if (this.page && this.page instanceof HelpPage) {
+      return;
+    }
+    this.page = new HelpPage();
+    this.listenForPageMessages();
   }
 
   listenForPageMessages() {
