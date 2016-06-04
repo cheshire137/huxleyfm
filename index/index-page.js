@@ -472,17 +472,18 @@ module.exports = class IndexPage extends Eventful {
     if (this.audioTag.getAttribute('data-paused') === 'true') {
       return;
     }
-    let message = song.title;
+    let body = '';
     if (typeof song.artist === 'string' && song.artist.length > 0) {
-      message += ' by ' + song.artist;
+      body = ' by ' + song.artist;
     }
     const options = {
       title: song.title,
-      body: message,
+      body: body,
+      silent: true,
       icon: path.join(__dirname, '..', 'images', station + '.png')
     };
     this.lastNotifiedSongID = song.id;
-    new Notification(message, options);
+    new Notification(song.title, options);
   }
 
   scrobbleTrack(song) {
