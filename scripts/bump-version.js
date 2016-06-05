@@ -12,34 +12,41 @@ function makeGitTag(version) {
       pushTags('origin');
 }
 
+function getNextVersion(curVersion) {
+  const subVersions = curVersion.split('.').map(i => parseInt(i, 10));
+  if (subVersions[2] < 9) {
+    subVersions[2]++;
+  } else if (subVersions[2] === 9 && subVersions[1] < 9) {
+    subVersions[2] = 0;
+    subVersions[1]++;
+  } else if (subVersions[2] === 9 && subVersions[1] === 9) {
+    subVersions[2] = 0;
+    subVersions[1] = 0;
+    subVersions[0]++;
+  }
+  return subVersions.join('.');
+}
+
+function bumpVersion(data) {
+  const json = JSON.parse(data);
+  const curVersion = json.version;
+  const newVersion = getNextVersion(curVersion);
+  console.log(curVersion + ' -> ' + newVersion);
+  json.version = newVersion;
+  const newConfig = JSON.stringify(json, null, 2) + '\n';
+  fs.writeFile(configPath, newConfig, (writeErr) => {
+    if (writeErr) {
+      console.error('error updating config', writeErr);
+    } else {
+      makeGitTag(newVersion);
+    }
+  });
+}
+
 fs.readFile(configPath, function(err, data) {
   if (err) {
     console.error('error reading config', err);
   } else {
-    const json = JSON.parse(data);
-    const curVersion = json.version;
-    const subVersions = curVersion.split('.').map(i => parseInt(i, 10));
-    if (subVersions[2] < 9) {
-      subVersions[2]++;
-    } else if (subVersions[2] === 9 && subVersions[1] < 9) {
-      subVersions[2] = 0;
-      subVersions[1]++;
-    } else if (subVersions[2] === 9 && subVersions[1] === 9) {
-      subVersions[2] = 0;
-      subVersions[1] = 0;
-      subVersions[0]++;
-    }
-    const newVersion = subVersions.join('.');
-    console.log(curVersion + ' -> ' + newVersion);
-    json.version = newVersion;
-    const newConfig = JSON.stringify(json, null, 2) + '\n';
-    fs.writeFile(configPath, newConfig, (writeErr) => {
-      if (writeErr) {
-        console.error('error updating config', writeErr);
-      } else {
-        console.log('updated ' + configPath);
-        makeGitTag(newVersion);
-      }
-    });
+    bumpVersion(data);
   }
 });
