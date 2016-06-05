@@ -17,4 +17,8 @@
 
 ## Version 0.0.1
 
-Initial release. Includes Chromecast support, a light and dark theme, desktop notifications, dynamic SomaFM station listing, song updates for the current station, and DJ and listener information.
+- Play SomaFM radio stations
+- Chromecast support
+- Light and dark theme
+- Desktop notifications when a new song starts playing
+- See the current station's DJ and how many listeners it has
