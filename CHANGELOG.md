@@ -1,5 +1,9 @@
 # Change Log
 
+## Version 0.0.4
+
+- Smaller app size by omitting some unnecessary files.
+
 ## Version 0.0.3
 
 - Fixes https://github.com/cheshire137/huxleyfm/issues/33 by showing the current version on the About page.
