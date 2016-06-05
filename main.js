@@ -63,8 +63,8 @@ app.on('ready', () => {
       mainWindow.setTitle(title);
     });
     mainWindow.webContents.send('version', app.getVersion());
-    ['MediaPlayPause', 'MediaStop'].forEach(registerMediaKey);
   });
+  ['MediaPlayPause', 'MediaStop'].forEach(registerMediaKey);
 });
 
 app.on('before-quit', () => {
