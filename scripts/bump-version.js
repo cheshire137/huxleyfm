@@ -3,6 +3,15 @@ const path = require('path');
 const simpleGit = require('simple-git')(path.join(__dirname, '..'));
 
 const configPath = path.join(__dirname, '..', 'package.json');
+
+function makeGitTag(version) {
+  simpleGit.add(configPath).
+      commit('Bump version to ' + version).
+      push('origin', 'master').
+      addTag(version).
+      pushTags('origin');
+}
+
 fs.readFile(configPath, function(err, data) {
   if (err) {
     console.error('error reading config', err);
@@ -29,6 +38,7 @@ fs.readFile(configPath, function(err, data) {
         console.error('error updating config', err);
       } else {
         console.log('updated ' + configPath);
+        makeGitTag(newVersion);
       }
     });
   }
