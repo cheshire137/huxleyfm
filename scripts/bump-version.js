@@ -32,10 +32,10 @@ fs.readFile(configPath, function(err, data) {
     const newVersion = subVersions.join('.');
     console.log(curVersion + ' -> ' + newVersion);
     json.version = newVersion;
-    const newData = JSON.stringify(json, null, 2) + '\n';
-    fs.writeFile(configPath, newData, (writeErr) => {
-      if (err) {
-        console.error('error updating config', err);
+    const newConfig = JSON.stringify(json, null, 2) + '\n';
+    fs.writeFile(configPath, newConfig, (writeErr) => {
+      if (writeErr) {
+        console.error('error updating config', writeErr);
       } else {
         console.log('updated ' + configPath);
         makeGitTag(newVersion);
