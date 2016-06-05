@@ -78,6 +78,10 @@ If you hit errors installing `castv2-client`, try running `npm install castv2-cl
 
 ### How to Build
 
+[Travis](https://travis-ci.org/) is set up to build Linux, Mac, and Windows
+versions on every tag. If you want to build manually on your computer, first
+follow the 'How to Develop' steps above, then:
+
     npm run build
 
 Builds the app for OS X using [electron-packager](https://github.com/electron-userland/electron-packager).
@@ -89,6 +93,10 @@ Builds the app for Windows.
     npm run-script build-linux
 
 Builds the app for Linux.
+
+You can use `node scripts/bump-version.js` to increment the app version in
+package.json, commit that change and push it, make a git tag of the same name,
+and push tags.
 
 ## License
 
