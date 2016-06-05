@@ -8,13 +8,13 @@ A desktop player for [SomaFM](http://somafm.com/). Compare to my [Chrome extensi
 
 See also the [change log](CHANGELOG.md).
 
-![Screenshot of OS X app](https://raw.githubusercontent.com/cheshire137/huxleyfm/master/screenshot-os-x.png)
+![Screenshot of OS X app](https://raw.githubusercontent.com/cheshire137/huxleyfm/master/screenshots/os-x.png)
 
-![Screenshot of OS X notification](https://raw.githubusercontent.com/cheshire137/huxleyfm/master/screenshot-notification.png)
+![Screenshot of OS X notification](https://raw.githubusercontent.com/cheshire137/huxleyfm/master/screenshots/notification.png)
 
-![Screenshot of Windows station menu](https://raw.githubusercontent.com/cheshire137/huxleyfm/master/huxleyfm-choose-station.png)
+![Screenshot of Windows station menu](https://raw.githubusercontent.com/cheshire137/huxleyfm/master/screenshots/choose-station.png)
 
-![Screenshot of Windows settings](https://raw.githubusercontent.com/cheshire137/huxleyfm/master/huxleyfm-settings.png)
+![Screenshot of Windows settings](https://raw.githubusercontent.com/cheshire137/huxleyfm/master/screenshots/settings.png)
 
 ## How to Develop
 
